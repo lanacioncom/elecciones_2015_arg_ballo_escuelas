@@ -1,0 +1,7 @@
+.venv/
+logs/
+docs/
+data/comun/
+data/paso/
+data/pv/
+data/DB/

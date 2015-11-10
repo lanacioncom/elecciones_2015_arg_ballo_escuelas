@@ -1,0 +1,23 @@
+{
+  "name": "server",
+  "version": "0.0.0",
+  "authors": [
+    "Cristian Bertelegni <cristianbertelegni@gmail.com>",
+    "Juan Elosua <juan.elosua@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "d3": "~3.5.5",
+    "requirejs": "jrburke/requirejs#~2.1.18",
+    "queue-async": "~1.0.7",
+    "requirejs-text": "~2.0.14",
+    "jquery-ui": "~1.11.4"
+  }
+}
