@@ -1,0 +1,9 @@
+<!--JET: Tooltip when one polling station is selected-->
+<div class="ttip_header"><%- poll.nombre %></div>
+<div class="ttip_body">El partido <%- dict_datos[v.rows[0].id_partido].nombre_corto %>
+    <% if (!winner) {;%>
+        <span class="ttip_main">ha obtenido un <%= vh.get_formatted_pct(v.rows[0].votos,poll.positivos,1) %>% de votos</span>
+    <% }else {%>
+        ha ganado por un margen de <span class="ttip_number"><%= (((v.rows[0].votos - v.rows[1].votos) / poll.positivos) * 100).format(1, ",", '.') %>%</span> al partido <%- dict_datos[v.rows[1].id_partido].nombre_corto %>
+    <%}%>
+</div>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="40px" height="200px" viewBox="0 0 40 200" enable-background="new 0 0 40 200" xml:space="preserve">
+<polygon fill="black" points="12.32,89.449 4.621,75.449 12.32,61.449 27.719,61.449 35.418,75.449 27.719,89.449 "/>
+<polygon class="gano_votos" points="12.32,139.449 4.621,125.449 12.32,111.449 27.719,111.449 35.418,125.449 27.719,139.449 "/>
+<g>
+	<g>
+		<line fill="none" stroke="#B3B3B3" stroke-miterlimit="10" x1="33.814" y1="174.949" x2="32.814" y2="174.949"/>
+		
+			<line fill="none" stroke="#B3B3B3" stroke-miterlimit="10" stroke-dasharray="2,2" x1="30.814" y1="174.949" x2="12.814" y2="174.949"/>
+		<line fill="none" stroke="#B3B3B3" stroke-miterlimit="10" x1="11.814" y1="174.949" x2="10.814" y2="174.949"/>
+		<g>
+			<polygon fill="#B3B3B3" points="11.814,172.521 7.497,175.014 11.814,177.507 			"/>
+		</g>
+	</g>
+</g>
+<polygon fill="none" stroke="#000000" stroke-miterlimit="10" points="11.564,39.949 3.314,24.949 11.564,9.949 28.063,9.949 
+	36.312,24.949 28.063,39.949 "/>
+</svg>

@@ -1,0 +1,5 @@
+SELECT e.cartodb_id, e.id_agrupado, d.id_partido, d.votos as votos, 
+d.votos_paso as votos_paso, e.positivos, e.the_geom_webmercator
+FROM arg_pv_localizaciones e, arg_pv_loc_diff_votos d
+WHERE d.id_agrupado = e.id_agrupado
+AND d.id_partido = '<%- id_partido %>'

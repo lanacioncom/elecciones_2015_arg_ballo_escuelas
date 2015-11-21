@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Elecciones 2015 - lanacion.com</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="http://especiales.lanacion.com.ar/multimedia/proyectos/fonts/font.css">
+    
+    <!-- build:css -->
+    <link rel="stylesheet" href="libs/jquery-ui/themes/smoothness/jquery-ui.css"/>
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <!--<link rel="stylesheet" type="text/css" href="libs/cartodb.js/themes/css/cartodb.css" />-->
+    <link rel="stylesheet" type="text/css" href="css/cartodb.css" />
+    <link rel="stylesheet" type="text/css" href="css/tooltip.css" />
+    <link rel="stylesheet" type="text/css" href="css/draw_controls.css" />
+    <link rel="stylesheet" type="text/css" href="css/leaflet_draw.css" />
+    <link rel="stylesheet" type="text/css" href="css/overlay.css" />
+    <link rel="stylesheet" type="text/css" href="css/styles_max_1100.css" />
+    <link rel="stylesheet" type="text/css" href="css/styles_max_0960.css" />
+    <link rel="stylesheet" type="text/css" href="css/styles_max_0850.css" />
+    <link rel="stylesheet" type="text/css" href="css/styles_max_0768.css" />
+    <link rel="stylesheet" type="text/css" href="css/styles_max_0640.css" />
+    <link rel="stylesheet" type="text/css" href="css/styles_max_0455.css" />
+
+    <style type="text/css">
+        .com { color: #93a1a1; }
+        .lit { color: #195f91; }
+        .pun, .opn, .clo { color: #93a1a1; }
+        .fun { color: #dc322f; }
+        .str, .atv { color: #D14; }
+        .kwd, .linenums .tag { color: #1e347b; }
+        .typ, .atn, .dec, .var { color: teal; }
+        .pln { color: #48484c; }
+
+        .prettyprint {
+          padding: 8px;
+          background-color: #f7f7f9;
+          border: 1px solid #e1e1e8;
+        }
+        .prettyprint.linenums {
+          -webkit-box-shadow: inset 40px 0 0 #fbfbfc, inset 41px 0 0 #ececf0;
+             -moz-box-shadow: inset 40px 0 0 #fbfbfc, inset 41px 0 0 #ececf0;
+                  box-shadow: inset 40px 0 0 #fbfbfc, inset 41px 0 0 #ececf0;
+        }
+
+        /* Specify class=linenums on a pre to get line numbering */
+        ol.linenums {
+          margin: 0;
+        }
+        ol.linenums li {
+          padding-left: 12px;
+          color: #bebec5;
+          line-height: 18px;
+          text-shadow: 0 1px 0 #fff;
+        }
+    </style>
+
+    <!-- endbuild -->
+
+    <!--Etiquetas HTML5 para IE8 hacia abajo-->
+    <!--[if lt IE 9]>
+        <script type="text/javascript">
+            document.createElement("nav");
+            document.createElement("header");
+            document.createElement("footer");
+            document.createElement("section");
+            document.createElement("article");
+            document.createElement("aside");        
+            document.createElement("hgroup");    
+            document.createElement("canvas");    
+        </script>
+        
+        <style> 
+            #mapa_cont, #filtros, .ayuda{display:none !important}
+            footer{display:none}
+            div.mensaje{width:100%; height:500px; position:relative; }    
+            div.mensaje div.texto{width:100%; height:400px; position:absolute; top:200px; }    
+            div.mensaje div.texto p{color:#787878; font-family:Arial, Helvetica, sans-serif; font-size:12px; text-align:center; line-height:1.5;}    
+            div.mensaje div.texto p a{color:#335577; font-weight:bold;}    
+        </style>
+        
+    <![endif]-->
+
+    <script src="http://especiales.lanacion.com.ar/multimedia/proyectos/LN_loader/js/spin.min.js"></script>
+    <script id="ga_scr" data-page="elecciones_2015_arg_pv_escuelas">var ga_page = document.getElementById('ga_scr').dataset.page;var _gaq = _gaq || [];_gaq.push(['_setAccount', 'UA-621326-6']);_gaq.push(['_setDomainName', '.lanacion.com.ar']);_gaq.push(['_setCampaignCookieTimeout',0]);_gaq.push(['_trackPageview', ga_page]);(function() {var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);})();</script>
+</head>
+<body>
+    <div id="wrapper_all" style='-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;'  unselectable='on' onselectstart='return false;'>
+        <nav>
+            <div class="blanco">
+                <div id="botones">
+                    <div id="menu"></div>
+                    <div class="buscar" id="buscar" title="Buscá tu escuela">
+                        <div class="lupa"></div>                        
+                        <input class="ui-widget invisible" id="searchbox" placeholder="Buscá tu escuela (min. 3 caracteres)">
+                    </div>
+
+                    <div class="btn" id="escuela">Resultados por cada escuela</div>
+                    <div class="btn on" id="fuerza">Resultados por grupo de escuelas</div>
+                    <div class="btn" id="difpaso">Diferencia con las PASO</div>                
+                </div>
+            </div>
+        </nav>
+
+        <!--- para IE7 , IE8 --->
+        <!--[if lt IE 9]>
+            <div class="mensaje">
+                <div class="texto">
+                    <p>Este contenido no es soportado por su navegador.</p>
+                    <p>Le recomendamos que descargue <a href="http://www.mozilla.org/es-AR/firefox/fx/" target="_blank">Mozilla Firefox</a> o <a href="https://www.google.com/intl/es/chrome/browser/?hl=es" target="_blank">Google Chrome</a>.</p> 
+                    <p>Disculpe las molestias</p>
+                </div>
+            </div>
+        <![endif]-->
+
+        <section id="data_container" class="clearfix">
+            <aside id="shotcuts">
+                <div class="short" id="conurbano" title="Conurbano">Conurbano</div>
+                <div class="short" id="caba" title="CABA">CABA</div>
+                <div class="short" id="cordoba" title="Córdoba">Córdoba</div>
+                <div class="short" id="rosario" title="Rosario">Rosario</div>
+                <div class="short" id="laplata" title="La Plata">La Plata</div>
+            </aside>
+
+            <article id="map_container"></article>
+            
+            <!-- tooltip -->
+            <div class="tooltip" id="tooltip"></div>
+            <div id="help_draw" class="disabled"></div>
+            
+            
+            <!-- Overlay section -->
+            <article id="overlay">
+                <article id="results">
+                    <div class="crowd">
+                        <div class="titulo" id="titu1">Filtrar por Fuerza</div>
+                        <div class="formu">
+                            <div class="titulo">¿Detectaste algún error en la ubicación de esta escuela?</div>
+                            <div class="chequea">SÍ</div>
+                            <div class="mensaje">
+                              <textarea name="msg" id="msg" wrap="soft" maxlength="100" placeholder="¿Qué es lo que esta mal? Ej.: Lat. - Long. de la escuela"></textarea >
+                              <input type="submit" value="ENVIAR" id="submit">
+                            </div>
+                        </div>
+                        
+                        <div></div>
+                    </div>
+                    <ul id="overlay_li_content" class="overlay"></ul>
+                </article>
+            </article>
+
+        </section>
+
+        <section id="tools">
+            <!--
+            <div class="sliders" id="porc"> 
+                <input type="text" id="slider_porc" name="porcentaje" value="" />
+            </div>
+
+            <div class="sliders" id="hexa"> 
+                 <input type="text" id="slider_hexa" name="hexagonos" value="" />
+            </div>
+            -->
+             <div class="contenedor0" id="refEscuelas">
+                <div class="como_leer">
+                    <h2>CÓMO SE LEE ESTE MAPA</h2>
+                </div>
+                <div class="explica">
+                    <p>Cada circulo representa una escuela. El tamaño de los cìrculos es proporcional a la cantidad de votos obtenido por el partido seleccionado en esa escuela.</p>
+                </div>
+                <div class="hexagono"></div>
+                <div class="flecha"></div>
+                <div class="colores">
+                    <div class="circ" id="c1"></div>
+                    <div class="circ" id="c2"></div>
+                    <div class="circ" id="c3"></div>
+                </div>
+            </div>
+
+            <div class="contenedor" id="refFuerza">
+                <div class="como_leer">
+                    <h2>CÓMO SE LEE ESTE MAPA</h2>
+                </div>
+                <div class="explica">
+                    <p>Cada hexágono se corresponde con una cantidad variable de escuelas. El color representa la fuerza ganadora, resultado de la suma de los votos de todas las escuelas dentro del hexágono.</p>
+                </div>
+                <div class="hexagono"></div>
+                <div class="colores">
+                    <div class="porcentajes">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="215.5px" height="67.5px" viewBox="0 0 215.5 67.5" enable-background="new 0 0 215.5 67.5" xml:space="preserve">
+                        <g>
+                            <polygon id="hex20" points="12.028,23.278 10,19.778 12.028,16.278 16.085,16.278 18.113,19.778 16.085,23.278    "/>
+                            <polygon id="hex40" points="57.5,23.278 55.472,19.778 57.5,16.278 61.557,16.278 63.584,19.778 61.557,23.278    "/>
+                            <polygon id="hex60" points="102.971,23.278 100.943,19.778 102.971,16.278 107.027,16.278 109.057,19.778 107.027,23.278  "/>
+                            <polygon id="hex80" points="148.441,23.278 146.415,19.778 148.441,16.278 152.501,16.278 154.527,19.778 152.501,23.278  "/>
+                            <polygon id="hex100" points="193.914,23.278 191.887,19.778 193.914,16.278 197.973,16.278 200,19.778 197.973,23.278  "/>
+                        </g>
+                        <text transform="matrix(1 0 0 1 2.25 41)" fill="#AFAFAF" font-family="Arial, Helvetica" font-size="11">&lt;20</text>
+                        <text transform="matrix(1 0 0 1 46 41)" fill="#AFAFAF" font-family="Arial, Helvetica" font-size="11">&lt;40</text>
+                        <text transform="matrix(1 0 0 1 92.5 41)" fill="#AFAFAF" font-family="Arial, Helvetica" font-size="11">&lt;60</text>
+                        <text transform="matrix(1 0 0 1 138.25 41)" fill="#AFAFAF" font-family="Arial, Helvetica" font-size="11">&lt;80</text>
+                        <text transform="matrix(1 0 0 1 175.5 41)" fill="#AFAFAF" font-family="Arial, Helvetica" font-size="11">&lt;100%</text>
+                        </svg>
+                    </div>
+                </div>
+                <div class="flecha"></div>
+                <div class="escala"><p>Escala de colores <br>en el mapa</p></div>
+            </div>
+
+
+            <div class="contenedor2" id="refPaso">
+                <div class="como_leer">
+                    <h2>CÓMO SE LEE ESTE MAPA</h2>
+                </div>
+                <div class="explica">
+                    <p>Cada hexágono se corresponde con una cantidad variable de escuelas. El color representa la fuerza ganadora, resultado de la suma de los votos de todas las escuelas dentro del hexágono.</p>
+                </div>
+                <div class="hexagono"></div>
+                 <div class="colores">
+                    <div class="perdio_gano">
+                        <div class="perdio">
+                            <p>Perdió votos respecto de las PASO</p>
+                            <svg version="1.1" id="hexdif_0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="47.5px" viewBox="0 0 40 47.5" enable-background="new 0 0 40 47.5" xml:space="preserve">
+                            <polygon points="12.32,35.449 4.621,21.449 12.32,7.449 27.719,7.449 35.418,21.449 27.719,35.449 "/>
+                            </svg>
+
+                        </div>
+                        <div class="gano">
+                            <p>Ganó votos respecto de las PASO</p>
+                            <svg version="1.1" id="hexdif_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="47.5px" viewBox="0 0 40 47.5" enable-background="new 0 0 40 47.5" xml:space="preserve">
+                            <polygon points="12.32,35.449 4.621,21.449 12.32,7.449 27.719,7.449 35.418,21.449 27.719,35.449 "/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="flecha"></div>
+                <div class="escala"><p>Referencias de color <br>en el mapa</p></div>
+            </div>
+
+
+        </section>
+
+        <footer>
+            <div class="creditos" id="creditos">Créditos</div>
+            <div class="creditos meto" id="metodo">Especificaciones</div>
+           <p><b>Fuente:</b> Cámara Nacional Electoral</p>
+        </footer>
+        
+       
+        
+        
+        
+    </div> <!-- end wrapper_all -->
+    <div id="append"></div>
+
+    <!-- LN LOADER -->
+    <div id="foo" class="loader"></div>
+    <script>var opts={lines:40,length:2,width:1,radius:25,corners:0.5,rotate:1,color:"#006998",speed:1,trail:60,shadow:false,hwaccel:false,className:"spinner",zIndex:2000000000,top:0,left:0};var target=document.getElementById("foo");var spinner=new Spinner(opts).spin(target);</script>
+    <!-- LN LOADER -->
+
+</body>
+</html>
+
+<!-- PYM -->
+<script src="http://especiales.lanacion.com.ar/multimedia/proyectos/js/pym.js" ></script>
+<!-- PYM -->
+<!-- build:lib_jquery -->
+<!--<script type="text/javascript" src="libs/jquery/dist/jquery.min.js"></script>-->
+<!-- endbuild -->
+<!-- build:lib_autocomplete -->
+<!--<script type="text/javascript" src="libs/jquery-ui/jquery-ui.min.js"></script>-->
+<!-- endbuild -->
+<!--<script type="text/javascript" src="libs/cartodb.min.js"></script>-->
+<!-- build:js -->
+<script data-main="js/app" src="libs/requirejs/require.js"></script>
+<!-- endbuild -->

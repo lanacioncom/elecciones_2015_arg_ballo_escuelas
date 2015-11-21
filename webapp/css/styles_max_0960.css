@@ -1,0 +1,50 @@
+@media (max-width: 960px) {
+    
+    .blanco{
+          width: 94%;
+    }
+
+    #buscar.activo {
+      width: 89%;
+      background-color: #f7f7f7;
+  }
+
+    section#tools div.contenedor .explica, section#tools div.contenedor2 .explica {
+        margin-top: 7px;
+
+    }
+
+    section#tools div.contenedor h2, section#tools div.contenedor2 h2{
+          width: 90px;
+    }
+
+    section#tools div.contenedor .como_leer, section#tools div.contenedor2 .como_leer {
+        width: 100px;
+    }
+
+    section#tools div.contenedor2 .flecha,
+    section#tools div.contenedor .flecha,
+    section#tools div.contenedor2 .hexagono,
+    section#tools div.contenedor .hexagono,
+    section#tools div.contenedor2 .escala,
+    section#tools div.contenedor .escala{
+      display: none;
+    }
+
+    section#tools div.contenedor .colores,
+    section#tools div.contenedor2 .colores {
+       border-left: 0px;
+       float:right;
+       margin-right: 30px;
+  }
+
+  section#tools div.contenedor .explica p, section#tools div.contenedor2 .explica p {
+      width: 125%;
+  }
+
+  section#tools div.contenedor0 h2 {
+    margin-left: 19%;
+ }
+
+}
+

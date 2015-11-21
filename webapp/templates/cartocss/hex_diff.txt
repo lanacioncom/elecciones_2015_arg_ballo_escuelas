@@ -1,0 +1,12 @@
+#cartocss_hex{ 
+    polygon-opacity: 0.9;
+    line-color: #FFF;
+    line-width: 1;
+    line-opacity: 1;
+    polygon-fill: #000000;
+    <% _.each(data, function(v,k) { %>
+        [id_partido='<%- k %>'] {
+            [agg_diff >= 0] {polygon-fill: <%- v.color_partido %>;}
+        }
+    <% }); %>
+}

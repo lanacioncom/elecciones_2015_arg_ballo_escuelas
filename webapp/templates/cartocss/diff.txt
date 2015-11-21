@@ -1,0 +1,14 @@
+#cartocss_diff {
+  marker-opacity: 0.7;
+  marker-allow-overlap: true;
+  marker-line-width: 1;
+  marker-line-opacity: 0.3;
+  marker-line-color: white;
+  [diferencia>=0]{marker-fill: <%- color %>;}
+  [diferencia<0]{marker-fill: #000000;}
+  <% _.each(_.pairs(zooms), function(p) { %>
+    [zoom=<%- p[0] %>] {
+      marker-width: 2 + [adif] * <%- p[1] / max %>; 
+    }
+  <% }); %>
+}

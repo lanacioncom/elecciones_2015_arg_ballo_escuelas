@@ -1,0 +1,9 @@
+SELECT DISTINCT ON (d.id_agrupado)
+d.id_agrupado, d.id_partido, d.votos as votos, 
+d.votos_paso as votos_paso,
+d.diferencia, abs(d.diferencia) as adif,
+e.the_geom_webmercator, e.positivos, e.nombre,
+(d.votos/e.positivos::float) as perc
+FROM arg_pv_localizaciones e, arg_pv_loc_diff_votos d
+WHERE e.id_agrupado = d.id_agrupado 
+ORDER BY d.id_agrupado, <%- orden %> DESC

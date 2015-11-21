@@ -1,0 +1,10 @@
+SELECT d.id_partido, 
+SUM(e.electores) as electores, SUM(e.votantes) as votantes,
+SUM(e.positivos) as positivos, SUM(d.diferencia) as diferencia, 
+SUM(d.votos) as votos, SUM(d.votos_paso) as votos_paso,
+array_length(string_to_array('{{ids}}',','), 1) as num_loc
+FROM arg_pv_localizaciones e, arg_pv_loc_diff_votos d
+WHERE e.id_agrupado in ({{ids}})
+AND e.id_agrupado = d.id_agrupado
+GROUP BY d.id_partido
+ORDER BY votos DESC

@@ -1,0 +1,8 @@
+SELECT e.id_agrupado, e.nombre, e.direccion, 
+e.id_distrito, e.id_seccion, e.circuitos, e.rangos_mesas, 
+e.electores, e.votantes, e.validos, e.positivos, st_asgeojson(e.the_geom) as g,
+d.id_partido, d.votos_paso as votos_paso, d.votos as votos, d.diferencia 
+FROM arg_pv_localizaciones e, arg_pv_loc_diff_votos d
+WHERE e.id_agrupado = {{id_agrupado}}
+AND e.id_agrupado = d.id_agrupado
+ORDER BY votos DESC;

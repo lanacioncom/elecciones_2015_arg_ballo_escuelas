@@ -1,0 +1,278 @@
+#overlay {
+  width: 275px;
+  height: 100%;
+  position: absolute;
+  background: #fff;
+  top: 0;
+  right: -100%;
+  border: 1px solid #E7E7E7;
+  border-top: 0px;
+  z-index:1500;
+  padding-left: 8px;
+}
+
+#participacion { position: absolute; bottom: 5px; font-size: 10px;  }
+/*! content overlay*/
+a.cerrar { display: inline-block; padding: 10px; font-weight: bold; position: absolute; top: 0; left: -20px; background: #fff; border-radius: 5px; cursor: pointer;}
+
+article#overlay {background:white;}
+div.wrapper_overlay { border-left: solid 1px #EAEAEA; padding-left: 37px;}
+div#res_total { margin-top: 19px;}
+div#res_total h3 { margin-bottom: 18px; font-size: 1.5em;}
+div#res_total > div {margin-bottom: 27px;}
+div#res_total div > div { display: inline-block; font-size: 11px; color: #999;}
+div#res_total div > div.mesas_esc { margin-right: 10px;}
+div#res_total div span {}
+
+
+a#comp_paso { text-decoration: none; color: #999; text-transform: uppercase; padding: 12px 0px 1px 0px; font-size:12px;}
+
+a#comp_paso .check { margin: 0 0 0 10px; position: relative; top: -5px; }
+    
+div#wrapper_ul_overlay { position: relative; overflow-x: hidden; overflow-y: auto; }
+ul.overlay{  position: relative; list-style: none;}
+ul.overlay li { 
+    /*padding-left: 27px;*/ border-bottom: 1px solid #eeeeee;; position: absolute;left: 0; cursor: pointer; 
+    width: 100%; 
+}
+
+ul.overlay li span.radio_bg{
+    width: 25px;
+    height: 25px;
+    background: url("../img/sprite5.svg") -43px -43px no-repeat;
+    position: absolute;
+    left: 0px;
+    top: calc(50% - 15px);
+}
+
+ul.overlay li.active span.radio_bg { background-position: -70px -43px}
+ul.overlay.filter li { opacity: .3;  background-image: url("../img/pat.png");  }
+ul.overlay.filter li.active { opacity: 1; background: #fff; }
+
+body.difpaso ul.overlay li.active span.radio_bg{
+    background-position: -9px -42px;
+}
+
+.clearfix .bg_li {
+/*    
+    margin-top:5px;
+    margin-bottom:5px;
+*/} 
+
+
+/*! wrapper for foto and partido */
+ul.overlay li .description {
+    width: 70px;
+    height: 65px;
+    margin: 7px 9px;
+    margin-left: 26px;
+    display: inline-block;
+    border-radius: 50%;
+    /* border: 2px solid #fff; */
+    float: left;
+}
+
+ul.overlay li .description.partido { }
+ul.overlay li .candi { font-size: 12px; color: #666;}
+ul.overlay li .name { font-size:11px; color:#A9A9A9; font-family: 'suecaslabmedium';}
+ul.overlay li .description .candi { text-indent: -5000px}
+li .description.foto {
+    background: #fff url(../img/sprite_nac_pasook.jpg) no-repeat;
+    text-indent: -5000px;
+    background-position: -5000px -5000px;/*! se debe setear desde el nombre del candidato */
+    line-height: 1.2;
+    background-size: 70%;
+}
+
+li .foto.Scioli{
+    background-position: 6px -785px;
+}
+
+li .foto.Macri{
+    background-position: 6px -539px;
+}
+
+li .foto.Stolbizer{
+    background-position: 6px 8px;
+}
+
+li .foto.del_cano{
+    background-position: 6px -285px;
+}
+
+li .foto.Massa{
+    background-position: 6px -600px;
+}
+
+li .foto.Rodriguez_Saa{
+   background-position: 6px -661px;
+}
+ 
+
+ul.overlay li .above_bar { height: 17px; padding-top: 14px; margin-bottom: 5px; width: 100%;}
+ul.overlay li .down_bar { padding-top: 4px;}
+
+ul.overlay li.active .cont_barra .above_bar {
+    /*padding-left: 10px;*/
+}
+
+ul.overlay li .above_bar .votos, 
+ul.overlay li .down_bar .votos{
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    font-weight: lighter;
+    color:#000 !important;
+}
+ul.overlay li .down_bar .porc_text{ font-size: 15px;}
+
+ul.overlay li .cont_barra { width: calc(100% - 110px); float: left; } 
+ul.overlay li .cont_barra .barra { height: 12px; position: relative; }
+ul.overlay li .cont_barra .barra .porc {
+    height: 17px;
+    position: absolute;
+    top: 0px;
+    right: -44px;
+    font-weight: lighter;
+    font-size: 12px;
+}
+
+ul.overlay li .cont_barra .barra div.paso_bar {
+    width: 100%; height: 7px; background: rgba(100, 100, 100, .7); 
+    position: absolute; top: 5px; left: 0
+}
+ul.overlay li .cont_barra .barra div.paso_bar .porc_paso{ position: absolute; top: -1px; right: -95px; width: 90px; display: inline-block; font-size: 9px;}
+ul.overlay li .cont_barra .barra div.paso_bar .porc_paso .txt_paso { color: #666;}
+
+div.crowd{
+    width: 100%;
+    border-bottom: 1px solid #dadada;
+}
+
+div.crowd div.titulo{
+    display: inline-block;
+    width: 29%;
+    font-family: 'TheSans', Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    padding: 19px 10px;
+    line-height: 1.2;
+    color: #0084b6;
+    text-transform: uppercase;
+    padding-left: 0px;
+}
+
+div.titulo#titu1 {
+	color:black;
+	line-height: 1.1;
+}
+
+
+body.escuela #overlay.activo div.crowd div.titulo#titu1{
+    display: none;
+}
+
+body.dibujo #overlay.activo div.crowd div.titulo#titu1{
+    display: inherit;
+}
+
+body.fuerza .activo div.crowd div.titulo#titu1,
+body.difpaso .activo div.crowd div.titulo#titu1,
+body.dibujo #overlay.activo div.crowd div.titulo#titu1{
+    width: 100%;
+    padding: 23px 8px;
+    font-size: 15px;
+}
+
+div.crowd div.formu{
+    position: relative;
+    height: 64px;
+    display: none;
+}
+
+body.escuela #overlay.activo div.crowd div.formu{
+    display: inherit;
+    transition: all 0.5s;
+}
+
+body.dibujo #overlay.activo div.crowd div.formu{
+    display: none;
+}
+
+div.crowd div.formu div.titulo{
+    width: 60%;
+    display: inline-block;
+    padding-right: 0px;
+    margin-left: 10px;
+}
+
+div.crowd div.formu div.chequea{
+    position: absolute;
+    top: 20px;
+    right: 13px;
+    display: inline-block;
+        border: 1px solid #DEDEDE;
+    background-color: #f7f7f7;
+    padding: 5px 16px;
+    border-radius: 35px;
+    padding-right: 36px;
+    font-size: 12px;
+    color: #0084b6;
+    background-image: url("../img/sprite5.svg");
+    background-repeat: no-repeat;
+    background-position: 26px -78px;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+div.crowd div.formu.on{
+    background-color: #fff !important;
+    height: auto;
+    border:0px !important;
+}
+
+div.crowd div.formu.on div.chequea{
+    background-position: 26px -45px;
+    border: 1px solid #4BB2FF;
+    color: #0084b6 !important;
+}
+
+div.crowd div.formu div.mensaje{
+    width: 100%;
+    height: 0px;
+    display: inline-block;
+    overflow: hidden;
+}
+
+div.crowd div.formu textarea#msg{
+    border:1px solid #dadada;
+    border-radius: 2px;
+    padding: 10px 10px;
+    width: 84%;
+    height: 30px;
+    max-width: 84%;
+    max-height: 30px;
+    margin:5px 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    line-height: 1.3;
+}
+
+div.crowd div.formu input#submit{
+    font-family: 'TheSans', Arial, Helvetica, sans-serif;
+    cursor: pointer;
+    padding: 4px 25px;
+    background-color: #ECECEC;
+    /* border: 1px solid #000000; */
+    border-radius: 85px;
+    margin-left: 36%;
+    margin-top: 5px;
+    /* color: #fff; */
+    font-size: 12px;
+}
+
+div.crowd div.formu div.mensaje input#submit:hover {
+    background-color: #C0E4FF;
+}
+
+div.crowd div.formu.on div.mensaje{
+    height: 105px;
+}

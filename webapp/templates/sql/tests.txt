@@ -1,0 +1,137 @@
+# Hexagon
+WITH test as (SELECT ST_EXPAND(ST_ENVELOPE(ST_COLLECT(the_geom_webmercator)), CDB_XYZ_Resolution(4) * 3)  as bbox FROM arg_pv_localizaciones), 
+hgrid as (SELECT CDB_HEXAGONGRID(bbox, CDB_XYZ_Resolution(4) * 3) as the_geom FROM test)
+SELECT the_geom FROM hgrid
+
+WITH hgrid as (
+    SELECT CDB_HEXAGONGRID(
+        ST_EXPAND(
+            ST_ENVELOPE(ST_COLLECT(wkb_geometry_4326)),
+            CDB_XYZ_Resolution(4) * 3
+        ),
+        CDB_XYZ_Resolution(4) * 3
+    ) as cell
+)
+SELECT h.cell as wkb_geometry_4326, count(h.*) as num_loc
+FROM hgrid h, arg_ballo_localizaciones l
+WHERE ST_Intersects(l.wkb_geometry_4326, h.cell)
+GROUP BY h.cell
+
+
+    SELECT ST_EXPAND(ST_ENVELOPE(ST_COLLECT(wkb_geometry_4326)), CDB_XYZ_Resolution(4) * 3)  as bbox FROM arg_pv_localizaciones), 
+hgrid as (SELECT CDB_HEXAGONGRID(bbox, CDB_XYZ_Resolution(4) * 3) as the_geom FROM test)
+SELECT the_geom FROM hgrid
+
+# Get rid of hexagon that do not intersect
+SELECT count(h.*)
+FROM lndata.arg_ballo_hexagon_z4_h3 h, arg_ballo_localizaciones l
+WHERE ST_Intersects(l.the_geom_webmercator, h.the_geom_webmercator)
+
+SELECT h.cartodb_id, count(h.cartodb_id) as num_loc
+FROM lndata.arg_ballo_hexagon_z4_h3 h, arg_ballo_localizaciones l
+WHERE ST_Intersects(l.the_geom_webmercator, h.the_geom_webmercator)
+GROUP BY h.cartodb_id
+ORDER BY num_loc desc
+
+WITH hex_poll AS (SELECT h.cartodb_id, array_agg(l.id_agrupado) as agg_list FROM
+lndata.arg_ballo_hexagon_z4_h3 h, arg_ballo_localizaciones l
+WHERE ST_Intersects(l.the_geom_webmercator, h.the_geom_webmercator)),
+SELECT * FROM hex_poll
+
+WITH hex_poll AS (SELECT h.cartodb_id as hex_id, array_agg(l.id_agrupado) as agg_list FROM
+lndata.arg_ballo_hexagon_z4_h3 h, arg_ballo_localizaciones l
+WHERE ST_Intersects(l.the_geom_webmercator, h.the_geom_webmercator)
+GROUP BY h.cartodb_id),
+joined AS (SELECT h.hex_id, COUNT(*) as num_loc
+FROM hex_poll h, arg_ballo_localizaciones l
+WHERE l.id_agrupado = ANY (h.agg_list)
+GROUP BY h.hex_id)
+SELECT * FROM joined
+
+
+
+WITH hgrid AS (SELECT CDB_HexagonGrid(ST_Expand(!bbox!, CDB_XYZ_Resolution(4)) * 5) as cell, row_number() over (ORDER BY cell) as cartodb_id), 
+aggs AS (SELECT count(i.cartodb_id)/power( 5 * CDB_XYZ_Resolution(4), 2 ) as points_density FROM hgrid, (select * from arg_pv_establecimientos) i where ST_Intersects(i.the_geom_webmercator, hgrid.cell) GROUP BY hgrid.cell) 
+SELECT min(points_density) mn, max(points_density) mx FROM aggs"
+
+
+
+WITH hgrid AS (SELECT CDB_HexagonGrid(ST_Expand(!bbox!, greatest(!pixel_width!,!pixel_height!) * "+multiplier+"), greatest(!pixel_width!,!pixel_height!) * "+multiplier+") as cell), 
+dataset AS (SELECT d.id_partido, SUM(e.electores) as electores, SUM(e.votantes) as votantes,
+SUM(e.positivos) as positivos, SUM(d.diferencia) as diferencia, SUM(d.votos_paso) as votos
+FROM lndata.arg_pv_establecimientos e, lndata.arg_pv_diff_votos d
+WHERE e.id_establecimiento = d.id_establecimiento
+AND ST_Intersects(e.the_geom, hgrid.cell)
+GROUP BY d.id_partido
+ORDER BY votos DESC)
+SELECT hgrid.cell as the_geom_webmercator, count(i.cartodb_id) as points_count, count(i.cartodb_id)/power( "+multiplier+" * CDB_XYZ_Resolution("+zoom+"), 2 ) as points_density, 1 as cartodb_id FROM hgrid, (select * from arg_pv_establecimientos) i where ST_Intersects(i.the_geom_webmercator, hgrid.cell) GROUP BY hgrid.cell
+
+WITH hgrid AS (SELECT CDB_HexagonGrid(ST_Expand(!bbox!, greatest(!pixel_width!,!pixel_height!) * <%- multiplier %>), greatest(!pixel_width!,!pixel_height!) * <%- multiplier %> as cell) SELECT hgrid.cell as the_geom_webmercator, count(i.cartodb_id) as points_count, count(i.cartodb_id)/power( <%- multiplier %> * CDB_XYZ_Resolution(<%- zoom %>), 2 ) as points_density, 1 as cartodb_id FROM hgrid, (select * from arg_pv_establecimientos) i where ST_Intersects(i.the_geom_webmercator, hgrid.cell) GROUP BY hgrid.cell
+
+WITH hgrid AS (SELECT CDB_HexagonGrid(ST_Expand(!bbox!, greatest(CDB_XYZ_Resolution("+zoom+")) * "+multiplier+"), CDB_XYZ_Resolution("+zoom+") * "+multiplier+") as cell), aggs AS (SELECT count(i.cartodb_id)/power( "+multiplier+" * CDB_XYZ_Resolution("+zoom+"), 2 ) as points_density FROM hgrid, (select * from "+tablename+") i where ST_Intersects(i.the_geom_webmercator, hgrid.cell) GROUP BY hgrid.cell) SELECT min(points_density) mn, max(points_density) mx FROM aggs
+
+# Hex bin para ganadores
+WITH hgrid AS (SELECT CDB_HexagonGrid(ST_Expand(!bbox!, greatest(!pixel_width!,!pixel_height!) * <%- multiplier %>), greatest(!pixel_width!,!pixel_height!) * <%- multiplier %>) as cell)
+SELECT hgrid.cell as the_geom_webmercator, count(i.cartodb_id) as count, (SUM(i.votos)*100/SUM(i.positivos)) as perc, 1 as cartodb_id FROM hgrid, (select * from arg_paso_ganador WHERE id_partido = '0131') i where ST_Intersects(i.the_geom_webmercator, hgrid.cell) GROUP BY hgrid.cell
+
+# Hexbin ganadores sql
+WITH hgrid AS (SELECT CDB_HexagonGrid(ST_Expand(!bbox!, greatest(CDB_XYZ_Resolution(<%- zoom %>)) * <%- multiplier %>), greatest(CDB_XYZ_Resolution(<%- zoom %>)) * <%- multiplier %>) as cell)
+SELECT hgrid.cell as the_geom_webmercator, count(i.cartodb_id) as points_count, (SUM(i.votos)*100/SUM(i.positivos)) as perc, 1 as cartodb_id FROM hgrid, (select * from arg_paso_ganador WHERE id_partido = '0135') i where ST_Intersects(i.the_geom_webmercator, hgrid.cell) GROUP BY hgrid.cell
+
+
+# Ganador
+WITH hgrid AS (SELECT CDB_HexagonGrid(ST_Expand(ST_MakeEnvelope(-20037508.5,-20037508.5,20037508.5,20037508.5,3857), greatest(CDB_XYZ_Resolution(4)) * 5), greatest(CDB_XYZ_Resolution(4)) * 5) as cell)
+SELECT h.cell as the_geom_webmercator, d.id_partido,
+SUM(d.votos_paso)/SUM(e.positivos):float as perc, SUM(d.votos_paso) as votos, 1 as cartodb_id 
+FROM arg_pv_localizaciones e, arg_pv_loc_diff_votos d, hgrid h
+WHERE e.id_agrupado = d.id_agrupado
+AND ST_Intersects(e.the_geom_webmercator, h.cell)
+GROUP BY d.id_partido
+ORDER BY votos DESC LIMIT 1
+
+
+
+WITH hgrid AS (SELECT CDB_HexagonGrid(ST_Expand(ST_MakeEnvelope(-20037508.5,-20037508.5,20037508.5,20037508.5,3857), greatest(CDB_XYZ_Resolution(4)) * 5), greatest(CDB_XYZ_Resolution(4)) * 5) as cell),
+WITH winner AS (
+    SELECT p.id, 
+           p.customer, 
+           p.total, 
+           ROW_NUMBER() OVER(PARTITION BY p.customer 
+                                 ORDER BY p.total DESC) AS rk
+      FROM PURCHASES p)
+SELECT s.*
+  FROM summary s
+ WHERE s.rk = 1
+
+
+
+WITH hgrid AS (SELECT CDB_HexagonGrid(ST_Expand(!bbox!, greatest(CDB_XYZ_Resolution(<%- zoom %>)) * <%- multiplier %>), greatest(CDB_XYZ_Resolution(<%- zoom %>)) * <%- multiplier %>) as cell)
+SELECT d.id_partido, count(*) FROM arg_pv_localizaciones e, arg_pv_loc_diff_votos d, hgrid h WHERE e.id_agrupado = d.id_agrupado AND ST_Intersects(e.the_geom_webmercator, h.cell) GROUP BY d.id_partido;
+
+
+
+WITH hgrid AS (SELECT CDB_HexagonGrid(ST_Expand(!bbox!, greatest(CDB_XYZ_Resolution(<%- zoom %>)) * <%- multiplier %>), greatest(CDB_XYZ_Resolution(<%- zoom %>)) * <%- multiplier %>) as cell)
+SELECT h.cell as the_geom_webmercator, array_to_string(array_agg(e.id_agrupado), ',') as agg_list, count(e.cartodb_id) as agg_count, d.id_partido, SUM(d.votos_paso)/SUM(e.positivos)::float as agg_perc, SUM(d.votos_paso) as votos, 1 as cartodb_id FROM arg_pv_localizaciones e, arg_pv_loc_diff_votos d, hgrid h WHERE e.id_agrupado = d.id_agrupado AND ST_Intersects(e.the_geom_webmercator, h.cell) GROUP BY h.cell, d.id_partido ORDER BY votos DESC LIMIT 1
+
+
+---------
+# ZOOM 9
+WITH loc_bbox AS (SELECT ST_EXPAND(ST_ENVELOPE(ST_COLLECT(wkb_geometry_3857)), CDB_XYZ_Resolution(9) * 3) as bbox FROM localizaciones WHERE NOT (id_distrito = '24' AND id_seccion = '003')),
+hgrid AS (SELECT CDB_HexagonGrid(l.bbox, CDB_XYZ_Resolution(9) * 3)  as cell FROM loc_bbox l)
+INSERT INTO hexagonos(wkb_geometry_3857,zoom_level,num_loc,arr_loc) 
+SELECT h.cell as wkb_geometry_3857, 9 as zoom_level, COUNT(*) as num_loc, array_agg(l.id_agrupado) as arr_loc FROM hgrid h, localizaciones l
+WHERE ST_INTERSECTS(l.wkb_geometry_3857, h.cell)
+GROUP BY h.cell
+ORDER BY num_loc desc;
+
+SELECT id_hexagono, CDB_HexagonGrid(ST_EXPAND(ST_ENVELOPE(wkb_geometry_3857), CDB_XYZ_Resolution(5) * 3), CDB_XYZ_Resolution(5) * 3)  as cell FROM hexagonos where zoom_level = 4; 
+
+--- HEXAGONOS PARTIDOS ----
+SELECT h.id_hexagono, d.id_partido, 
+SUM(l.positivos)::float as agg_positivos,
+SUM(d.votos) as agg_v, SUM(d.votos_pv) as agg_v_pv, SUM(d.votos_paso) as agg_v_paso
+FROM hexagonos h, ballo_diff_localizaciones d, localizaciones_totales l
+WHERE l.id_agrupado = d.id_agrupado
+AND d.id_agrupado = ANY (h.arr_loc)
+GROUP BY h.id_hexagono, d.id_partido
+ORDER BY id_hexagono, agg_v desc;

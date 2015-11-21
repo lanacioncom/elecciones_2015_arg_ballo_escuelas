@@ -1,0 +1,6 @@
+WITH hgrid AS (SELECT CDB_HexagonGrid(
+    ST_Expand(!bbox!, CDB_XYZ_Resolution(<%- zoom %>) * <%- multiplier %>), CDB_XYZ_Resolution(<%- zoom %>) * <%- multiplier %>) as cell)
+SELECT h.cell, count(l.cartodb_id) as num_loc 
+FROM arg_ballo_localizaciones l, hgrid h
+WHERE ST_Intersects(l.the_geom_webmercator, h.cell)
+GROUP BY h.cell

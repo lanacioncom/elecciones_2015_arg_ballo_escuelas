@@ -1,0 +1,9 @@
+SELECT d.id_partido, SUM(e.electores) as electores, SUM(e.votantes) as votantes,
+SUM(e.positivos) as positivos, SUM(d.diferencia) as diferencia, 
+SUM(d.votos) as votos, SUM(d.votos_paso) as votos_paso,
+COUNT(d.id_partido) as num_loc
+FROM arg_pv_localizaciones e, arg_pv_loc_diff_votos d
+WHERE e.id_agrupado = d.id_agrupado
+AND ST_Intersects(e.the_geom, ST_MakePolygon(ST_MakeLine(Array[{{bounds}}])))
+GROUP BY d.id_partido
+ORDER BY votos DESC

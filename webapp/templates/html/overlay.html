@@ -1,0 +1,21 @@
+<div class="clearfix bg_li">
+
+    <!--<input type="radio" name="candidato" value="16" />-->
+    <span class="radio_bg">&nbsp;</span>
+    <p class="description foto <%=vh.get_candidato_apellido_class(d,dict_datos)%>"><span class="name">Foto de: <%= vh.get_candidato_nombre(d,dict_datos) %></span><br></p>
+    
+    <div class="cont_barra clearfix" style="<!-- color:#7CC374; -->">
+        <div class="above_bar"><span class="candi"><%= vh.get_candidato_nombre(d,dict_datos) %></span> <span class="name"><%= vh.get_partido(d,dict_datos) %></span></div>
+        <div class="barra" style="background: <%= vh.get_candidato_color(d,dict_datos) %>;">
+            <div class="porc" style="opacity: 1;"><%= vh.get_formatted_num(d.pct,1) %>%</div>
+            <!-- 
+            <div class="paso_bar">
+               <div class="porc_paso" style="opacity: 1;">60,24% <span class="txt_paso">PASO</span></div>
+            </div>
+             -->
+        </div>
+        <div class="down_bar"><span class="votos" style="color: <%= vh.get_candidato_color(d,dict_datos) %>;"><%= vh.get_formatted_num(d.votos,0) %> votos</span></div>
+    </div>
+   
+</div>
+

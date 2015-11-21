@@ -1,0 +1,15 @@
+#cartocss {
+  marker-opacity: 0.7;
+  marker-allow-overlap: true;
+  marker-line-width: 1;
+  marker-line-opacity: 0.3;
+  marker-line-color: white;
+    <% _.each(_.pairs(zooms), function(z) { %>
+        [zoom=<%- z[0] %>] {
+            marker-width: 2 + [perc] * <%- z[1] %>;
+            <% _.each(data, function(v,k) { %>
+                [id_partido='<%- k %>'] {marker-fill: <%- v.color_partido %>;}
+            <% }); %>
+        }
+    <% }); %>
+}

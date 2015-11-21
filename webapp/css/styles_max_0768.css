@@ -1,0 +1,32 @@
+@media (max-width: 768px) {
+
+    div.btn {
+        font-size: 11px;
+    }
+
+    #buscar.activo {
+    width: 95%;
+}
+
+    .typeahead{
+        margin-left: 5%;
+        width: 76%;
+    }
+
+    .activo .typeahead{
+        width: calc(100% - 84px);
+        margin-left: 2%;
+    }
+
+    section#tools div.contenedor .colores, section#tools div.contenedor2 .colores {
+        margin-right: 6px;
+    }
+
+    section#tools div.contenedor .explica, section#tools div.contenedor2 .explica {
+        margin-top: 2px;
+    }
+
+    section#tools div.contenedor .explica p, section#tools div.contenedor2 .explica p {
+        width: 110%;
+    }
+}

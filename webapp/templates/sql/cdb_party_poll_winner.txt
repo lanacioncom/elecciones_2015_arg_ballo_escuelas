@@ -1,0 +1,6 @@
+SELECT g.cartodb_id, g.id_agrupado, g.id_partido, g.votos as votos, g.nombre, 
+g.positivos, g.the_geom_webmercator, (g.votos/g.positivos::float) as perc,
+g.margen_victoria as diferencia
+FROM arg_paso_loc_ganador g
+WHERE g.id_partido = '<%- id_partido %>'
+ORDER BY <%- orden %> DESC

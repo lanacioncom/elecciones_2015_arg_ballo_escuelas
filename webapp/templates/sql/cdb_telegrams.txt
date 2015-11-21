@@ -1,0 +1,2 @@
+SELECT key_telegrama FROM arg_pv_loc_telegramas 
+WHERE id_agrupado = {{id_agrupado}};

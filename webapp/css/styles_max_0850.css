@@ -1,0 +1,56 @@
+@media (max-width: 850px) {
+
+    .blanco {
+        width: 100%;
+
+    }
+
+    #escuela {
+        margin-left: 0px;
+    }
+
+    div.btn{
+       background-image: none;
+        width: 24.6%;
+        height: 33px;
+        padding-left: 30px;
+        margin-left: 1%;
+        font-family: 'suecaslabmedium', georgia;
+        font-size: 12px;
+        text-align: left;
+        color: rgba(0,0,0,.5);
+        line-height: 2.8;
+        border-radius: 25px;
+        text-align: center;
+    }
+
+    #buscar.activo {
+        width: 88%;
+    }
+
+    section#tools div.contenedor0 h2 {
+        margin-left: 1%;
+    }
+
+    section#tools div.contenedor0 .explica {
+        width: 42%;
+    }
+
+    section#tools div.contenedor0 .como_leer {
+        margin-left: 0%;
+    }
+
+    section#tools div.contenedor0 h2 {
+        margin-left: 0%;
+        margin-right: 5px;
+        width: 85px;
+    }
+
+    section#tools div.contenedor0 .explica {
+        width: 54%;
+    }
+
+    
+    
+
+}

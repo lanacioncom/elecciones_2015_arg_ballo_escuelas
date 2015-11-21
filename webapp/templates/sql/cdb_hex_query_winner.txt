@@ -1,0 +1,7 @@
+SELECT w.id_hexagono, w.the_geom_webmercator, w.id_partido,
+w.votos as agg_votes, 
+CASE WHEN w.positivos = 0 THEN 0
+     ELSE w.votos/w.positivos::float
+     END as agg_perc
+FROM cache_arg_pv_hex_ganador w
+WHERE w.zoom_level = <%- zoom %>

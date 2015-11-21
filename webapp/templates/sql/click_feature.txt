@@ -1,0 +1,5 @@
+SELECT d.id_partido, d.votos_paso as votos_paso, d.votos as votos, 
+d.diferencia 
+FROM arg_pv_loc_diff_votos d
+WHERE d.id_agrupado = {{id_agrupado}}
+ORDER BY votos DESC

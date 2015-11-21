@@ -1,0 +1,16 @@
+<div class="creVent">
+    <div class="txts metodo">
+        <div class="cerrar">X</div>
+        <div class="titu">Accedé a los telegramas de esta escuela</div>
+        <div id="escuelaTelegrama"><p><%-nombre%></p></div>
+        <div class="telegramas_wrapper">
+            <ul id="telegramas_list">
+                <% _.each(data, function(d) { %>
+                    <li>
+                        <a target="_blank" href="<%- vh.get_url(d.key_telegrama) %>"><%- vh.get_mesa(d.key_telegrama)%></a>
+                    </li>
+                <% }); %>
+            </ul>
+        </div>
+    </div>
+</div>

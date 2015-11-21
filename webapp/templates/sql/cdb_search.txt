@@ -1,0 +1,7 @@
+SELECT id_agrupado, nombre, direccion,
+distrito, localidad, seccion 
+FROM arg_ballo_localizaciones
+WHERE nombre ilike '%{{q}}%'
+OR direccion ilike '%{{q}}%'
+OR localidad ilike '%{{q}}%'
+LIMIT 100

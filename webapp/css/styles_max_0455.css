@@ -1,0 +1,204 @@
+@media screen and (max-width: 455px) {
+    body{
+        width: 98%;
+    }
+    nav{
+        position: absolute;
+        top:0px;
+        z-index: 5000;
+        overflow: visible;
+    }
+
+    #data_container{
+        margin-top: 40px;
+    }
+    
+    #map_container {
+        width: 82%;
+        height: 430px;
+    }
+
+   .leaflet-left {
+        left: -10px;
+    }
+
+    .blanco {
+        margin-left: 0px;
+        width: calc(100% - 85px);
+    }
+
+    #buscar{
+        display: none;
+    }
+
+    #escuela {
+        margin-left: 2px;
+    }
+
+    div.btn {
+        line-height: 0.5;
+        padding: 10px 10px;
+        height: auto;
+        width: 99%;
+        text-align: left;
+        font-size: 13px;
+        border-top: 1px solid #dadada;
+        border-radius: 0px;
+        line-height: 19px;
+        background-color: #fff;
+        visibility: hidden;
+        position: absolute;
+    }
+
+    div.loader {
+        left: 42%;
+    }
+
+
+    #buscar.activo {
+        width: 100%;
+    }
+    
+    #menu {
+        display: inherit !important;
+        right: -5px;
+        z-index: 1000;
+        border-radius: 3px;
+        height: 39px;
+        width: 39px !important; 
+        background-color: #fff;
+        background-position: 0px -146px;
+    }
+
+    div.on{
+        visibility: visible !important;
+        top:0px;
+    }
+
+    div.crowd{
+        display: none;
+    }
+
+    ul.overlay li .name{
+        display: none;
+    }
+
+    .leaflet-draw,
+    #help_draw,
+    ul.overlay li .above_bar .votos, ul.overlay li .down_bar .votos{
+        display: none !important;
+    }
+
+    #overlay {
+        width: 120px !important;
+        padding-left: 0px ;
+    }
+
+    ul.overlay li .cont_barra .barra {
+        width: 0px !important;
+
+    } 
+
+    ul.overlay li .cont_barra {
+        width: calc(100% - 97px);
+    }
+
+    ul.overlay li span.radio_bg{
+        display: none;
+    }
+
+    ul.overlay li .description{
+        width: 60px;
+        height: 63px;
+        margin: 3px;
+    }
+
+    ul.overlay li .above_bar{
+        padding-top: 6px;
+        margin-bottom: 10px;
+    }
+
+    ul.overlay li .cont_barra .barra .porc {
+        height: 17px;
+        position: absolute;
+        top: 7px;
+        left: 0px;
+        font-weight: lighter;
+        font-size: 16px;
+        text-align: left;
+        font-weight: bold;
+    }
+
+    li .description.foto{
+        background-size: 83%;
+    }
+
+    div.ttip_body {
+        width: 100%;
+    }
+
+    .leaflet-popup{
+    width: 150px !important;
+    }
+
+    div.ttip_header {
+        width: 100%;
+    }
+
+    div.activo .select2{
+        width: 75% !important;
+    }
+
+    
+
+    section#tools div.contenedor .contenedor {
+        max-width: 450px;
+    }
+
+    section#tools div.contenedor .como_leer{
+        width: 25%;
+        margin-right: 15px;
+        padding-right: 5%;
+    }
+
+    section#tools div.contenedor h2{
+        margin-left: 5%;
+    }
+
+    section#tools div.contenedor .hexagono{
+        display: none;
+    }
+    section#tools div.contenedor .flecha{
+        display: none;
+    }
+    section#tools div.contenedor .colores{
+        border: none;
+        width: 60%;
+    }
+    section#tools div.contenedor .escala{
+        display: none;
+    }
+
+     footer p{
+        width: 100%;
+        margin-top: 15px;
+        border:0px;
+        padding: 0px; 
+        margin-left: 0px;  
+    }
+
+    div.creVent{
+        height: 667px;
+    }
+
+    div.creVent div.txts{
+        width: 76%;
+            margin: 44px auto;
+
+    }
+
+    div.creVent div.metodo {
+        margin: 260px auto;
+    }
+
+ }
