@@ -8,6 +8,25 @@ from settings import DATABASE_URL, DATABASE_TYPES
 db = None
 
 
+def alter_geometry(elec=None, table='localizaciones',
+                   column='wkb_geometry_4326', srid='4326', loc=False):
+    '''alter geometry column for locations'''
+    if elec:
+        db_prefix = elec
+        db_suffix = 'localizaciones' if loc else 'establecimientos'
+        src_table = '%s_%s_%s' % (db_prefix, table, db_suffix)
+    else:
+        src_table = table
+
+    q = '''
+        ALTER TABLE %(tab)s
+            ALTER COLUMN %(col)s
+            TYPE geometry(Point,%(srid)s)
+            USING st_transform(%(col)s, %(srid)s)
+    ''' % {'tab': src_table, 'col': column, 'srid': srid}
+    db.query(q)
+
+
 def create_polling_relations():
     '''create temp table'''
     q = '''
@@ -59,19 +78,20 @@ def create_location_telegrams():
 def create_locations():
     '''create polling stations by location'''
     q = '''
-        WITH agg as (SELECT id_agrupado, SUM(num_mesas) as num_mesas,
-                     array_to_string(array_agg(rango), ',') as rangos_mesas,
-                     array_to_string(array_agg(id_circuito), ',') as circuitos,
-                     array_to_string(array_agg(id_establecimiento), ',') as establecimientos,
-                     array_to_string(array_agg(key_sie), ',') as keys_sie
-                     FROM establecimientos_tmp
-                     GROUP BY id_agrupado),
-             loc as (SELECT t1.*
-                     FROM establecimientos_tmp as t1
-                     LEFT OUTER JOIN establecimientos_tmp as t2
-                     ON t1.id_agrupado = t2.id_agrupado
-                     AND t1.id_establecimiento > t2.id_establecimiento
-                    WHERE t2.id_agrupado IS NULL)
+        WITH agg as (
+            SELECT id_agrupado, SUM(num_mesas) as num_mesas,
+            array_to_string(array_agg(rango), ',') as rangos_mesas,
+            array_to_string(array_agg(id_circuito), ',') as circuitos,
+            array_to_string(array_agg(id_establecimiento), ',') as establecimientos,
+            array_to_string(array_agg(key_sie), ',') as keys_sie
+            FROM establecimientos_tmp
+            GROUP BY id_agrupado),
+        loc as (SELECT t1.*
+                FROM establecimientos_tmp as t1
+                LEFT OUTER JOIN establecimientos_tmp as t2
+                ON t1.id_agrupado = t2.id_agrupado
+                AND t1.id_establecimiento > t2.id_establecimiento
+                WHERE t2.id_agrupado IS NULL)
         SELECT l.id_agrupado,
                l.id_distrito,
                l.distrito,
@@ -84,7 +104,8 @@ def create_locations():
                a.num_mesas, a.rangos_mesas,
                a.circuitos,
                a.establecimientos, a.keys_sie,
-               l.wkb_geometry_4326
+               l.wkb_geometry_4326,
+               l.wkb_geometry_4326 as wkb_geometry_3857
         FROM loc l, agg a
         WHERE l.id_agrupado = a.id_agrupado
     '''
@@ -239,13 +260,13 @@ def create_winner_table(elec='paso', loc=False):
     (r_table, 'establecimientos', t_table)
 
     results = db.query(q)
-    t = db.create_table('%s_winner_%s' % (db_preffix, src),
+    t = db.create_table('cache_%s_winner_%s' % (db_preffix, src),
                         primary_id=key,
                         primary_type='Integer')
     t.insert_many(results, chunk_size=1000, types=DATABASE_TYPES)
 
 
-def create_diff_table(loc=False):
+def create_cache_paso_results_table(loc=False):
     '''get the difference for each polling station
        and party between past and actual elections'''
     src = 'localizaciones' if loc else 'establecimientos'
@@ -254,28 +275,106 @@ def create_diff_table(loc=False):
     q = '''
         SELECT r.%(key)s,
                r.id_partido,
+               t.positivos as pos,
                r.votos as votos,
-               rpv.votos as votos_pv,
-               rp.votos as votos_paso,
-               (r.votos - rp.votos) as dif_paso,
-               (r.votos - rpv.votos) as dif_pv
-        FROM ballo_resultados_%(src)s r,
-             pv_resultados_%(src)s rpv,
-             paso_resultados_%(src)s rp
-        WHERE r.%(key)s = rp.%(key)s
-        AND r.id_partido = rp.id_partido
-        AND r.%(key)s = rpv.%(key)s
-        AND r.id_partido = rpv.id_partido
+               CASE WHEN t.positivos = 0 THEN 0
+                    ELSE r.votos/t.positivos::float
+                    END as porc
+        FROM paso_resultados_%(src)s r,
+             paso_totales_%(src)s t
+        WHERE r.%(key)s = t.%(key)s
     ''' % {'key': key, 'src': src}
 
     results = db.query(q)
-    t = db.create_table('ballo_diff_%s' % (src))
+    t = db.create_table('cache_paso_resultados_%s' % (src))
     t.create_index(['id_partido'], name='ix_party')
     t.create_index([key], name='ix_poll')
     t.insert_many(results, chunk_size=5000, types=DATABASE_TYPES)
 
 
-def create_polling_geo_w_totals(loc=False):
+def create_cache_pv_results_table(loc=False):
+    '''get the difference for each polling station
+       and party between past and actual elections'''
+    src = 'localizaciones' if loc else 'establecimientos'
+    key = 'id_agrupado' if loc else 'id_establecimiento'
+
+    q = '''
+        SELECT r.%(key)s,
+               r.id_partido,
+               t.positivos as pos,
+               tp.positivos as pos_paso,
+               r.votos as votos,
+               rp.votos as votos_paso,
+               CASE WHEN t.positivos = 0 THEN 0
+                    ELSE r.votos/t.positivos::float
+                    END as porc,
+               CASE WHEN tp.positivos = 0 THEN 0
+                    ELSE rp.votos/tp.positivos::float
+                    END as porc_paso
+        FROM pv_resultados_%(src)s r,
+             paso_resultados_%(src)s rp,
+             pv_totales_%(src)s t,
+             paso_totales_%(src)s tp
+        WHERE r.%(key)s = t.%(key)s
+        AND r.%(key)s = rp.%(key)s
+        AND rp.%(key)s = tp.%(key)s
+        AND r.id_partido = rp.id_partido
+    ''' % {'key': key, 'src': src}
+
+    results = db.query(q)
+    t = db.create_table('cache_pv_resultados_%s' % (src))
+    t.create_index(['id_partido'], name='ix_party')
+    t.create_index([key], name='ix_poll')
+    t.insert_many(results, chunk_size=5000, types=DATABASE_TYPES)
+
+
+def create_cache_ballo_results_table(loc=False):
+    '''get the difference for each polling station
+       and party between past and actual elections'''
+    src = 'localizaciones' if loc else 'establecimientos'
+    key = 'id_agrupado' if loc else 'id_establecimiento'
+
+    q = '''
+        SELECT r.%(key)s,
+               r.id_partido,
+               t.positivos as pos,
+               tpv.positivos as pos_pv,
+               tp.positivos as pos_paso,
+               r.votos as votos,
+               rpv.votos as votos_pv,
+               rp.votos as votos_paso,
+               CASE WHEN t.positivos = 0 THEN 0
+                    ELSE r.votos/t.positivos::float
+                    END as porc,
+               CASE WHEN tpv.positivos = 0 THEN 0
+                    ELSE rpv.votos/tpv.positivos::float
+                    END as porc_pv,
+               CASE WHEN tp.positivos = 0 THEN 0
+                    ELSE rp.votos/tp.positivos::float
+                    END as porc_paso
+        FROM ballo_resultados_%(src)s r,
+             pv_resultados_%(src)s rpv,
+             paso_resultados_%(src)s rp,
+             ballo_totales_%(src)s t,
+             pv_totales_%(src)s tpv,
+             paso_totales_%(src)s tp
+        WHERE r.%(key)s = t.%(key)s
+        AND r.%(key)s = rpv.%(key)s
+        AND rpv.%(key)s = tpv.%(key)s
+        AND r.id_partido = rpv.id_partido
+        AND r.%(key)s = rp.%(key)s
+        AND rp.%(key)s = tp.%(key)s
+        AND r.id_partido = rp.id_partido
+    ''' % {'key': key, 'src': src}
+
+    results = db.query(q)
+    t = db.create_table('cache_ballo_resultados_%s' % (src))
+    t.create_index(['id_partido'], name='ix_party')
+    t.create_index([key], name='ix_poll')
+    t.insert_many(results, chunk_size=5000, types=DATABASE_TYPES)
+
+
+def create_cache_polling_w_totals(loc=False):
     '''get the denormalized totals table'''
     src = 'localizaciones' if loc else 'establecimientos'
     key = 'id_agrupado' if loc else 'id_establecimiento'
@@ -289,12 +388,12 @@ def create_polling_geo_w_totals(loc=False):
                t.blancos,
                t.nulos
         FROM %(src)s s,
-             pv_totales_%(src)s t
+             ballo_totales_%(src)s t
         WHERE s.%(key)s = t.%(key)s
     ''' % {'key': key, 'src': src}
 
     results = db.query(q)
-    t = db.create_table('%s_totales' % (src),
+    t = db.create_table('cache_%s_totales' % (src),
                         primary_id=key,
                         primary_type='Integer')
     t.insert_many(results, chunk_size=1000, types=DATABASE_TYPES)
@@ -317,6 +416,9 @@ def run():
     print "Create cartodb tables"
     create_cartodb()
     print "create_cartodb: %s seconds" % (time() - start_time)
+    print "Alter geometry columns"
+    alter_geometries()
+    print "alter_geometries: %s seconds" % (time() - start_time)
 
 
 def create_location_tables():
@@ -353,26 +455,63 @@ def create_cartodb():
     print "create location paso winner"
     create_winner_table(elec='paso', loc=True)
 
+    print "create polling station paso cache results"
+    create_cache_paso_results_table()
+    print "create location paso cache results"
+    create_cache_paso_results_table(loc=True)
+
     print "create polling station pv winner"
     create_winner_table(elec='pv', loc=False)
     print "create location pv winner"
     create_winner_table(elec='pv', loc=True)
+
+    print "create polling station pv cache results"
+    create_cache_pv_results_table()
+    print "create location pv cache results"
+    create_cache_pv_results_table(loc=True)
 
     print "create polling station ballottage winner"
     create_winner_table(elec='ballo', loc=False)
     print "create location ballottage winner"
     create_winner_table(elec='ballo', loc=True)
 
-    print "create polling station differences"
-    create_diff_table()
-    print "create location differences"
-    create_diff_table(loc=True)
+    print "create polling station ballottage cache results"
+    create_cache_ballo_results_table()
+    print "create location ballottage cache results"
+    create_cache_ballo_results_table(loc=True)
 
     print "create polling stations with totals"
-    create_polling_geo_w_totals()
+    create_cache_polling_w_totals()
     print "create location with totals"
-    create_polling_geo_w_totals(loc=True)
+    create_cache_polling_w_totals(loc=True)
 
+
+def alter_geometries():
+    '''Alter geometry columns to postgis format'''
+    print "alter locations"
+    alter_geometry(table='localizaciones')
+    print "alter locations in webmercator"
+    alter_geometry(table='localizaciones',
+                   column='wkb_geometry_3857', srid='3857')
+    print "alter polling station paso winner"
+    alter_geometry(table='cache_paso_winner_establecimientos', column='geom')
+    print "alter location paso winner"
+    alter_geometry(table='cache_paso_winner_localizaciones', column='geom')
+
+    print "alter polling station pv winner"
+    alter_geometry(table='cache_pv_winner_establecimientos', column='geom')
+    print "alter location pv winner"
+    alter_geometry(table='cache_pv_winner_localizaciones', column='geom')
+
+    print "alter polling station ballottage winner"
+    alter_geometry(table='cache_ballo_winner_establecimientos', column='geom')
+    print "alter location ballottage winner"
+    alter_geometry(table='cache_ballo_winner_localizaciones', column='geom')
+
+    print "alter polling stations with totals"
+    alter_geometry(table='cache_establecimientos_totales')
+    print "alter location with totals"
+    alter_geometry(table='cache_localizaciones_totales')
 
 if __name__ == "__main__":
     db = dataset.connect(DATABASE_URL)

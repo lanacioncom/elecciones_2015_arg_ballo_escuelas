@@ -1,7 +1,7 @@
 .venv/
 logs/
 docs/
-data/comun/
-data/paso/
-data/pv/
 data/DB/
+data/comun/
+data/**/*.csv
+data/** !data/**/*.zip

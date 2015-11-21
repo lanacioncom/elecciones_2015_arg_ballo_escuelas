@@ -1,0 +1,37 @@
+common:
+
+  database: "postgresql://user:pass@localhost:5432/dbname"
+  prefix: ../data/cartodb/localizaciones
+  format: csv
+
+exports:
+
+  - query: "SELECT p.id_partido, p.siglas, p.nombre FROM partidos p ORDER BY p.id_partido;"
+    filename: "arg_ballo_partidos.csv"
+
+  - query: "SELECT t.id_agrupado, t.keys_sie, t.establecimientos, t.id_distrito, t.distrito, t.id_seccion, t.seccion, t.circuitos, t.rangos_mesas, t.num_mesas, t.nombre, t.direccion, t.localidad, t.cod_postal, ST_asText(t.wkb_geometry_4326) as geom, t.electores, t.votantes, t.validos, t.positivos, t.blancos, t.nulos FROM cache_localizaciones_totales t WHERE t.positivos > 0 ORDER BY id_agrupado"
+    filename: "arg_ballo_localizaciones.csv"
+
+  - query: "SELECT t.id_establecimiento, t.id_agrupado FROM relaciones t ORDER BY t.id_establecimiento"
+    filename: "arg_ballo_rel_est_loc.csv"
+
+  - query: "SELECT t.id_agrupado, t.key_telegrama FROM localizaciones_telegramas t ORDER BY t.id_agrupado"
+    filename: "arg_ballo_loc_telegramas.csv"
+
+  - query: "SELECT w.id_agrupado, w.keys_sie, w.establecimientos, w.id_distrito, w.distrito, w.id_seccion, w.seccion, w.circuitos, w.rangos_mesas, w.num_mesas, w.nombre, w.direccion, w.localidad, w.cod_postal, w.electores, w.votantes, w.positivos, w.sqrt_positivos as raiz_positivos, w.id_partido, w.votos, w.margin_victory as margen_victoria, ST_asText(w.geom) as the_geom FROM cache_ballo_winner_localizaciones w WHERE w.positivos > 0 ORDER BY w.id_agrupado;"
+    filename: "cache_arg_ballo_loc_ganador.csv"
+
+  - query: "SELECT r.id_agrupado, r.id_partido, r.pos, r.pos_pv, r.pos_paso, r.votos, r.votos_pv, r.votos_paso, r.porc, r.porc_pv, r.porc_paso FROM cache_ballo_resultados_localizaciones r ORDER BY r.id_agrupado, r.id_partido;"
+    filename: "cache_arg_ballo_loc_votos.csv"
+
+  - query: "SELECT w.id_agrupado, w.keys_sie, w.establecimientos, w.id_distrito, w.distrito, w.id_seccion, w.seccion, w.circuitos, w.rangos_mesas, w.num_mesas, w.nombre, w.direccion, w.localidad, w.cod_postal, w.electores, w.votantes, w.positivos, w.sqrt_positivos as raiz_positivos, w.id_partido, w.votos, w.margin_victory as margen_victoria, ST_asText(w.geom) as the_geom FROM cache_pv_winner_localizaciones w WHERE w.positivos > 0 ORDER BY w.id_agrupado;"
+    filename: "cache_arg_pv_loc_ganador.csv"
+
+  - query: "SELECT r.id_agrupado, r.id_partido, r.pos, r.pos_paso, r.votos, r.votos_paso, r.porc, r.porc_paso FROM cache_pv_resultados_localizaciones r ORDER BY r.id_agrupado, r.id_partido;"
+    filename: "cache_arg_pv_loc_votos.csv"
+
+  - query: "SELECT w.id_agrupado, w.keys_sie, w.establecimientos, w.id_distrito, w.distrito, w.id_seccion, w.seccion, w.circuitos, w.rangos_mesas, w.num_mesas, w.nombre, w.direccion, w.localidad, w.cod_postal, w.electores, w.votantes, w.positivos, w.sqrt_positivos as raiz_positivos, w.id_partido, w.votos, w.margin_victory as margen_victoria, ST_asText(w.geom) as the_geom FROM cache_paso_winner_localizaciones w WHERE w.positivos > 0 ORDER BY w.id_agrupado;"
+    filename: "cache_arg_paso_loc_ganador.csv"
+
+  - query: "SELECT r.id_agrupado, r.id_partido, r.pos, r.votos, r.porc FROM cache_paso_resultados_localizaciones r ORDER BY r.id_agrupado, r.id_partido;"
+    filename: "cache_arg_paso_loc_votos.csv"

@@ -1,7 +1,7 @@
 # coding: utf-8
 from __future__ import with_statement
 from fabric.api import *
-from localdb import clear_agg
+from localdb import clear_agg, create_ix
 import os
 
 # Restrict visible functions
@@ -19,3 +19,4 @@ def run():
     with lcd(cwd):
         execute(clear_agg)
         local('python %s/process_results.py' % (scripts_path))
+        execute(create_ix)

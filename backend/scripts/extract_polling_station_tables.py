@@ -97,7 +97,7 @@ def _main():
 
     # Open output file in write mode
     with open('%s/%s_mesas.csv'
-              % (OUTPUT_COMMON_PATH, 'establecimientos_geo'), 'w') as fout:
+              % (OUTPUT_COMMON_PATH, 'establecimientos'), 'w') as fout:
         results = CSVKitDictWriter(
             fout,
             encoding='utf-8',
@@ -109,7 +109,7 @@ def _main():
 
         # Open input file in read mode
         with open('%s/%s.csv'
-                  % (INPUT_COMMON_PATH, 'establecimientos_geo'), 'r') as f:
+                  % (INPUT_COMMON_PATH, 'establecimientos'), 'r') as f:
             reader = CSVKitDictReader(f)
             count = 0
             for row in reader:

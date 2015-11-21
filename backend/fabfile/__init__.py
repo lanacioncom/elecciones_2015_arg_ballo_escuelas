@@ -3,6 +3,7 @@ from fabric.api import *
 import localdb
 import preprocess
 import process
+import hexagons
 import cartodb
 import export
 
@@ -11,10 +12,11 @@ import export
 @runs_once
 def run():
     '''runs the complete process'''
-    execute(init)
-    execute(preprocess)
-    execute(process)
-    execute(export)
+    execute(localdb.init)
+    execute(preprocess.run)
+    execute(process.run)
+    execute(hexagons.run)
+    execute(export.csv)
 
 
 # DEFAULT TASK

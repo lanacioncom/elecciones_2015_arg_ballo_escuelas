@@ -3,9 +3,10 @@ from __future__ import with_statement
 from fabric.api import *
 import os
 from localdb import load_preprocessed
+from localdb import reset_preprocessed
 
 # Restrict visible functions
-__all__ = ['run']
+__all__ = ['run', 'reset']
 
 # LOCAL PATHS
 cwd = os.path.dirname(__file__)
@@ -16,10 +17,19 @@ scripts_path = os.path.join(cwd, '../scripts')
 @runs_once
 def run():
     '''execute preprocessing tasks on the input datasets'''
+    execute(reset)
     execute(polling_stations)
     execute(totals)
     execute(results)
     execute(load_preprocessed)
+
+
+@task
+@runs_once
+def reset():
+    '''reset all preprocessed tables'''
+    with lcd(cwd):
+        execute(reset_preprocessed)
 
 
 @task

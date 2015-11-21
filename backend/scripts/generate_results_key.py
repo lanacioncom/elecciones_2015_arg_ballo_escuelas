@@ -160,6 +160,7 @@ def _main():
     create_key_file('mesascandidaturapresidente', elec='paso')
     print "create pv polling station keys to facilitate joins"
     create_key_file('mesascandidaturapresidente', elec='pv')
+    print "create ballo polling station keys to facilitate joins"
     # create_key_file('mesascandidaturapresidente', elec='ballo')
     create_key_file('mesascandidaturapresidente', elec='ballo', sim=True)
     print "polling table key creation: %s seconds" % (time() - start_time)

@@ -1,24 +1,3 @@
---EXTENSIONS
-
--- Extension: pg_trgm
--- DROP EXTENSION pg_trgm;
- CREATE EXTENSION IF NOT EXISTS pg_trgm
-  SCHEMA public
-  VERSION "1.1";
-
--- Extension: plpgsql
--- DROP EXTENSION plpgsql;
- CREATE EXTENSION IF NOT EXISTS plpgsql
-  SCHEMA pg_catalog
-  VERSION "1.0";
-
--- Extension: postgis
--- DROP EXTENSION postgis;
- CREATE EXTENSION IF NOT EXISTS postgis
-  SCHEMA public
-  VERSION "2.1.7";
-
-
 --TABLES AND INDEXES
 
 -- Table: establecimientos
@@ -57,6 +36,15 @@ CREATE INDEX establecimientos_ix_sie
   ON establecimientos
   USING btree
   (key_sie);
+
+
+-- Index: establecimientos_ix_geo
+DROP INDEX IF EXISTS establecimientos_ix_geo;
+
+CREATE INDEX establecimientos_ix_geo
+  ON establecimientos
+  USING GIST
+  (wkb_geometry_4326);
 
 
 -- Table: ambitos
@@ -258,3 +246,4 @@ CREATE TABLE ballo_resultados_mesas
 WITH (
   OIDS=FALSE
 );
+
