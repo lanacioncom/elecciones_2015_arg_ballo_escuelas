@@ -69,7 +69,7 @@ define(['app/context','app/config', 'app/templates'], function (ctxt, config, te
                     //                           zoom: ctxt.zoom,
                     //                           subquery: subquery});
                     query = hex_sql_tpl({zoom: ctxt.zoom, id_partido: pid});
-                    interactivity = 'agg_votes, agg_perc';   
+                    interactivity = 'agg_votes, agg_perc, agg_diff';   
                 }
                 break;
             case "difpaso":
@@ -78,10 +78,13 @@ define(['app/context','app/config', 'app/templates'], function (ctxt, config, te
                 // SHOW THE HEXAGON AGGREGATION
                 cartocss = hex_diff_ccss_tpl({data: config.diccionario_datos});
                     
-                subquery = hex_sub_party_sql_tpl({id_partido: pid});
-                query = hex_sql_tpl({multiplier: ctxt.hex_size,
-                                     zoom: ctxt.zoom,
-                                     subquery: subquery});
+                // subquery = hex_sub_party_sql_tpl({id_partido: pid});
+                // query = hex_sql_tpl({multiplier: ctxt.hex_size,
+                //                      zoom: ctxt.zoom,
+                //                      subquery: subquery});
+                query = hex_sql_tpl({zoom: ctxt.zoom, id_partido: pid});
+                interactivity = 'agg_votes, agg_perc, agg_diff';   
+                query
                 break;
         }
 
