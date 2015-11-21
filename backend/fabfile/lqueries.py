@@ -35,6 +35,11 @@ TRUNCATE hexagonos;
 ALTER SEQUENCE hexagonos_id_hexagono_seq RESTART WITH 1;
 '''
 
+
+update_hex_seq = '''
+SELECT setval('hexagonos_id_hexagono_seq', max(id_hexagono)) FROM hexagonos;
+'''
+
 clear_results_hex_sql = '''
 TRUNCATE ballo_resultados_hexagonos;
 TRUNCATE pv_resultados_hexagonos;

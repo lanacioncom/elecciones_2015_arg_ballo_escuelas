@@ -180,3 +180,16 @@ WHERE ST_INTERSECTS(l.wkb_geometry_3857, h.cell)
 GROUP BY h.cell
 ORDER BY num_loc desc;
 '''
+
+insert_antartida_hex_sql = '''
+WITH antartida AS (
+    SELECT id_agrupado, wkb_geometry_3857
+    FROM localizaciones
+    WHERE (id_distrito = '24' AND id_seccion = '003'))
+INSERT INTO hexagonos(wkb_geometry_3857,zoom_level,hex_size, num_loc,arr_loc)
+SELECT CDB_MakeHexagon(a.wkb_geometry_3857,
+                       CDB_XYZ_Resolution(%(z)s) * %(size)s),
+%(z)s as zoom_level, %(size)s as hex_size,
+1 as num_loc, array[a.id_agrupado]
+FROM antartida a
+'''

@@ -8,7 +8,8 @@ from localdb import reset_results_hexagons
 from localdb import reset_totals_hexagons
 
 # Restrict visible functions
-__all__ = ['create', 'create_all', 'run',
+__all__ = ['create', 'create_all',
+           'create_antartida', 'run',
            'calc_results', 'calc_cache_results',
            'calc_results_all', 'calc_totals',
            'reset', 'reset_results', 'reset_totals']
@@ -124,3 +125,14 @@ def create_all():
         for i in range(4, 13):
             local('python %s/create_hexagons.py -z %s -s %s'
                   % (scripts_path, i, 3))
+            local('python %s/create_hexagons.py -z %s -s %s -a'
+                  % (scripts_path, i, 3))
+
+
+@task
+@runs_once
+def create_antartida(zoom=4, size=3):
+    '''creates antartida hex for a particular zoom level and size multiplier'''
+    with lcd(cwd):
+        local('python %s/create_hexagons.py -z %s -s %s -a'
+              % (scripts_path, zoom, size))

@@ -8,6 +8,7 @@ from lqueries import clear_hex_sql
 from lqueries import clear_results_hex_sql
 from lqueries import clear_totals_hex_sql
 from lqueries import clear_preprocessed_sql
+form lqueries import update_hexagons_seq
 
 # Restrict visible functions
 __all__ = ['init']
@@ -83,6 +84,7 @@ def init():
     '''creates and loads initial data in the DB'''
     execute(recreate)
     execute(load_initial)
+    execute(update_hexagons_seq)
 
 
 @task
@@ -186,6 +188,16 @@ def clear_agg():
 def reset_hexagons():
     '''truncates and resets seq for hexagons'''
     sql = clear_hex_sql
+    with lcd(cwd):
+        with hide('running'):
+            local('%s/exec_pg_sql.sh %s "%s"' % (scripts_path, dbname, sql))
+
+
+@task
+@runs_once
+def update_hexagons_seq():
+    '''updates the hexagon serial id after an external load'''
+    sql = update_hex_seq
     with lcd(cwd):
         with hide('running'):
             local('%s/exec_pg_sql.sh %s "%s"' % (scripts_path, dbname, sql))

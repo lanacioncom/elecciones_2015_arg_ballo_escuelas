@@ -5,16 +5,20 @@ import psycopg2
 from time import time
 from settings import DATABASE_URL
 from lqueries import insert_hex_sql
+from lqueries import insert_antartida_hex_sql
 
 
-def run(zoom, size):
-    '''testing'''
+def run(args):
+    '''generate hex data'''
+    zoom = args.zoom
+    size = args.size
+    query = insert_antartida_hex_sql if args.antar else insert_hex_sql
     print "calculate hex for zoom: %s && hex multiplier: %s" % (zoom, size)
     conn = psycopg2.connect(DATABASE_URL)
     cur = conn.cursor()
     data = {'z': zoom, 'size': size}
     try:
-        cur.execute(insert_hex_sql, data)
+        cur.execute(query, data)
     except psycopg2.Error, e:
         e.pgcode
     conn.commit()
@@ -32,5 +36,9 @@ if __name__ == '__main__':
                         type=float,
                         default=30,
                         help="multiplier for hexagon size")
+    parser.add_argument("-a",
+                        "--antar",
+                        help="generate antartida hex data",
+                        action="store_true")
     args = parser.parse_args()
-    run(zoom=args.zoom, size=args.size)
+    run(args)
