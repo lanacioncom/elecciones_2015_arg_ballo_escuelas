@@ -6,7 +6,7 @@
   marker-line-color: white;
     <% _.each(_.pairs(zooms), function(z) { %>
         [zoom=<%- z[0] %>] {
-            marker-width: 2 + [perc] * <%- z[1] %>;
+            marker-width: 2 + [porc] * <%- z[1] %>;
             <% _.each(data, function(v,k) { %>
                 [id_partido='<%- k %>'] {marker-fill: <%- v.color_partido %>;}
             <% }); %>

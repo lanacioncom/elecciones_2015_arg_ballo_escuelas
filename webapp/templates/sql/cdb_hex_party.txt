@@ -1,0 +1,23 @@
+SELECT 
+h.id_hexagono, 
+h.the_geom_webmercator,
+h.num_loc,
+h.electores, 
+h.votantes,
+h.validos,
+h.positivos,
+v.id_partido,
+v.winner as ganador,
+v.swing as swing,
+v.agg_votos as votos,
+v.agg_votos_pv as votos_pv,
+v.agg_votos_paso as votos_paso,
+v.agg_porc as porc,
+v.agg_porc_pv as porc_pv,
+v.agg_porc_paso as porc_paso,
+(v.agg_votos - v.agg_votos_pv) as diff_pv,
+(v.agg_votos - v.agg_votos_paso) as diff_paso
+FROM cache_arg_ballo_hex_votos v, arg_ballo_hexagonos h
+WHERE h.id_hexagono = v.id_hexagono
+AND h.zoom_level = <%- zoom %>
+AND v.id_partido = '<%- id_partido %>'

@@ -275,6 +275,8 @@ def create_cache_paso_results_table(loc=False):
     q = '''
         SELECT r.%(key)s,
                r.id_partido,
+               0 as winner,
+               0 as new,
                t.positivos as pos,
                r.votos as votos,
                CASE WHEN t.positivos = 0 THEN 0
@@ -301,6 +303,8 @@ def create_cache_pv_results_table(loc=False):
     q = '''
         SELECT r.%(key)s,
                r.id_partido,
+               0 as winner,
+               0 as new,
                t.positivos as pos,
                tp.positivos as pos_paso,
                r.votos as votos,
@@ -337,6 +341,8 @@ def create_cache_ballo_results_table(loc=False):
     q = '''
         SELECT r.%(key)s,
                r.id_partido,
+               0 as winner,
+               0 as new,
                t.positivos as pos,
                tpv.positivos as pos_pv,
                tp.positivos as pos_paso,

@@ -7,7 +7,7 @@
     <div class="cont_barra clearfix" style="<!-- color:#7CC374; -->">
         <div class="above_bar"><span class="candi"><%= vh.get_candidato_nombre(d,dict_datos) %></span> <span class="name"><%= vh.get_partido(d,dict_datos) %></span></div>
         <div class="barra" style="background: <%= vh.get_candidato_color(d,dict_datos) %>;">
-            <div class="porc" style="opacity: 1;"><%= vh.get_formatted_num(d.pct,1) %>%</div>
+            <div class="porc" style="opacity: 1;"><%= vh.get_formatted_num(d.porc,1) %>%</div>
             <!-- 
             <div class="paso_bar">
                <div class="porc_paso" style="opacity: 1;">60,24% <span class="txt_paso">PASO</span></div>

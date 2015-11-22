@@ -1,0 +1,23 @@
+SELECT h.num_loc,
+h.electores, 
+h.votantes,
+h.validos,
+h.positivos, 
+st_asgeojson(ST_Centroid(h.the_geom)) as geo,
+v.id_partido,
+v.winner as ganador,
+v.swing as swing,
+v.agg_votos as votos,
+v.agg_votos_pv as votos_pv,
+v.agg_votos_paso as votos_paso,
+v.agg_porc as porc,
+v.agg_porc_pv as porc_pv,
+v.agg_porc_paso as porc_paso,
+(v.agg_votos - v.agg_votos_pv) as diff_pv,
+abs(v.agg_votos - v.agg_votos_pv) as adiff_pv,
+(v.agg_votos - v.agg_votos_paso) as diff_paso,
+abs(v.agg_votos - v.agg_votos_paso) as adiff_paso
+FROM arg_ballo_hexagonos h, cache_arg_ballo_hex_votos v
+WHERE h.id_hexagono = {{id}}
+AND h.id_hexagono = v.id_hexagono
+ORDER BY votos DESC;

@@ -8,9 +8,9 @@ define(['app/context'], function(context){
         location.hash = ctxt;
     }
 
-    function get(){
+    function get(u){
         /*jshint evil:true */
-        var u = location.hash.replace("#", "");
+        u = u ? u : location.hash.replace("#", "");
         if(u){
             u = u.split(/\&/);
             u.forEach(function(c, i){
@@ -28,7 +28,8 @@ define(['app/context'], function(context){
 
     /** Validate permalink status */
     function validate(){
-        if (context.selected_tab == 'difpaso' &&
+        if ((context.selected_tab == 'difpaso' ||
+            context.selected_tab == 'difpv') &&
             context.selected_party == "0000") {
             context.selected_party = "0131";
             set();

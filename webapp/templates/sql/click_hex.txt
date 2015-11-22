@@ -1,10 +1,17 @@
-SELECT d.id_partido, 
-SUM(e.electores) as electores, SUM(e.votantes) as votantes,
-SUM(e.positivos) as positivos, SUM(d.diferencia) as diferencia, 
-SUM(d.votos) as votos, SUM(d.votos_paso) as votos_paso,
-array_length(string_to_array('{{ids}}',','), 1) as num_loc
-FROM arg_pv_localizaciones e, arg_pv_loc_diff_votos d
-WHERE e.id_agrupado in ({{ids}})
-AND e.id_agrupado = d.id_agrupado
-GROUP BY d.id_partido
-ORDER BY votos DESC
+SELECT 
+v.id_partido,
+v.winner as ganador,
+v.swing as swing,
+v.agg_votos as votos,
+v.agg_votos_pv as votos_pv,
+v.agg_votos_paso as votos_paso,
+v.agg_porc as porc,
+v.agg_porc_pv as porc_pv,
+v.agg_porc_paso as porc_paso,
+(v.agg_votos - v.agg_votos_pv) as diff_pv,
+abs(v.agg_votos - v.agg_votos_pv) as adiff_pv,
+(v.agg_votos - v.agg_votos_paso) as diff_paso,
+abs(v.agg_votos - v.agg_votos_paso) as adiff_paso
+FROM cache_arg_ballo_hex_votos v
+WHERE v.id_hexagono = {{id}}
+ORDER BY {{orden}} DESC;

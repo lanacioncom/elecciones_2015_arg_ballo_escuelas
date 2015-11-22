@@ -1,5 +1,0 @@
-SELECT s.cell as the_geom_webmercator, s.id_partido,
-s.num_loc as agg_cnt, s.loc_list as agg_list, s.electores, s.votantes, s.votos as agg_votes, s.votos_paso as agg_votes_prev,
-s.positivos, s.votos/s.positivos::float as agg_perc, 1 as cartodb_id
-FROM hexsumm s
-WHERE s.rk = 1

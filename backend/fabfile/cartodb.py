@@ -129,20 +129,20 @@ def import_est_results():
 def create_indexes():
     '''create indexes for ballotage cartodb tables'''
     with lcd(cwd):
-        execute(run_query, queries.location_index_sql)
-        execute(run_query, queries.loc_index_name_sql)
-        execute(run_query, queries.loc_index_address_sql)
-        execute(run_query, queries.loc_index_city_sql)
-        execute(run_query, queries.telegrams_index_sql)
-        execute(run_query, queries.diff_index_loc_sql)
-        execute(run_query, queries.diff_index_party_sql)
-        execute(run_query, queries.ballo_hexagonos_index_sql)
-        execute(run_query, queries.cache_ballo_hex_res_index_hex_sql)
-        execute(run_query, queries.cache_ballo_hex_res_index_party_sql)
-        execute(run_query, queries.cache_pv_hex_res_index_hex_sql)
-        execute(run_query, queries.cache_pv_hex_res_index_party_sql)
-        execute(run_query, queries.paso_hex_res_index_hex_sql)
-        execute(run_query, queries.paso_hex_res_index_party_sql)
+        execute(run_query, cdbqueries.location_index_sql)
+        execute(run_query, cdbqueries.loc_index_name_sql)
+        execute(run_query, cdbqueries.loc_index_address_sql)
+        execute(run_query, cdbqueries.loc_index_city_sql)
+        execute(run_query, cdbqueries.telegrams_index_sql)
+        execute(run_query, cdbqueries.diff_index_loc_sql)
+        execute(run_query, cdbqueries.diff_index_party_sql)
+        execute(run_query, cdbqueries.ballo_hexagonos_index_sql)
+        execute(run_query, cdbqueries.cache_ballo_hex_res_index_hex_sql)
+        execute(run_query, cdbqueries.cache_ballo_hex_res_index_party_sql)
+        execute(run_query, cdbqueries.cache_pv_hex_res_index_hex_sql)
+        execute(run_query, cdbqueries.cache_pv_hex_res_index_party_sql)
+        execute(run_query, cdbqueries.paso_hex_res_index_hex_sql)
+        execute(run_query, cdbqueries.paso_hex_res_index_party_sql)
 
 
 @task
@@ -151,9 +151,9 @@ def search():
     '''cartodb winner table setting full text search'''
 
     with lcd(cwd):
-        execute(run_query, queries.search_alter_sql)
-        execute(run_query, queries.search_index_sql)
-        execute(run_query, queries.search_update_sql)
+        execute(run_query, cdbqueries.search_alter_sql)
+        execute(run_query, cdbqueries.search_index_sql)
+        execute(run_query, cdbqueries.search_update_sql)
 
 
 @task
@@ -163,8 +163,8 @@ def crowdsource():
 
     with lcd(cwd):
         execute(run_query, drop_sql('arg_ballo_crowdsource'))
-        execute(run_query, queries.crowd_create_sql)
-        execute(run_query, queries.crowd_index_sql)
-        execute(run_query, queries.crowd_editor_sql)
-        execute(run_query, queries.crowd_function_sql)
+        execute(run_query, cdbqueries.crowd_create_sql)
+        execute(run_query, cdbqueries.crowd_index_sql)
+        execute(run_query, cdbqueries.crowd_editor_sql)
+        execute(run_query, cdbqueries.crowd_function_sql)
 

@@ -1,7 +1,0 @@
-SELECT h.id_hexagono, h.the_geom_webmercator, v.id_partido,
-v.agg_votos as agg_votes, v.agg_porc as agg_perc,
-(v.agg_votos - v.agg_votos_paso) as agg_diff
-FROM cache_arg_pv_hex_votos v, arg_ballo_hexagonos h
-WHERE h.id_hexagono = v.id_hexagono
-AND h.zoom_level = <%- zoom %>
-AND v.id_partido = '<%- id_partido %>'

@@ -1,8 +1,24 @@
-SELECT e.id_agrupado, e.nombre, e.direccion, 
-e.id_distrito, e.id_seccion, e.circuitos, e.rangos_mesas, 
-e.electores, e.votantes, e.validos, e.positivos, st_asgeojson(e.the_geom) as g,
-d.id_partido, d.votos_paso as votos_paso, d.votos as votos, d.diferencia 
-FROM arg_pv_localizaciones e, arg_pv_loc_diff_votos d
-WHERE e.id_agrupado = {{id_agrupado}}
-AND e.id_agrupado = d.id_agrupado
+SELECT l.electores, 
+l.votantes, 
+l.validos, 
+l.positivos,
+st_asgeojson(l.the_geom) as geo,
+l.nombre,
+l.direccion,
+v.id_partido,
+v.winner as ganador,
+v.swing as swing,
+v.votos as votos,
+v.votos_pv as votos_pv,
+v.votos_paso as votos_paso,
+v.porc as porc,
+v.porc_pv as porc_pv,
+v.porc_paso as porc_paso,
+(v.votos - v.votos_pv) as diff_pv,
+abs(v.votos - v.votos_pv) as adiff_pv,
+(v.votos - v.votos_paso) as diff_paso,
+abs(v.votos - v.votos_paso) as adiff_paso
+FROM arg_ballo_localizaciones l, cache_arg_ballo_loc_votos v
+WHERE l.id_agrupado = {{id}}
+AND l.id_agrupado = v.id_agrupado
 ORDER BY votos DESC;

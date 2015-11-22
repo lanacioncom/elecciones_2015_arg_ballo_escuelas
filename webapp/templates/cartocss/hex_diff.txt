@@ -6,7 +6,11 @@
     polygon-fill: #000000;
     <% _.each(data, function(v,k) { %>
         [id_partido='<%- k %>'] {
-            [agg_diff >= 0] {polygon-fill: <%- v.color_partido %>;}
+            <% if (tab == 'difpv') { %>
+                [diff_pv >= 0] {polygon-fill: <%- v.color_partido %>;}
+            <% } else { %>
+                [diff_paso >= 0] {polygon-fill: <%- v.color_partido %>;}
+            <% } %>
         }
     <% }); %>
 }

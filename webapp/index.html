@@ -86,7 +86,7 @@
     <script id="ga_scr" data-page="elecciones_2015_arg_pv_escuelas">var ga_page = document.getElementById('ga_scr').dataset.page;var _gaq = _gaq || [];_gaq.push(['_setAccount', 'UA-621326-6']);_gaq.push(['_setDomainName', '.lanacion.com.ar']);_gaq.push(['_setCampaignCookieTimeout',0]);_gaq.push(['_trackPageview', ga_page]);(function() {var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);})();</script>
 </head>
 <body>
-    <div id="wrapper_all" style='-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;'  unselectable='on' onselectstart='return false;'>
+    <div id="wrapper_all" class="clearfix" style='-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;'  unselectable='on' onselectstart='return false;'>
         <nav>
             <div class="blanco">
                 <div id="botones">
@@ -96,9 +96,10 @@
                         <input class="ui-widget invisible" id="searchbox" placeholder="Buscá tu escuela (min. 3 caracteres)">
                     </div>
 
-                    <div class="btn" id="escuela">Resultados por cada escuela</div>
-                    <div class="btn on" id="fuerza">Resultados por grupo de escuelas</div>
-                    <div class="btn" id="difpaso">Diferencia con las PASO</div>                
+                    <div class="btn on" id="escuela">Resultados por cada escuela</div>
+                    <div class="btn" id="fuerza">Resultados por grupo de escuelas</div>
+                    <div class="btn" id="difpv">Diferencia con la 1ra. vuelta</div>
+                    <div class="btn" id="difpaso">Diferencia con las PASO</div>
                 </div>
             </div>
         </nav>
@@ -116,6 +117,7 @@
 
         <section id="data_container" class="clearfix">
             <aside id="shotcuts">
+                <div class="short" id="arg" title="Argentina">Argentina</div>
                 <div class="short" id="conurbano" title="Conurbano">Conurbano</div>
                 <div class="short" id="caba" title="CABA">CABA</div>
                 <div class="short" id="cordoba" title="Córdoba">Córdoba</div>
@@ -220,14 +222,14 @@
                  <div class="colores">
                     <div class="perdio_gano">
                         <div class="perdio">
-                            <p>Perdió votos respecto de las PASO</p>
+                            <p>Perdió votos respecto de la 1ra. vuelta</p>
                             <svg version="1.1" id="hexdif_0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="47.5px" viewBox="0 0 40 47.5" enable-background="new 0 0 40 47.5" xml:space="preserve">
                             <polygon points="12.32,35.449 4.621,21.449 12.32,7.449 27.719,7.449 35.418,21.449 27.719,35.449 "/>
                             </svg>
 
                         </div>
                         <div class="gano">
-                            <p>Ganó votos respecto de las PASO</p>
+                            <p>Ganó votos respecto de las 1ra. vuelta</p>
                             <svg version="1.1" id="hexdif_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="47.5px" viewBox="0 0 40 47.5" enable-background="new 0 0 40 47.5" xml:space="preserve">
                             <polygon points="12.32,35.449 4.621,21.449 12.32,7.449 27.719,7.449 35.418,21.449 27.719,35.449 "/>
                             </svg>
@@ -265,13 +267,6 @@
 <!-- PYM -->
 <script src="http://especiales.lanacion.com.ar/multimedia/proyectos/js/pym.js" ></script>
 <!-- PYM -->
-<!-- build:lib_jquery -->
-<!--<script type="text/javascript" src="libs/jquery/dist/jquery.min.js"></script>-->
-<!-- endbuild -->
-<!-- build:lib_autocomplete -->
-<!--<script type="text/javascript" src="libs/jquery-ui/jquery-ui.min.js"></script>-->
-<!-- endbuild -->
-<!--<script type="text/javascript" src="libs/cartodb.min.js"></script>-->
 <!-- build:js -->
 <script data-main="js/app" src="libs/requirejs/require.js"></script>
 <!-- endbuild -->

@@ -24,7 +24,7 @@ define(['cartodbjs'], function(dummy) {
         },
         carto_user: 'lndata',
         carto_layers:[], 
-        arg_center: [-40.647, 62.139],
+        arg_center: [-40.647, -62.139],
         izoom: 4,
         izoom_mob: 4,
         sql: null,
@@ -32,8 +32,12 @@ define(['cartodbjs'], function(dummy) {
         diccionario_datos: null,
         current_latlng: null,
         prev_zoom_level: null,
-        hex_zoom_threshold: 12,
+        hex_zoom_threshold: 13,
         cities: {
+            'arg': {
+                center: L.latLng(-40.647, -62.139),
+                zoom: 4
+            },
             'conurbano': {
                 center: L.latLng(-34.64902575352698, -58.54751586914063),
                 zoom: 10

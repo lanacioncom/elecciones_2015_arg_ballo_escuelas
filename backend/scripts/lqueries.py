@@ -68,6 +68,8 @@ ORDER BY id_hexagono, agg_votos desc
 cache_insert_ballo_results_hex_sql = '''
 INSERT INTO cache_ballo_resultados_hexagonos
 SELECT h.id_hexagono, ballo_r.id_partido,
+0 as winner,
+0 as new,
 SUM(ballo_t.positivos) as agg_pos,
 SUM(pv_t.positivos) as agg_pos_pv,
 SUM(paso_t.positivos) as agg_pos_paso,
@@ -102,6 +104,8 @@ ORDER BY id_hexagono, agg_votos desc
 cache_insert_pv_results_hex_sql = '''
 INSERT INTO cache_pv_resultados_hexagonos
 SELECT h.id_hexagono, pv_r.id_partido,
+0 as winner,
+0 as new,
 SUM(pv_t.positivos) as agg_pos,
 SUM(paso_t.positivos) as agg_pos_paso,
 SUM(pv_r.votos) as agg_votos,
@@ -127,6 +131,8 @@ ORDER BY id_hexagono, agg_votos desc
 cache_insert_paso_results_hex_sql = '''
 INSERT INTO cache_paso_resultados_hexagonos
 SELECT h.id_hexagono, paso_r.id_partido,
+0 as winner,
+0 as new,
 SUM(paso_t.positivos) as agg_pos,
 SUM(paso_r.votos) as agg_votos,
 CASE WHEN SUM(paso_t.positivos) = 0 THEN 0
@@ -192,4 +198,23 @@ SELECT CDB_MakeHexagon(a.wkb_geometry_3857,
 %(z)s as zoom_level, %(size)s as hex_size,
 1 as num_loc, array[a.id_agrupado]
 FROM antartida a
+'''
+
+update_cache_set_winner_status = '''
+UPDATE %(cache)s r
+SET winner = CASE WHEN r.id_partido = w.id_partido THEN 1 ELSE 0 END
+FROM %(winner)s w
+WHERE r.%(key)s = w.%(key)s
+'''
+
+update_cache_set_new_status = '''
+UPDATE %(cache)s r
+SET new = CASE WHEN (r.id_partido = w.id_partido
+                     AND r.id_partido != wprev.id_partido) THEN 1
+               WHEN (r.id_partido != w.id_partido
+                     AND r.id_partido = wprev.id_partido) THEN 1
+               ELSE 0 END
+FROM %(winner)s w, %(wprev)s wprev
+WHERE r.%(key)s = w.%(key)s
+AND r.%(key)s = wprev.%(key)s
 '''

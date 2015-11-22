@@ -1,1 +1,1 @@
-SELECT crowdsource_geo({{id_agrupado}}, true, {{comment}})
+SELECT ballo_crowdsource_geo(<%- id %>, true, '<%- comment %>') as cartodb_id

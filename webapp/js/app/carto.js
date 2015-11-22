@@ -7,25 +7,34 @@ define(['app/context','app/config', 'app/templates'], function (ctxt, config, te
     var hex_diff_ccss_tpl = _.template(templates.hex_diff_cartocss);
     var winner_sql_tpl = _.template(templates.cdb_winner_sql);
     var party_sql_tpl = _.template(templates.cdb_party_sql);
-    var party_sql_poll_winner_tpl = _.template(templates.cdb_party_poll_winner_sql);
-    var hex_sql_tpl = _.template(templates.cdb_hex_query_sql);
-    var hex_winner_sql_tpl = _.template(templates.cdb_hex_query_winner_sql);
-    var hex_sub_party_sql_tpl = _.template(templates.cdb_hex_sub_party_sql);
-    var hex_sub_party_sql_poll_winner_tpl = _.template(templates.cdb_hex_sub_party_poll_winner_sql);
-    var hex_sub_winner_sql_tpl = _.template(templates.cdb_hex_sub_winner_sql);
+    var hex_party_sql_tpl = _.template(templates.cdb_hex_party_sql);
+    var hex_winner_sql_tpl = _.template(templates.cdb_hex_winner_sql);
     var hex_test_sql_tpl = _.template(templates.cdb_hex_test_sql);
+    var crowdsource_sql_tpl = _.template(templates.cdb_crowdsource_sql);
 
 
     function update_layer() {
         var query, cartocss;
-        var i_hex = "agg_cnt, agg_perc, agg_list, agg_votes, agg_votes_prev";
-        var i_nohex = "id_agrupado, id_partido, nombre, positivos,"+
-                      "votos, votos_paso, adif, diferencia, perc";
+        var i_hex = "id_hexagono, num_loc, id_partido, ganador, swing,"+
+                    "votos, votos_pv, votos_paso,"+
+                    "porc, porc_pv, porc_paso,"+
+                    "diff_pv, diff_paso";
+        var i_nohex = "id_agrupado, nombre, direccion, id_partido, ganador, swing,"+
+                      "votos, votos_pv, votos_paso,"+
+                      "porc, porc_pv, porc_paso,"+
+                      "diff_pv, diff_paso, adiff_pv";
         
         var pid = ctxt.selected_party;
         var interactivity = i_hex;
         if (ctxt.selected_tab == "escuela") {
             interactivity = i_nohex;
+        } else {
+            // Hexagons zoom threshold
+            if (ctxt.zoom > 12) {
+                z = 12;
+            } else {
+                z = ctxt.zoom;
+            }
         }
 
         // TEST QUERIES
@@ -43,48 +52,33 @@ define(['app/context','app/config', 'app/templates'], function (ctxt, config, te
                     cartocss = perc_ccss_tpl({data: config.diccionario_datos, 
                                          zooms: config.zoom_perc_multipliers});
                     // GET THE WINNER FOR EACH POLLING STATION
-                    query = winner_sql_tpl({orden: 'perc'});
+                    query = winner_sql_tpl({orden: 'votos'});
                 } else {
                     // GET PARTY DATA
                     cartocss = perc_ccss_tpl({data: config.diccionario_datos, 
                                          zooms: config.zoom_perc_multipliers});
                     // GET THE PARTY FOR EACH POLLING STATION
-                    query = party_sql_tpl({id_partido: pid, orden: 'perc'});
+                    query = party_sql_tpl({id_partido: pid, orden: 'votos'});
                 }
                 break;
             case "fuerza":
                 cartocss = hex_perc_ccss_tpl({data: config.diccionario_datos});
                 if (pid == "0000") {
-                    // AGGREGATE CALCULATING WINNERS OVER EACH HEXAGON
-                    subquery = hex_sub_winner_sql_tpl();
-                    query = hex_winner_sql_tpl({multiplier: ctxt.hex_size, 
-                                                zoom: ctxt.zoom,
-                                                subquery: subquery});
-                    query = hex_winner_sql_tpl({zoom: ctxt.zoom});
-                    interactivity = 'agg_votes, agg_perc';
+                    query = hex_winner_sql_tpl({zoom: z});
                 }
                 else {
-                    //subquery = hex_sub_party_sql_tpl({id_partido: pid});
-                    //query = hex_sql_tpl({multiplier: ctxt.hex_size,
-                    //                           zoom: ctxt.zoom,
-                    //                           subquery: subquery});
-                    query = hex_sql_tpl({zoom: ctxt.zoom, id_partido: pid});
-                    interactivity = 'agg_votes, agg_perc, agg_diff';   
+                    query = hex_party_sql_tpl({zoom: z, id_partido: pid});   
                 }
                 break;
             case "difpaso":
+            case "difpv":
                 // ALWAYS WITH A SELECTED PARTY, DEFAULT OVERALL WINNER
                 var color = config.diccionario_datos[pid].color_partido;
                 // SHOW THE HEXAGON AGGREGATION
-                cartocss = hex_diff_ccss_tpl({data: config.diccionario_datos});
-                    
-                // subquery = hex_sub_party_sql_tpl({id_partido: pid});
-                // query = hex_sql_tpl({multiplier: ctxt.hex_size,
-                //                      zoom: ctxt.zoom,
-                //                      subquery: subquery});
-                query = hex_sql_tpl({zoom: ctxt.zoom, id_partido: pid});
-                interactivity = 'agg_votes, agg_perc, agg_diff';   
-                query
+                cartocss = hex_diff_ccss_tpl({'data': config.diccionario_datos,
+                                              'tab': ctxt.selected_tab});
+
+                query = hex_party_sql_tpl({zoom: z, id_partido: pid});
                 break;
         }
 
@@ -100,11 +94,8 @@ define(['app/context','app/config', 'app/templates'], function (ctxt, config, te
 
     /** persist readers feedback on polling station geolocation*/
     function send_crowdsource(id_agrupado, comentario) {
-
-        var sql = "SELECT crowdsource_geo(";
-        sql += id_agrupado+",";
-        sql += true+",'";
-        sql += comentario+"') as cartodb_id;";
+        var sql = crowdsource_sql_tpl({'id': id_agrupado,
+                                       'comment': comentario});
         $.ajax({
             type: 'POST',
             url: 'https://lndata.cartodb.com/api/v2/sql',
@@ -112,7 +103,6 @@ define(['app/context','app/config', 'app/templates'], function (ctxt, config, te
             data: {"q":sql},
             dataType: 'json',
             success: function(responseData, textStatus, jqXHR) {
-                //console.log(responseData.rows[0].cartodb_id);
             },
             error: function (responseData, textStatus, errorThrown) {
                 console.log("Problem saving the data" + textStatus);

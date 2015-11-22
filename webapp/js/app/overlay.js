@@ -22,7 +22,7 @@ define(['app/context', 'app/config', 'app/permalink', 'app/carto',
         results = config.initial_data.results;
         polling_totals = config.initial_data.polling_totals;
 
-        var max = results[0].pct;
+        var max = results[0].porc;
 
         var li = ul.selectAll("li.candidato")
             .data(results, function(d){ return d.id_partido;});
@@ -41,15 +41,15 @@ define(['app/context', 'app/config', 'app/permalink', 'app/carto',
                 });
             })
             .on("click", function(d){
-                if (ctxt.selected_tab == "difpaso" &&
+
+                if ((ctxt.selected_tab == "difpaso" ||
+                     ctxt.selected_tab == "difpv") &&
                     ctxt.selected_party == d.id_partido) {
                     return false;
                 }
                 
                 if(ctxt.selected_party != d.id_partido){
                     ctxt.selected_party = d.id_partido;
-                    // Set permalink
-                    permalink.set();
                     // Analytics
                     var GA_KEY = ctxt.show_diff ? 'diferencia' : 'porcentaje';
                     _gaq.push(['_trackEvent','elecciones_2015_arg_pv_escuelas',
@@ -57,6 +57,8 @@ define(['app/context', 'app/config', 'app/permalink', 'app/carto',
                 }else {
                     ctxt.selected_party = "0000";
                 }
+                // Set permalink
+                permalink.set();
                 _self.update_filter();
                 // We moved this to the cartodb loaded event
                 //_self.update_ref();
@@ -134,7 +136,7 @@ define(['app/context', 'app/config', 'app/permalink', 'app/carto',
 
         li.each(function(d, i){
             var el = d3.select(this);
-            el.select(".porc").html(view_helpers.get_formatted_num(d.pct,1) + "%");
+            el.select(".porc").html(view_helpers.get_formatted_num(d.porc,1) + "%");
             el.select(".votos").html(view_helpers.get_formatted_num(d.votos,0) + " votos");
             // update width bars TODO
         });
@@ -155,7 +157,7 @@ define(['app/context', 'app/config', 'app/permalink', 'app/carto',
                 // update width bars
                 var bar_w = (+d.votos / +max)*w_content;
                 el.select(".barra").transition().duration(500).style("width", bar_w+"px");
-                el.select(".porc").html(view_helpers.get_formatted_num(d.pct,1) + "%");
+                el.select(".porc").html(view_helpers.get_formatted_num(d.porc,1) + "%");
                 el.select(".votos").html(view_helpers.get_formatted_num(d.votos,0) + " votos");
 
             });
@@ -196,6 +198,7 @@ define(['app/context', 'app/config', 'app/permalink', 'app/carto',
                   .style("fill", function(d) {return d;});
                 break;
             case 'difpaso':
+            case 'difpv':
                 d3.select("#hexdif_1").style("fill", helpers.get_party_color());
                 break;
         }

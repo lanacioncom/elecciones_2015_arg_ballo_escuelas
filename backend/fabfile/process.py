@@ -20,3 +20,5 @@ def run():
         execute(clear_agg)
         local('python %s/process_results.py' % (scripts_path))
         execute(create_ix)
+        for i in range(0, 3):
+            local('python %s/update_cache_status.py -e %s' % (scripts_path, i))

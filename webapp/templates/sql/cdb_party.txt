@@ -1,8 +1,25 @@
-SELECT d.id_agrupado, d.id_partido, d.votos as votos, d.votos_paso as votos_paso,
-d.diferencia, abs(d.diferencia) as adif, e.nombre, e.positivos, 
-e.the_geom_webmercator,
-(d.votos/e.positivos::float) as perc
-FROM arg_pv_localizaciones e, arg_pv_loc_diff_votos d
-WHERE d.id_agrupado = e.id_agrupado
-AND d.id_partido = '<%- id_partido %>'
-ORDER BY <%- orden %> DESC
+SELECT 
+l.id_agrupado, 
+l.the_geom_webmercator,
+l.nombre,
+l.direccion,
+l.electores, 
+l.votantes,
+l.validos,
+l.positivos,
+v.id_partido,
+v.winner as ganador,
+v.swing as swing,
+v.votos as votos,
+v.votos_pv as votos_pv,
+v.votos_paso as votos_paso,
+v.porc as porc,
+v.porc_pv as porc_pv,
+v.porc_paso as porc_paso,
+(v.votos - v.votos_pv) as diff_pv,
+abs(v.votos - v.votos_pv) as adiff_pv,
+(v.votos - v.votos_paso) as diff_paso
+FROM cache_arg_ballo_loc_votos v, arg_ballo_localizaciones l
+WHERE v.id_agrupado = l.id_agrupado
+AND v.id_partido = '<%- id_partido %>'
+ORDER BY <%- orden %> DESC;

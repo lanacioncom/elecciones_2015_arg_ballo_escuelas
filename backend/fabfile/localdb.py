@@ -8,7 +8,7 @@ from lqueries import clear_hex_sql
 from lqueries import clear_results_hex_sql
 from lqueries import clear_totals_hex_sql
 from lqueries import clear_preprocessed_sql
-form lqueries import update_hexagons_seq
+from lqueries import update_hex_seq
 
 # Restrict visible functions
 __all__ = ['init']

@@ -153,7 +153,9 @@ DROP TABLE IF EXISTS cache_ballo_resultados_hexagonos;
 CREATE TABLE cache_ballo_resultados_hexagonos
 (
   id_hexagono integer,
-  id_partido character varying(4), 
+  id_partido character varying(4),
+  winner integer DEFAULT 0,
+  new integer DEFAULT 0, 
   agg_pos integer,
   agg_pos_pv integer,
   agg_pos_paso integer,
@@ -210,7 +212,9 @@ DROP TABLE IF EXISTS cache_pv_resultados_hexagonos;
 CREATE TABLE cache_pv_resultados_hexagonos
 (
   id_hexagono integer,
-  id_partido character varying(4), 
+  id_partido character varying(4),
+  winner integer DEFAULT 0,
+  new integer DEFAULT 0,
   agg_pos integer,
   agg_pos_paso integer,
   agg_votos integer,
@@ -244,6 +248,8 @@ CREATE TABLE cache_paso_resultados_hexagonos
 (
   id_hexagono integer,
   id_partido character varying(4),
+  winner integer DEFAULT 0,
+  new integer DEFAULT 0,
   agg_pos double precision,
   agg_votos integer,
   agg_porc double precision,

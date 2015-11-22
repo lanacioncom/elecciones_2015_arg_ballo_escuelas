@@ -1,5 +1,0 @@
-SELECT g.cartodb_id, g.id_agrupado, g.id_partido, 
-g.votos as votos, g.votos_paso as votos_paso, 
-g.positivos, g.the_geom_webmercator
-FROM arg_pv_loc_ganador g
-WHERE g.id_partido = '<%- id_partido %>'

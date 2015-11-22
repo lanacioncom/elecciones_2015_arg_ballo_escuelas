@@ -1,2 +1,2 @@
-SELECT key_telegrama FROM arg_pv_loc_telegramas 
-WHERE id_agrupado = {{id_agrupado}};
+SELECT t.key_telegrama FROM arg_ballo_loc_telegramas t
+WHERE t.id_agrupado = {{id}};

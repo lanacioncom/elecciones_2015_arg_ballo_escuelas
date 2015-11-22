@@ -1,9 +1,17 @@
-SELECT d.id_partido, SUM(e.electores) as electores, SUM(e.votantes) as votantes,
-SUM(e.positivos) as positivos, SUM(d.diferencia) as diferencia, 
-SUM(d.votos) as votos, SUM(d.votos_paso) as votos_paso,
-COUNT(d.id_partido) as num_loc
-FROM arg_pv_localizaciones e, arg_pv_loc_diff_votos d
-WHERE e.id_agrupado = d.id_agrupado
-AND ST_Intersects(e.the_geom, ST_MakePolygon(ST_MakeLine(Array[{{bounds}}])))
-GROUP BY d.id_partido
+SELECT v.id_partido, 
+COUNT(v.id_partido) as num_loc,
+SUM(l.electores) as electores, 
+SUM(l.votantes) as votantes,
+SUM(l.positivos) as positivos, 
+SUM(v.votos) as votos, 
+SUM(v.votos_pv) as votos_pv,
+SUM(v.votos_paso) as votos_paso,
+(SUM(v.votos) - SUM(v.votos_pv)) as diff_pv,
+abs((SUM(v.votos) - SUM(v.votos_pv))) as adiff_pv,
+(SUM(v.votos) - SUM(v.votos_paso)) as diff_paso,
+abs((SUM(v.votos) - SUM(v.votos_paso))) as adiff_paso
+FROM arg_ballo_localizaciones l, cache_arg_ballo_loc_votos v
+WHERE l.id_agrupado = v.id_agrupado
+AND ST_Intersects(l.the_geom, ST_MakePolygon(ST_MakeLine(Array[{{bounds}}])))
+GROUP BY v.id_partido
 ORDER BY votos DESC

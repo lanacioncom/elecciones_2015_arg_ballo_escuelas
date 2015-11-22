@@ -1,5 +1,5 @@
 html, body {
-  margin: 0; padding: 0; height: 100%; min-height: 800px; max-width: 1360px;
+  margin: 0; padding: 0; max-width: 1360px;
 }
 
 .invisible{
@@ -786,7 +786,8 @@ section#tools div.contenedor, section#tools div.contenedor0{
 
 body.escuela section#tools div.contenedor0#refEscuelas,
 body.fuerza section#tools div.contenedor#refFuerza,
-body.difpaso section#tools div.contenedor2#refPaso
+body.difpaso section#tools div.contenedor2#refPaso,
+body.difpv section#tools div.contenedor2#refPaso
 {
   opacity: 1;
 }
