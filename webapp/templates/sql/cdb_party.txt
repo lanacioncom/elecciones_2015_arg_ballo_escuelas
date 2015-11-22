@@ -22,4 +22,10 @@ abs(v.votos - v.votos_pv) as adiff_pv,
 FROM cache_arg_ballo_loc_votos v, arg_ballo_localizaciones l
 WHERE v.id_agrupado = l.id_agrupado
 AND v.id_partido = '<%- id_partido %>'
+<% if (fwinner !== null) {%>
+    AND v.winner = <%- +fwinner %>
+<%}%>
+<% if (fswing !== null) {%>
+    AND v.swing = <%- +fswing %>
+<%}%> 
 ORDER BY <%- orden %> DESC;

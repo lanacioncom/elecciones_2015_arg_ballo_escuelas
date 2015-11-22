@@ -419,6 +419,8 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers, dr
                 var btn_id = $el.attr("id").replace('#','');
                 fire_analytics_event("click",btn_id);
                 ctxt.selected_polling = null;
+                ctxt.w = null;
+                ctxt.sw = null;
                 ctxt.selected_tab = btn_id;
                 // Control zoom issues with hexagons
                 if (ctxt.selected_tab != "escuela") {
@@ -601,7 +603,6 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers, dr
         });
 
         map.on('zoomend', function(e) {
-            debugger
             var current_zoom_level = map.getZoom();
             ctxt.zoom = current_zoom_level;
             // update layer only if needed

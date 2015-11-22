@@ -3,7 +3,8 @@ define({
     selected_tab: "escuela",
     selected_polling: null,
     selected_hex: null,
-    election: 2,
+    w: null,
+    sw: null,
     zoom: 4,
     lat: -40.647,
     lng: -62.139

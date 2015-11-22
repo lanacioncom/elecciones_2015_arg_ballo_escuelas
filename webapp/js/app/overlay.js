@@ -55,6 +55,9 @@ define(['app/context', 'app/config', 'app/permalink', 'app/carto',
                     _gaq.push(['_trackEvent','elecciones_2015_arg_pv_escuelas',
                                GA_KEY, d.id_partido]);
                 }else {
+                    // Reset filters
+                    ctxt.w = null;
+                    ctxt.sw = null;
                     ctxt.selected_party = "0000";
                 }
                 // Set permalink

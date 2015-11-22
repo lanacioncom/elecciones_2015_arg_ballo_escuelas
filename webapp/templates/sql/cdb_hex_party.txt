@@ -21,3 +21,9 @@ FROM cache_arg_ballo_hex_votos v, arg_ballo_hexagonos h
 WHERE h.id_hexagono = v.id_hexagono
 AND h.zoom_level = <%- zoom %>
 AND v.id_partido = '<%- id_partido %>'
+<% if (fwinner !== null) {%>
+    AND v.winner = <%- +fwinner %>
+<%}%>
+<% if (fswing !== null) {%>
+    AND v.swing = <%- +fswing %>
+<%}%>  

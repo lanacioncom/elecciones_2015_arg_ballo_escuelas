@@ -49,16 +49,22 @@ define(['app/context','app/config', 'app/templates'], function (ctxt, config, te
             case "escuela":
                 if (pid == "0000") {
                     // GET WINNER DATA
-                    cartocss = perc_ccss_tpl({data: config.diccionario_datos, 
-                                         zooms: config.zoom_perc_multipliers});
+                    cartocss = perc_ccss_tpl({'data': config.diccionario_datos, 
+                                         'zooms': config.zoom_perc_multipliers});
                     // GET THE WINNER FOR EACH POLLING STATION
                     query = winner_sql_tpl({orden: 'votos'});
                 } else {
+                    //CHECK IF 
+
                     // GET PARTY DATA
-                    cartocss = perc_ccss_tpl({data: config.diccionario_datos, 
-                                         zooms: config.zoom_perc_multipliers});
+                    cartocss = perc_ccss_tpl({'data': config.diccionario_datos, 
+                                         'zooms': config.zoom_perc_multipliers
+                                         });
                     // GET THE PARTY FOR EACH POLLING STATION
-                    query = party_sql_tpl({id_partido: pid, orden: 'votos'});
+                    query = party_sql_tpl({'id_partido': pid, 
+                                           'orden': 'votos',
+                                           'fwinner': ctxt.w,
+                                           'fswing': ctxt.sw});
                 }
                 break;
             case "fuerza":
@@ -67,7 +73,10 @@ define(['app/context','app/config', 'app/templates'], function (ctxt, config, te
                     query = hex_winner_sql_tpl({zoom: z});
                 }
                 else {
-                    query = hex_party_sql_tpl({zoom: z, id_partido: pid});   
+                    query = hex_party_sql_tpl({'zoom': z,
+                                               'id_partido': pid,
+                                               'fwinner': ctxt.w,
+                                               'fswing': ctxt.sw});
                 }
                 break;
             case "difpaso":
@@ -78,7 +87,10 @@ define(['app/context','app/config', 'app/templates'], function (ctxt, config, te
                 cartocss = hex_diff_ccss_tpl({'data': config.diccionario_datos,
                                               'tab': ctxt.selected_tab});
 
-                query = hex_party_sql_tpl({zoom: z, id_partido: pid});
+                query = hex_party_sql_tpl({'zoom': z,
+                                           'id_partido': pid,
+                                           'fwinner': null,
+                                           'fswing': null});
                 break;
         }
 
