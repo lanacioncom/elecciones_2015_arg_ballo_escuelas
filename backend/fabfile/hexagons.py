@@ -111,7 +111,7 @@ def run():
 
 @task
 @runs_once
-def create(zoom=4, size=3):
+def create(zoom=4, size=3, antar=False, low=False):
     '''creates a grid for a particular zoom level and size multiplier'''
     with lcd(cwd):
         local('python %s/create_hexagons.py -z %s -s %s'
@@ -128,6 +128,9 @@ def create_all():
             local('python %s/create_hexagons.py -z %s -s %s'
                   % (scripts_path, i, 3))
             local('python %s/create_hexagons.py -z %s -s %s -a'
+                  % (scripts_path, i, 3))
+        for i in range(13, 15):
+            local('python %s/create_hexagons.py -z %s -s %s -l'
                   % (scripts_path, i, 3))
 
 

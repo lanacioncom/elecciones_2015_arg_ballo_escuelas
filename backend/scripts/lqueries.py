@@ -18,6 +18,22 @@ GROUP BY h.cell
 ORDER BY num_loc desc;
 '''
 
+insert_hex_lzoom_sql = '''
+WITH hexa(bbox) AS (SELECT ST_EXPAND(ST_ENVELOPE(wkb_geometry_3857),
+                    CDB_XYZ_Resolution(%(z)s) * %(size)s)
+                    FROM hexagonos WHERE zoom_level = %(zold)s),
+hgrid(cell) AS (
+    SELECT CDB_HexagonGrid(h.bbox,CDB_XYZ_Resolution(%(z)s) * %(size)s)
+    FROM hexa h)
+INSERT INTO hexagonos(wkb_geometry_3857,zoom_level,hex_size, num_loc,arr_loc)
+SELECT h.cell as wkb_geometry_3857, %(z)s as zoom_level, %(size)s as hex_size,
+       COUNT(*) as num_loc, array_agg(l.id_agrupado) as arr_loc
+FROM hgrid h, localizaciones l
+WHERE ST_INTERSECTS(l.wkb_geometry_3857, h.cell)
+GROUP BY h.cell
+ORDER BY num_loc desc;
+'''
+
 cache_insert_hex_totales_sql = '''
 INSERT INTO cache_hexagonos_totales
 SELECT h.id_hexagono, h.wkb_geometry_3857,
