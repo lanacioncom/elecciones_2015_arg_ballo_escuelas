@@ -79,6 +79,8 @@ define(['cartodbjs'], function(dummy) {
                 positivos: 24772286,
                 participacion: 74.81
             }
-        }
+        },
+        // Sharing default
+        url_parent: 'http://www.lanacion.com.ar'
     };
 });

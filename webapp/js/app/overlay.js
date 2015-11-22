@@ -1,6 +1,9 @@
 /** overlay app */
-define(['app/context', 'app/config', 'app/permalink', 'app/carto',
-        'app/templates', 'app/helpers', 'app/view_helpers'], function(ctxt, config, permalink, cdb, templates, helpers, view_helpers){
+define(['app/context', 'app/config', 'app/permalink',
+        'app/analytics', 'app/carto',
+        'app/templates', 'app/helpers', 'app/view_helpers'], 
+        function(ctxt, config, permalink, ga, cdb, 
+                 templates, helpers, view_helpers){
     var Overlay = function(map){
     "use strict";
         var _self = this;
@@ -51,9 +54,7 @@ define(['app/context', 'app/config', 'app/permalink', 'app/carto',
                 if(ctxt.selected_party != d.id_partido){
                     ctxt.selected_party = d.id_partido;
                     // Analytics
-                    var GA_KEY = ctxt.show_diff ? 'diferencia' : 'porcentaje';
-                    _gaq.push(['_trackEvent','elecciones_2015_arg_pv_escuelas',
-                               GA_KEY, d.id_partido]);
+                    ga.fire_analytics_event("partido",ctxt.selected_party);
                 }else {
                     // Reset filters
                     ctxt.w = null;

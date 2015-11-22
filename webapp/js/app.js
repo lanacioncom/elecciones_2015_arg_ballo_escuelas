@@ -17,8 +17,10 @@ requirejs.config({
 
 requirejs(['app/context', 'app/config', 'app/templates', 'app/carto',
            'app/media', 'app/overlay', 'app/helpers', 'app/view_helpers',
-           'app/draw', 'app/permalink', 'd3', 'cartodbjs','jquery-ui'],
-function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers, draw, permalink, d3, dummy, dummy2) {
+           'app/draw', 'app/permalink', 'app/analytics', 'app/share',
+           'd3', 'cartodbjs','jquery-ui'],
+function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers, 
+         draw, permalink, ga, share, d3, dummy, dummy2) {
     $(function() {
     "use strict";
         var _self = this;
@@ -134,7 +136,9 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers, dr
             console.log(parent_url);
             var utoken = parent_url.split('#');
             if (utoken.length > 1) {
-                permalink.get(utoken[1]);
+                query_string = utoken[1]; 
+                ga.fire_analytics_event("permalink", query_string);
+                permalink.get(query_string);
                 update_nav(true);
                 update();
                 _self.overlay.update_filter();
@@ -235,7 +239,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers, dr
 
                 //Analytics
                 if (latlng !== null) {
-                    fire_analytics_event("hexagono",ctxt.selected_hex);
+                    ga.fire_analytics_event("hexagono",ctxt.selected_hex);
                 }
 
                 fid = ctxt.selected_hex;
@@ -255,7 +259,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers, dr
 
                 //Analytics
                 if (latlng !== null) {
-                    fire_analytics_event("establecimiento",ctxt.selected_polling);
+                    ga.fire_analytics_event("establecimiento",ctxt.selected_polling);
                 }
 
                 fid = data.id_agrupado;
@@ -336,7 +340,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers, dr
             // Show the list of linked telegrams
             d3.select("div.telegramas").on('click', function(d) {
                 if (ctxt.selected_polling) {
-                    fire_analytics_event("telegramas",ctxt.selected_polling);
+                    ga.fire_analytics_event("telegramas",ctxt.selected_polling);
                     var fid = ctxt.selected_polling;
                     config.sql.execute(templates.cdb_telegrams_sql,
                                        {'id': fid})
@@ -386,11 +390,6 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers, dr
             }
         }
 
-        function fire_analytics_event(action, data){
-            _gaq.push(['_trackEvent','elecciones_2015_arg_ballo_escuelas',
-                       action, data]);
-        }
-
         function my_popup_close(e) {
             ctxt.selected_polling = null;
             ctxt.selected_hex = null;
@@ -417,7 +416,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers, dr
                 var $el = $(this); 
                 $el.addClass("on");
                 var btn_id = $el.attr("id").replace('#','');
-                fire_analytics_event("click",btn_id);
+                ga.fire_analytics_event("click",btn_id);
                 ctxt.selected_polling = null;
                 ctxt.w = null;
                 ctxt.sw = null;
@@ -471,7 +470,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers, dr
             // To hide filters if we are on mobile
             var city = $(this).attr('id');
             // Google analytics
-            fire_analytics_event("shortcut", city);
+            ga.fire_analytics_event("shortcut", city);
             // Set the new context and save in permalink
             ctxt.lat = config.cities[city].center.lat;
             ctxt.lng = config.cities[city].center.lng;
@@ -557,7 +556,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers, dr
               minLength: 3,
               select: function( event, ui ) {
                 ctxt.selected_polling = ui.item.value.split("-")[0].trim();
-                fire_analytics_event("search",ctxt.selected_polling);
+                ga.fire_analytics_event("search",ctxt.selected_polling);
                 if (ctxt.selected_tab != "escuela") {
                     ctxt.selected_tab = "escuela";
                     cdb.update_layer();
@@ -636,7 +635,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers, dr
         d3.select("input#submit").on("click", function() {
             var comment = d3.select("textarea#msg").node();
             if (ctxt.selected_polling) {
-                fire_analytics_event("crowdsource",ctxt.selected_polling);
+                ga.fire_analytics_event("crowdsource",ctxt.selected_polling);
                 cdb.send_crowdsource(ctxt.selected_polling, comment.value);
             }
             comment.value = "";

@@ -135,3 +135,8 @@ WHERE l.id_agrupado = d.id_agrupado
 AND d.id_agrupado = ANY (h.arr_loc)
 GROUP BY h.id_hexagono, d.id_partido
 ORDER BY id_hexagono, agg_v desc;
+
+-----HEXAGONOS BACKUP DESDE PGADMIN ------
+SELECT h.id_hexagono, st_asewkt(h.wkb_geometry_3857) as wkb_geometry_3857,
+h.zoom_level, h.hex_size, h.num_loc, h.arr_loc
+FROM hexagonos h;
