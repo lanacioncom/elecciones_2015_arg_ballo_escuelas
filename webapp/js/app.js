@@ -476,9 +476,17 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             ctxt.lng = config.cities[city].center.lng;
             ctxt.zoom = config.cities[city].zoom;
             permalink.set();
-            // Finally setView
-            map.setView(config.cities[city].center, 
-                        config.cities[city].zoom);
+            if (map.getZoom() >= ctxt.zoom) {
+                map.setView(config.cities[city].center, 
+                            config.cities[city].zoom);
+            } else {
+                cdb.update_layer();
+                // Finally setView
+                setTimeout(function(){ // wait to avoid hex
+                    map.setView(config.cities[city].center, 
+                            config.cities[city].zoom);
+                }, 1000);
+            }
         }, false);
         
 
@@ -567,7 +575,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 d3.select("body").classed("escuela difpaso difpv fuerza", false);
                 $("body").addClass("escuela");
                 config.sql.execute(templates.permalink_sql,
-                                   {'id_agrupado': id_agrupado})
+                                   {'id': id_agrupado})
                 .done(function(data) {
                     var position = JSON.parse(data.rows[0].geo).coordinates;
                     var latlng = L.latLng(position[1], position[0]);
@@ -606,7 +614,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             ctxt.zoom = current_zoom_level;
             // update layer only if needed
             if (ctxt.selected_tab != 'escuela') {
-                if (current_zoom_level < config.hex_zoom_threshold) {
+                if (current_zoom_level <= config.hex_zoom_threshold) {
                     cdb.update_layer();
                 }
             }

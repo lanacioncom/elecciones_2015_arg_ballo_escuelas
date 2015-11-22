@@ -7,13 +7,16 @@ from settings import CDB_USER, CDB_KEY
 import cdbqueries
 
 # Restrict visible functions
-__all__ = ['import_common', 'import_shortcuts',
+__all__ = ['import_common',
+           'import_shortcuts',
            'import_hexagons',
            'import_ballo_loc_results',
            'import_pv_loc_results',
            'import_paso_loc_results',
-           'import_hex_winners',
-           'search', 'crowdsource',
+           # 'import_hex_winners',
+           # 'import_est_results',
+           'crowdsource',
+           'search',
            'create_indexes']
 
 # LOCAL PATHS
@@ -76,7 +79,7 @@ def import_shortcuts():
 @runs_once
 def import_ballo_loc_results():
     '''import location csv files into cartodb using import && SQL APIs'''
-    execute(import_table, 'localizaciones', 'cache_arg_ballo_loc_ganador')
+    # execute(import_table, 'localizaciones', 'cache_arg_ballo_loc_ganador')
     execute(import_table, 'localizaciones', 'cache_arg_ballo_loc_votos')
     execute(import_table, 'hexagonos', 'cache_arg_ballo_hex_votos')
 
@@ -85,7 +88,7 @@ def import_ballo_loc_results():
 @runs_once
 def import_pv_loc_results():
     '''import location csv files into cartodb using import && SQL APIs'''
-    execute(import_table, 'localizaciones', 'cache_arg_pv_loc_ganador')
+    # execute(import_table, 'localizaciones', 'cache_arg_pv_loc_ganador')
     execute(import_table, 'localizaciones', 'cache_arg_pv_loc_votos')
     execute(import_table, 'hexagonos', 'cache_arg_pv_hex_votos')
 
@@ -94,7 +97,7 @@ def import_pv_loc_results():
 @runs_once
 def import_paso_loc_results():
     '''import location csv files into cartodb using import && SQL APIs'''
-    execute(import_table, 'localizaciones', 'cache_arg_paso_loc_ganador')
+    # execute(import_table, 'localizaciones', 'cache_arg_paso_loc_ganador')
     execute(import_table, 'localizaciones', 'cache_arg_paso_loc_votos')
     execute(import_table, 'hexagonos', 'cache_arg_paso_hex_votos')
 
@@ -103,6 +106,7 @@ def import_paso_loc_results():
 @runs_once
 def import_hex_winners():
     '''import hex winners for each election'''
+    # UNUSED
     execute(import_table, 'hexagonos', 'cache_arg_ballo_hex_ganador')
     execute(import_table, 'hexagonos', 'cache_arg_pv_hex_ganador')
     execute(import_table, 'hexagonos', 'cache_arg_paso_hex_ganador')
@@ -119,6 +123,7 @@ def import_hexagons():
 @runs_once
 def import_est_results():
     '''import csv files into cartodb using import API'''
+    # UNUSED
     execute(import_table, 'establecimientos', 'arg_ballo_establecimientos')
     execute(import_table, 'establecimientos', 'cache_arg_ballo_est_ganador')
     execute(import_table, 'establecimientos', 'cache_arg_ballo_est_votos')
@@ -129,20 +134,24 @@ def import_est_results():
 def create_indexes():
     '''create indexes for ballotage cartodb tables'''
     with lcd(cwd):
-        execute(run_query, cdbqueries.location_index_sql)
-        execute(run_query, cdbqueries.loc_index_name_sql)
-        execute(run_query, cdbqueries.loc_index_address_sql)
-        execute(run_query, cdbqueries.loc_index_city_sql)
-        execute(run_query, cdbqueries.telegrams_index_sql)
-        execute(run_query, cdbqueries.diff_index_loc_sql)
-        execute(run_query, cdbqueries.diff_index_party_sql)
-        execute(run_query, cdbqueries.ballo_hexagonos_index_sql)
-        execute(run_query, cdbqueries.cache_ballo_hex_res_index_hex_sql)
+        execute(run_query, cdbqueries.loc_index_id_sql)
+        execute(run_query, cdbqueries.loc_search_index_name_sql)
+        execute(run_query, cdbqueries.loc_search_index_address_sql)
+        execute(run_query, cdbqueries.loc_search_index_city_sql)
+        execute(run_query, cdbqueries.hex_index_id_sql)
+        execute(run_query, cdbqueries.telegrams_index_id_sql)
+        execute(run_query, cdbqueries.cache_ballo_loc_res_index_id_sql)
+        execute(run_query, cdbqueries.cache_ballo_loc_res_index_party_sql)
+        execute(run_query, cdbqueries.cache_ballo_hex_res_index_id_sql)
         execute(run_query, cdbqueries.cache_ballo_hex_res_index_party_sql)
-        execute(run_query, cdbqueries.cache_pv_hex_res_index_hex_sql)
+        execute(run_query, cdbqueries.cache_pv_loc_res_index_id_sql)
+        execute(run_query, cdbqueries.cache_pv_loc_res_index_party_sql)
+        execute(run_query, cdbqueries.cache_pv_hex_res_index_id_sql)
         execute(run_query, cdbqueries.cache_pv_hex_res_index_party_sql)
-        execute(run_query, cdbqueries.paso_hex_res_index_hex_sql)
-        execute(run_query, cdbqueries.paso_hex_res_index_party_sql)
+        execute(run_query, cdbqueries.cache_paso_loc_res_index_id_sql)
+        execute(run_query, cdbqueries.cache_paso_loc_res_index_party_sql)
+        execute(run_query, cdbqueries.cache_paso_hex_res_index_id_sql)
+        execute(run_query, cdbqueries.cache_paso_hex_res_index_party_sql)
 
 
 @task

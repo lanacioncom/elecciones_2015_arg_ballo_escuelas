@@ -122,7 +122,6 @@ define(['app/context', 'app/config', 'app/permalink',
     Overlay.prototype.update = function(results, polling_totals){
         /** update overlay */
         var _self = this;
-        debugger
 
         var ul = d3.select('ul#overlay_li_content');
         // Initial configuration

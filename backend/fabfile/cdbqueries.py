@@ -1,46 +1,46 @@
 # coding: utf-8
 
-location_index_sql = '''
+loc_index_id_sql = '''
 CREATE INDEX arg_ballo_localizaciones_ix_agrupado
 ON arg_ballo_localizaciones USING btree(id_agrupado);
 '''
 
-diff_index_loc_sql = '''
-CREATE INDEX arg_ballo_loc_diff_votos_ix_agrupado
-ON arg_ballo_loc_diff_votos USING btree(id_agrupado);
-'''
-
-diff_index_party_sql = '''
-CREATE INDEX arg_ballo_loc_diff_votos_ix_partido
-ON arg_ballo_loc_diff_votos USING btree(id_partido);
-'''
-
-telegrams_index_sql = '''
-CREATE INDEX arg_ballo_loc_telegramas_ix_agrupado
-ON arg_ballo_loc_telegramas USING btree(id_agrupado);
-'''
-
-loc_index_name_sql = '''
+loc_search_index_name_sql = '''
 CREATE INDEX arg_ballo_localizaciones_ix_nombre
 ON arg_ballo_localizaciones USING btree(nombre);
 '''
 
-loc_index_address_sql = '''
+loc_search_index_address_sql = '''
 CREATE INDEX arg_ballo_localizaciones_ix_direccion
 ON arg_ballo_localizaciones USING btree(direccion);
 '''
 
-loc_index_city_sql = '''
+loc_search_index_city_sql = '''
 CREATE INDEX arg_ballo_localizaciones_ix_localidad
 ON arg_ballo_localizaciones USING btree(localidad);
 '''
 
-ballo_hexagonos_index_sql = '''
+hex_index_id_sql = '''
 CREATE INDEX arg_ballo_hexagonos_ix_hexagono
 ON arg_ballo_hexagonos USING btree(id_hexagono);
 '''
 
-cache_ballo_hex_res_index_hex_sql = '''
+telegrams_index_id_sql = '''
+CREATE INDEX arg_ballo_loc_telegramas_ix_agrupado
+ON arg_ballo_loc_telegramas USING btree(id_agrupado);
+'''
+
+cache_ballo_loc_res_index_id_sql = '''
+CREATE INDEX cache_arg_ballo_loc_votos_ix_agrupado
+ON cache_arg_ballo_loc_votos USING btree(id_agrupado);
+'''
+
+cache_ballo_loc_res_index_party_sql = '''
+CREATE INDEX cache_arg_ballo_loc_votos_ix_partido
+ON cache_arg_ballo_loc_votos USING btree(id_partido);
+'''
+
+cache_ballo_hex_res_index_id_sql = '''
 CREATE INDEX cache_arg_ballo_hex_votos_ix_hexagono
 ON cache_arg_ballo_hex_votos USING btree(id_hexagono);
 '''
@@ -50,7 +50,17 @@ CREATE INDEX cache_arg_ballo_hex_votos_ix_partido
 ON cache_arg_ballo_hex_votos USING btree(id_partido);
 '''
 
-cache_pv_hex_res_index_hex_sql = '''
+cache_pv_loc_res_index_id_sql = '''
+CREATE INDEX cache_arg_pv_loc_votos_ix_agrupado
+ON cache_arg_pv_loc_votos USING btree(id_agrupado);
+'''
+
+cache_pv_loc_res_index_party_sql = '''
+CREATE INDEX cache_arg_pv_loc_votos_ix_partido
+ON cache_arg_pv_loc_votos USING btree(id_partido);
+'''
+
+cache_pv_hex_res_index_id_sql = '''
 CREATE INDEX cache_arg_pv_hex_votos_ix_hexagono
 ON cache_arg_pv_hex_votos USING btree(id_hexagono);
 '''
@@ -60,26 +70,36 @@ CREATE INDEX cache_arg_pv_hex_votos_ix_partido
 ON cache_arg_pv_hex_votos USING btree(id_partido);
 '''
 
-paso_hex_res_index_hex_sql = '''
-CREATE INDEX arg_paso_hex_votos_ix_hexagono
-ON arg_paso_hex_votos USING btree(id_hexagono);
+cache_paso_loc_res_index_id_sql = '''
+CREATE INDEX cache_arg_paso_loc_votos_ix_agrupado
+ON cache_arg_paso_loc_votos USING btree(id_agrupado);
 '''
 
-paso_hex_res_index_party_sql = '''
-CREATE INDEX arg_paso_hex_votos_ix_partido
-ON arg_paso_hex_votos USING btree(id_partido);
+cache_paso_loc_res_index_party_sql = '''
+CREATE INDEX cache_arg_paso_loc_votos_ix_partido
+ON cache_arg_paso_loc_votos USING btree(id_partido);
+'''
+
+cache_paso_hex_res_index_id_sql = '''
+CREATE INDEX cache_arg_paso_hex_votos_ix_hexagono
+ON cache_arg_paso_hex_votos USING btree(id_hexagono);
+'''
+
+cache_paso_hex_res_index_party_sql = '''
+CREATE INDEX cache_arg_paso_hex_votos_ix_partido
+ON cache_arg_paso_hex_votos USING btree(id_partido);
 '''
 
 search_alter_sql = '''
-ALTER TABLE arg_ballo_loc_ganador
+ALTER TABLE arg_ballo_localizaciones
 ADD COLUMN tsv tsvector;
 '''
 search_index_sql = '''
-CREATE INDEX arg_ballo_loc_ganador_tsv_idx
-ON arg_ballo_loc_ganador USING gin(tsv);
+CREATE INDEX arg_ballo_localizaciones_tsv_idx
+ON arg_ballo_localizaciones USING gin(tsv);
 '''
 search_update_sql = '''
-UPDATE arg_ballo_loc_ganador SET tsv =
+UPDATE arg_ballo_localizaciones SET tsv =
 setweight(to_tsvector('pg_catalog.spanish', coalesce(nombre,'')), 'A')
 || setweight(to_tsvector('pg_catalog.spanish', coalesce(direccion,'')), 'B')
 || setweight(to_tsvector('pg_catalog.spanish', coalesce(localidad,'')), 'C')
