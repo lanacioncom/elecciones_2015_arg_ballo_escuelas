@@ -9,13 +9,13 @@ exports:
   - query: "SELECT h.id_hexagono, ST_asText(ST_transform(h.wkb_geometry_3857,4326)) as the_geom, h.zoom_level, h.hex_size, h.num_loc, h.localizaciones, h.electores, h.votantes, h.validos, h.positivos, h.blancos, h.nulos FROM cache_hexagonos_totales h ORDER BY h.id_hexagono, h.num_loc desc"
     filename: "arg_ballo_hexagonos.csv"
 
-  - query: "SELECT h.id_hexagono, h.id_partido, h.winner, h.new, h.agg_pos, h.agg_pos_pv, h.agg_pos_paso, h.agg_votos, h.agg_votos_pv, h.agg_votos_paso, h.agg_porc, h.agg_porc_pv, h.agg_porc_paso FROM cache_ballo_resultados_hexagonos h ORDER BY h.id_hexagono, h.agg_votos desc"
+  - query: "SELECT h.id_hexagono, h.id_partido, h.winner, h.swing, h.agg_pos, h.agg_pos_pv, h.agg_pos_paso, h.agg_votos, h.agg_votos_pv, h.agg_votos_paso, h.agg_porc, h.agg_porc_pv, h.agg_porc_paso FROM cache_ballo_resultados_hexagonos h ORDER BY h.id_hexagono, h.agg_votos desc"
     filename: "cache_arg_ballo_hex_votos.csv"
 
-  - query: "SELECT h.id_hexagono, h.id_partido, h.winner, h.new, h.agg_pos, h.agg_pos_paso, h.agg_votos, h.agg_votos_paso, h.agg_porc, h.agg_porc_paso FROM cache_pv_resultados_hexagonos h ORDER BY h.id_hexagono, h.agg_votos desc"
+  - query: "SELECT h.id_hexagono, h.id_partido, h.winner, h.swing, h.agg_pos, h.agg_pos_paso, h.agg_votos, h.agg_votos_paso, h.agg_porc, h.agg_porc_paso FROM cache_pv_resultados_hexagonos h ORDER BY h.id_hexagono, h.agg_votos desc"
     filename: "cache_arg_pv_hex_votos.csv"
 
-  - query: "SELECT h.id_hexagono, h.id_partido, h.winner, h.new, h.agg_pos, h.agg_votos, h.agg_porc FROM cache_paso_resultados_hexagonos h ORDER BY h.id_hexagono, h.agg_votos desc"
+  - query: "SELECT h.id_hexagono, h.id_partido, h.winner, h.swing, h.agg_pos, h.agg_votos, h.agg_porc FROM cache_paso_resultados_hexagonos h ORDER BY h.id_hexagono, h.agg_votos desc"
     filename: "cache_arg_paso_hex_votos.csv"
 
   - query: "SELECT w.id_hexagono, ST_asText(ST_transform(w.wkb_geometry_3857,4326)) as the_geom, w.zoom_level, w.hex_size, w.num_loc, w.electores, w.positivos, w.votantes, w.id_partido, w.votos, w.margin_victory as margen_victoria FROM cache_ballo_winner_hexagonos w ORDER BY w.id_hexagono"

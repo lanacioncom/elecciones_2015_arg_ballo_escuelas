@@ -5,30 +5,9 @@ import psycopg2
 from time import time
 from settings import DATABASE_URL
 from lqueries import update_cache_set_winner_status
-from lqueries import update_cache_set_new_status
+from lqueries import update_cache_set_swing_status
 
 elec_arr = ['paso', 'pv', 'ballo']
-
-
-def process_winner(elec):
-    '''calculate results for all hex levels'''
-    print "calculate results for all hex levels"
-    template = insert_winner_hex_sql
-    key = 'id_hexagono'
-    election = elec_arr[elec]
-    r_table = '%s_resultados_hexagonos' % (election)
-    t_table = '%s_totales_hexagonos' % (election)
-    w_table = 'cache_%s_winner_hexagonos' % (election)
-    query = template % {'results': r_table, 'totals': t_table,
-                        'dest': w_table, 'key': key}
-    print query
-    conn = psycopg2.connect(DATABASE_URL)
-    cur = conn.cursor()
-    try:
-        cur.execute(query)
-    except psycopg2.Error, e:
-        print e.pgerror
-    conn.commit()
 
 
 def process_winner_status(elec, hexa):
@@ -50,9 +29,9 @@ def process_winner_status(elec, hexa):
     conn.commit()
 
 
-def process_new_status(elec, hexa):
+def process_swing_status(elec, hexa):
     '''process cache new status'''
-    template = update_cache_set_new_status
+    template = update_cache_set_swing_status
     election = elec_arr[elec]
     if elec > 0:
         prev = elec_arr[elec-1]
@@ -76,7 +55,7 @@ def process_new_status(elec, hexa):
 def run(args):
     '''process selected hexagon results'''
     process_winner_status(elec=args.elec, hexa=args.hexa)
-    process_new_status(elec=args.elec, hexa=args.hexa)
+    process_swing_status(elec=args.elec, hexa=args.hexa)
 
 if __name__ == '__main__':
     # Arguments handling

@@ -223,9 +223,9 @@ FROM %(winner)s w
 WHERE r.%(key)s = w.%(key)s
 '''
 
-update_cache_set_new_status = '''
+update_cache_set_swing_status = '''
 UPDATE %(cache)s r
-SET new = CASE WHEN (r.id_partido = w.id_partido
+SET swing = CASE WHEN (r.id_partido = w.id_partido
                      AND r.id_partido != wprev.id_partido) THEN 1
                WHEN (r.id_partido != w.id_partido
                      AND r.id_partido = wprev.id_partido) THEN 1
