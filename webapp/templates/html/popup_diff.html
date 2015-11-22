@@ -1,8 +1,15 @@
 <!--JET: Tooltip when one polling station is selected-->
 <div class="ttip_header"><%- poll.nombre %></div>
-<div class="ttip_body">El partido <%- dict_datos[v.rows[0].id_partido].nombre_corto %>
-    <span class="ttip_main">ha <% if (v.rows[0].diff_pv > 0) { %>ganado<% }else {%>perdido<%}%> un total de <%= vh.get_formatted_num(v.rows[0].adiff_pv,0) %></span> votos respecto a la 1ra. vuelta 
-    </br><span class="ttip_footer">Votos obtenidos <%= vh.get_formatted_num(v.rows[0].votos,0) %></span>
-</div>
+<% if (tab == "difpv") {;%>
+    <div class="ttip_body">El partido <%- dict_datos[v.rows[0].id_partido].nombre_corto %>
+        <span class="ttip_main">ha <% if (v.rows[0].diff_pv > 0) { %>ganado<% }else {%>perdido<%}%> un total de <%= vh.get_formatted_num(v.rows[0].adiff_pv,0) %></span> votos respecto a la 1ra. vuelta 
+        </br><span class="ttip_footer">Votos obtenidos <%= vh.get_formatted_num(v.rows[0].votos,0) %></span>
+    </div>
+<% }else {%>
+    <div class="ttip_body">El partido <%- dict_datos[v.rows[0].id_partido].nombre_corto %>
+        <span class="ttip_main">ha <% if (v.rows[0].diff_paso > 0) { %>ganado<% }else {%>perdido<%}%> un total de <%= vh.get_formatted_num(v.rows[0].adiff_paso,0) %></span> votos respecto a las PASO 
+        </br><span class="ttip_footer">Votos obtenidos <%= vh.get_formatted_num(v.rows[0].votos,0) %></span>
+    </div>
+<%}%>
 
 
