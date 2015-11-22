@@ -26,9 +26,8 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
         var _self = this;
         var map;
 
-        // responsive
+        //Instantiate pymjs
         _self.pymChild = new pym.Child();
-        // FIN TODO PYM
         
         // STATIC TEMPLATES
         d3.select('#btn_nav').html(templates.nav_html);
@@ -462,7 +461,8 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             }
         }
 
-        /** HTML EVENTS */
+/**************************** HTML EVENTS ***********************************/
+
         // filter buttons
         d3.selectAll(".short").on('click', function (){
         /*jshint validthis: true */
@@ -564,11 +564,12 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 permalink.set();
                 update_nav(true);
                 var id_agrupado = ctxt.selected_polling;
-                d3.select("body").classed("escuela difpaso difpv, fuerza", false);
+                d3.select("body").classed("escuela difpaso difpv fuerza", false);
                 $("body").addClass("escuela");
-                config.sql.execute(templates.permalink_sql,{'id_agrupado': id_agrupado})
+                config.sql.execute(templates.permalink_sql,
+                                   {'id_agrupado': id_agrupado})
                 .done(function(data) {
-                    var position = JSON.parse(data.rows[0].g).coordinates;
+                    var position = JSON.parse(data.rows[0].geo).coordinates;
                     var latlng = L.latLng(position[1], position[0]);
                     map.panTo(latlng);
                     var d = data.rows[0];
@@ -576,7 +577,6 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 });             
                 $("#buscar").toggleClass('activo');
                 $("#searchbox").toggleClass('invisible');
-
            }
         });
 

@@ -122,6 +122,7 @@ define(['app/context', 'app/config', 'app/permalink',
     Overlay.prototype.update = function(results, polling_totals){
         /** update overlay */
         var _self = this;
+        debugger
 
         var ul = d3.select('ul#overlay_li_content');
         // Initial configuration
@@ -140,7 +141,7 @@ define(['app/context', 'app/config', 'app/permalink',
 
         li.each(function(d, i){
             var el = d3.select(this);
-            el.select(".porc").html(view_helpers.get_formatted_num(d.porc,1) + "%");
+            el.select(".porc").html(view_helpers.get_formatted_num(d.porc*100,1) + "%");
             el.select(".votos").html(view_helpers.get_formatted_num(d.votos,0) + " votos");
             // update width bars TODO
         });
@@ -161,7 +162,7 @@ define(['app/context', 'app/config', 'app/permalink',
                 // update width bars
                 var bar_w = (+d.votos / +max)*w_content;
                 el.select(".barra").transition().duration(500).style("width", bar_w+"px");
-                el.select(".porc").html(view_helpers.get_formatted_num(d.porc,1) + "%");
+                el.select(".porc").html(view_helpers.get_formatted_num(d.porc*100,1) + "%");
                 el.select(".votos").html(view_helpers.get_formatted_num(d.votos,0) + " votos");
 
             });

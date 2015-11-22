@@ -28,13 +28,6 @@ define(['app/context','app/config', 'app/templates'], function (ctxt, config, te
         var interactivity = i_hex;
         if (ctxt.selected_tab == "escuela") {
             interactivity = i_nohex;
-        } else {
-            // Hexagons zoom threshold
-            if (ctxt.zoom > 12) {
-                z = 12;
-            } else {
-                z = ctxt.zoom;
-            }
         }
 
         // TEST QUERIES
@@ -54,8 +47,6 @@ define(['app/context','app/config', 'app/templates'], function (ctxt, config, te
                     // GET THE WINNER FOR EACH POLLING STATION
                     query = winner_sql_tpl({orden: 'votos'});
                 } else {
-                    //CHECK IF 
-
                     // GET PARTY DATA
                     cartocss = perc_ccss_tpl({'data': config.diccionario_datos, 
                                          'zooms': config.zoom_perc_multipliers
@@ -70,10 +61,10 @@ define(['app/context','app/config', 'app/templates'], function (ctxt, config, te
             case "fuerza":
                 cartocss = hex_perc_ccss_tpl({data: config.diccionario_datos});
                 if (pid == "0000") {
-                    query = hex_winner_sql_tpl({zoom: z});
+                    query = hex_winner_sql_tpl({zoom: ctxt.zoom});
                 }
                 else {
-                    query = hex_party_sql_tpl({'zoom': z,
+                    query = hex_party_sql_tpl({'zoom': ctxt.zoom,
                                                'id_partido': pid,
                                                'fwinner': ctxt.w,
                                                'fswing': ctxt.sw});
@@ -87,7 +78,7 @@ define(['app/context','app/config', 'app/templates'], function (ctxt, config, te
                 cartocss = hex_diff_ccss_tpl({'data': config.diccionario_datos,
                                               'tab': ctxt.selected_tab});
 
-                query = hex_party_sql_tpl({'zoom': z,
+                query = hex_party_sql_tpl({'zoom': ctxt.zoom,
                                            'id_partido': pid,
                                            'fwinner': null,
                                            'fswing': null});

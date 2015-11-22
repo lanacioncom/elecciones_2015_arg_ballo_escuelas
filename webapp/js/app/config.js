@@ -32,7 +32,7 @@ define(['cartodbjs'], function(dummy) {
         diccionario_datos: null,
         current_latlng: null,
         prev_zoom_level: null,
-        hex_zoom_threshold: 13,
+        hex_zoom_threshold: 14,
         cities: {
             'arg': {
                 center: L.latLng(-40.647, -62.139),
@@ -67,11 +67,7 @@ define(['cartodbjs'], function(dummy) {
         initial_data: {
             'results': [
                 {"id_partido":"0131","votos_paso":8493753,"votos":9144031,"diferencia":650240, 'pct': 36.91},
-                {"id_partido":"0135","votos_paso":6665120,"votos":8474836,"diferencia":1809697, 'pct': 34.21},
-                {"id_partido":"0138","votos_paso":4564127,"votos":5299455,"diferencia":735319, 'pct': 21.39},
-                {"id_partido":"0137","votos_paso":733593,"votos":810939,"diferencia":77344, 'pct': 3.27},
-                {"id_partido":"0132","votos_paso":778885,"votos":627328,"diferencia":-151558, 'pct': 2.53},
-                {"id_partido":"0133","votos_paso":466695,"votos":415697,"diferencia":-50998, 'pct': 1.68}],
+                {"id_partido":"0135","votos_paso":6665120,"votos":8474836,"diferencia":1809697, 'pct': 34.21}],
             'polling_totals': {
                 nombre: "Resultado Total",
                 electores: 32632646,
