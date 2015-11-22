@@ -28,37 +28,7 @@ ELEC_CONFIG = {
     'ballo': [INPUT_BALLO_PATH, OUTPUT_BALLO_PATH]
 }
 
-
-def assign_random_perc(value=None):
-    '''assign random percentage of votes, skip if 0'''
-    result = None
-    if value:
-        result = int(random.random() * value)
-    else:
-        result = 0
-    return result
-
-
-def format_circuit(c):
-    '''format circuit to 5 chars'''
-    result = None
-    c = c.upper().strip()
-    if len(c) == 4:
-        result = '0'+c
-    else:
-        result = c
-    return result
-
-
-def generate_key(row, circ=True):
-    '''generates a key to join with the elections results data'''
-    result = None
-    result = row['id_distrito']
-    result += "_"+row['id_seccion']
-    if circ:
-        result += "_"+row['id_circuito']
-    result += "_"+row['id_mesa']
-    return result
+# #################SIMULATION FUNCTIONALITY ######################
 
 
 def generate_sim_rows(row):
@@ -92,6 +62,41 @@ def generate_sim_rows(row):
             print "could not convert to int. Reason %s" % (e)
             raise
     return rows
+
+
+def assign_random_perc(value=None):
+    '''assign random percentage of votes, skip if 0'''
+    result = None
+    if value:
+        result = int(random.random() * value)
+    else:
+        result = 0
+    return result
+
+
+# ##################END SIMULATION FUNCTIONALITY ###############
+
+
+def format_circuit(c):
+    '''format circuit to 5 chars'''
+    result = None
+    c = c.upper().strip()
+    if len(c) == 4:
+        result = '0'+c
+    else:
+        result = c
+    return result
+
+
+def generate_key(row, circ=True):
+    '''generates a key to join with the elections results data'''
+    result = None
+    result = row['id_distrito']
+    result += "_"+row['id_seccion']
+    if circ:
+        result += "_"+row['id_circuito']
+    result += "_"+row['id_mesa']
+    return result
 
 
 def clean_row(row):

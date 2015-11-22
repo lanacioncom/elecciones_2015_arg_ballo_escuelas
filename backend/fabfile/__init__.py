@@ -6,6 +6,7 @@ import process
 import hexagons
 import cartodb
 import export
+import telegrams
 
 
 @task

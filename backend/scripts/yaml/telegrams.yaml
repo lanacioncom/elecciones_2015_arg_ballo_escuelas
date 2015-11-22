@@ -1,0 +1,10 @@
+common:
+
+  database: "postgresql://user:pass@localhost:5432/dbname"
+  prefix: ../data/telegrams/
+  format: csv
+
+exports:
+
+  - query: "SELECT t.id_agrupado, (string_to_array(t.key_telegrama, '/'))[1] as id_distrito, (string_to_array(t.key_telegrama, '/'))[2] as id_seccion, (string_to_array(t.key_telegrama, '/'))[3] as id_circuito, t.key_telegrama as key FROM localizaciones_telegramas t ORDER BY id_agrupado"
+    filename: "telegrams.csv"
