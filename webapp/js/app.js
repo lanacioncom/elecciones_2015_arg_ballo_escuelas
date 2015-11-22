@@ -596,8 +596,8 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 map.closePopup();
             }
             var cnt = map.getCenter();
-            ctxt.lat = cnt.lat;
-            ctxt.lng = cnt.lng;
+            ctxt.lat = +(cnt.lat).toFixed(2);
+            ctxt.lng = +(cnt.lng).toFixed(2);
             permalink.set();
         });
 

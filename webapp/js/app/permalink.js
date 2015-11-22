@@ -1,11 +1,20 @@
-define(['app/context'], function(context){
+define(['app/context'], function(ctxt){
 
-    function set(){
-        var ctxt = JSON.stringify(context);
-        ctxt = ctxt.replace(/\"|\{|\}/g, '')
-                   .replace(/,/g, "&")
-                   .replace(/:/g, "=");
-        location.hash = ctxt;
+    function set(share){
+        var context;
+        if (share) {
+            var ctxtbis = ctxt.clone();
+            c = min2share(ctxtbis);
+            context = c.replace(/\"|\{|\}/g, '')
+                       .replace(/,/g, "&")
+                       .replace(/:/g, "=");
+        } else {
+            var c = JSON.stringify(ctxt);
+            context = c.replace(/\"|\{|\}/g, '')
+                       .replace(/,/g, "&")
+                       .replace(/:/g, "=");
+        }
+        location.hash = context;
     }
 
     function get(u){
@@ -17,10 +26,10 @@ define(['app/context'], function(context){
                 c = c.split("=");
                 var re = /^([1-9]\d*\.?\d+|true|false|null|0\.\d+)$/;
                 if (re.test(c[1])) {
-                    context[c[0]] = eval(c[1]);
+                    ctxt[c[0]] = eval(c[1]);
                 }
                 else {
-                    context[c[0]] = c[1];
+                    ctxt[c[0]] = c[1];
                 }
             });
         }
@@ -28,17 +37,24 @@ define(['app/context'], function(context){
 
     /** Validate permalink status */
     function validate(){
-        if ((context.selected_tab == 'difpaso' ||
-            context.selected_tab == 'difpv') &&
-            context.selected_party == "0000") {
-            context.selected_party = "0131";
+        if ((ctxt.selected_tab == 'difpaso' ||
+            ctxt.selected_tab == 'difpv') &&
+            ctxt.selected_party == "0000") {
+            ctxt.selected_party = "0131";
             set();
         }
+    }
+
+    /** Minimize the url to share in social networks */
+    function min2share(){
+        
     }
 
     return {
         get: get,
         set: set,
-        validate: validate
+        validate: validate,
+        min2share: min2share
+
     };
 });

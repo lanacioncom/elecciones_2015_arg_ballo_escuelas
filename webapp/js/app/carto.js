@@ -43,13 +43,13 @@ define(['app/context','app/config', 'app/templates'], function (ctxt, config, te
                 if (pid == "0000") {
                     // GET WINNER DATA
                     cartocss = perc_ccss_tpl({'data': config.diccionario_datos, 
-                                         'zooms': config.zoom_perc_multipliers});
+                                              'zooms': config.zoom_perc_multipliers});
                     // GET THE WINNER FOR EACH POLLING STATION
                     query = winner_sql_tpl({orden: 'votos'});
                 } else {
                     // GET PARTY DATA
                     cartocss = perc_ccss_tpl({'data': config.diccionario_datos, 
-                                         'zooms': config.zoom_perc_multipliers
+                                              'zooms': config.zoom_perc_multipliers
                                          });
                     // GET THE PARTY FOR EACH POLLING STATION
                     query = party_sql_tpl({'id_partido': pid, 
