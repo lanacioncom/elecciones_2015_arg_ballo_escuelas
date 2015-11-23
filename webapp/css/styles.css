@@ -1045,12 +1045,100 @@ section#tools div.contenedor2 .gano svg{
 }
 
 
+/*///////// COMPARTIR ////////*/
+
+.compartir{
+  width: 99%;
+  /*background-color: #f2f2f2;*/
+  /*background-image: url("../img/bkg.png");*/
+  text-align:center; 
+  line-height: 1.3;
+  display: inline-block;
+  border-top:1px solid #dadada;
+}
+
+h3{
+  width: 115px;
+  font-family: 'TheSans', georgia;
+  font-size: 12px;
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 25px;
+  text-align: left;
+}
+
+
+.compartir div.share{
+    display: inline-block;
+    background-color: #fff;
+    padding: 10px 15px;
+    margin: 10px 0px;
+    margin-top: 15px;
+    border:1px dashed #dadada;
+}
+
+.compartir div.share div.btnShare, 
+.compartir div.share div.btnShare a{
+    width: 27px;
+    height: 27px;
+    float: right;
+    margin-left: 2px;
+    background-repeat: no-repeat;
+    background-image:url(../img/compartir.png); 
+    -webkit-transition: background-position .2s;
+    -moz-transition: background-position .2s; 
+    -o-transition: background-position .2s; 
+    transition: background-position .2s;
+    cursor:pointer;
+}
+
+.compartir div.share div#facebook{
+    background-position: 2px 0px;
+}
+
+.compartir div.share div#facebook:hover{
+    background-position: 2px -28px;
+}
+
+.compartir div.share div#twit{
+    background-position: -25px 0px;
+}
+
+.compartir div.share div#twit:hover{
+    background-position: -25px -28px;
+}
+
+.compartir div.share div#google{
+    background-position: -51px 0px;
+}
+
+.compartir div.share div#google:hover{
+    background-position: -51px -28px;
+}
+
+.compartir div.share a#mail{
+    background-position: -77px 0px;
+}
+
+.compartir div.share a#mail:hover{
+    background-position: -77px -28px;
+}
+
+.compartir div.share div#link{
+    background-position: -104px 0px;
+}
+
+.compartir div.share div#link:hover{
+    background-position: -104px -28px;
+}
+
+
 
 /*///// FOOTER ////*/
 
 footer{
   width: 100%;
-  padding:20px 0px;
+  padding:15px 0px;
   max-width: 1400px;
   color:#999;
   border-top:1px solid #dadada;
@@ -1058,10 +1146,11 @@ footer{
 }
 
 footer p{
-  margin: 0px 15px;
-  padding: 2px 10px;
-  border-left:1px solid #dadada;
-  display: inline-block;
+  margin: 0px;
+    padding: 2px 0px;
+    /* border-left: 1px solid #dadada; */
+    display: inline-block;
+    float: right;
 }
 
 footer div.creditos{
