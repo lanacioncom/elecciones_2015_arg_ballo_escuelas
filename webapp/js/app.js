@@ -7,7 +7,7 @@ requirejs.config({
         'd3': '../libs/d3/d3.min',
         'jquery': '../libs/jquery/dist/jquery.min',
         'jquery-ui': '../libs/jquery-ui/jquery-ui.min',
-        'cartodbjs': '../libs/cartodb.js/cartodb.uncompressed'
+        'cartodbjs': '../libs/cartodb.js/cartodb_nojquery'
     },
     shim: {
         'draw': ['cartodbjs'],

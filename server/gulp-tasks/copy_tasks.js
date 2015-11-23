@@ -25,22 +25,13 @@ gulp.task('copy', function () {
                 src: [['js/'+js_min, 'libs/'+libs_min]],
                 tpl: '<script data-main="%s" src="%s"></script>'
             },
-            lib_jquery: {
-                src: [['libs/'+lib_jquery_min]],
-                tpl: '<script type="text/javascript" src="%s"></script>'
-            },
-            lib_autocomplete: {
-                src: [['libs/'+lib_autocomplete_min]],
-                tpl: '<script type="text/javascript" src="%s"></script>'
-            },
             css: ['css/'+css_min]
         }))
         .pipe(minifyHTML(opts))
         .pipe(gulp.dest(cfg.dest));
 
     var libs = gulp.src(['libs/jquery/dist/jquery.min.js',
-                         'libs/jquery-ui/jquery-ui.min.js',
-                         'libs/cartodb.min.js'], { cwd: cfg.cwd })
+                         'libs/jquery-ui/jquery-ui.min.js'], { cwd: cfg.cwd })
         .pipe(gulp.dest(cfg.dest+'libs'));
     
     var favicon = gulp.src('favicon.ico', { cwd: cfg.cwd })
