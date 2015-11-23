@@ -169,7 +169,7 @@ div.btn, #menu{
     background-position: -2px -116px;
 }
 
-.on#difpaso {
+.on#difpaso, .on#difpv {
     background-position: 0px -316px;
 }
 
@@ -492,7 +492,7 @@ div.leaflet-popup-content div.telegramas:hover{
 /*//////// MAP //////*/
 #map_container {
   width: 100%;
-  height: 534px;
+  height: 550px;
   overflow: hidden;
   float: left;
 
@@ -1126,5 +1126,7 @@ footer div.datos span{
 	background:#f1f1f1;
 }
 
-
+.leaflet-container .leaflet-control-attribution, .leaflet-container .leaflet-control-scale{
+  display: none;
+}
 
