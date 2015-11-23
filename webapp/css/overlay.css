@@ -313,8 +313,7 @@ div.crowd div.formu.on div.mensaje{
     font-family:"suecaslabmedium", Georgia;
 }
 
-#overlay div.refes div.contenedor0, 
-#overlay div.refes div.contenedor,
+#overlay div.refes div.contenedor, 
 #overlay div.refes div.contenedor2{
     display: none;
 }
@@ -361,11 +360,11 @@ div.crowd div.formu.on div.mensaje{
 }
 
 #overlay div.refes div.contenedor div.porcentajes{
-    width: 40%;
-    margin-top: -25px;
+        width: 40%;
+    margin-top: 0px;
     margin-left: -8px;
     position: relative;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 #overlay div.refes div.contenedor div.porcentajes svg{
@@ -381,14 +380,14 @@ div.crowd div.formu.on div.mensaje{
     font-family:"suecaslabmedium", Georgia;
 }
 
-#overlay div.refes div.contenedor div.porcentajes div.escala.max{
+#overlay div.refes div.contenedor div.porcentajes div.escala.min{
     top:13px;
-    right: -20px;
+    right: -10px;
 }
 
-#overlay div.refes div.contenedor div.porcentajes div.escala.min{
+#overlay div.refes div.contenedor div.porcentajes div.escala.max{
     top:85px;
-    right: -10px;
+    right: -20px;
 }
 
 #overlay div.refes div.contenedor div.porcentajes div.escala.ref{
@@ -403,7 +402,7 @@ div.crowd div.formu.on div.mensaje{
 
 #overlay.activo div.refes div.contenedor div.porcentajes{
     width: 100%;
-    margin-top: -15px;
+    margin-top: 5px;
     margin-bottom: 40px;
 }
 
@@ -426,7 +425,7 @@ div.crowd div.formu.on div.mensaje{
 }
 #overlay div.refes div.contenedor2 div.perdio_gano{
     width: 100%;
-    margin-top: -15px;
+    margin-top: 10px;
 }
 
 #overlay div.refes div.contenedor2 div.hex{
@@ -434,8 +433,18 @@ div.crowd div.formu.on div.mensaje{
     display:inline-block;
 }
 
+#overlay div.refes div.contenedor2 div.hex.perdio{
+    border-right:1px solid #dadada;
+    padding-right: 2px;
+}
+
 #overlay div.refes div.contenedor2 div.hex p.tit{
     width: 42px;
     margin-top: -2px;
     text-align: center;
+    margin-bottom: 10px;
+}
+
+#overlay.activo div.refes div.contenedor2 div.hex{
+    width: 17%;
 }
