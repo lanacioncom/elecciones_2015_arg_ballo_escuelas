@@ -1,4 +1,4 @@
-define(['app/context', 'app/config', 'app/analytics'], function(ctxt, config, ga) {
+define(['app/context', 'app/config', 'app/analytics', './permalink'], function(ctxt, config, ga, permalink) {
 
     function activate_share (url_parent){
         var txt_share = "Mirá los resultados de mi búsqueda en el mapa de elecciones de @LANACION";
@@ -36,14 +36,12 @@ define(['app/context', 'app/config', 'app/analytics'], function(ctxt, config, ga
         }
 
         function get_url_to_share(){
-            // TODO
-            console.log(config.url_parent);
-            // parent url - REPLACE WITH THE URL FOR PYM
+
             url_parent = url_parent ? url_parent : location.href.split("#")[0];
             var url = url_parent.split("?")[0]; 
             // var h = location.hash.replace('#', '');
-            var h = helpers.permalink.get_short_hash();
-            // console.log(encodeURI(url +"?l="+ h));
+            
+            var h = permalink.min2share();
             var s = (url ? url : document.URL) +"?" +h;
             return encodeURIComponent(s);
         }
