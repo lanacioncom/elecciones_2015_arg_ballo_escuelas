@@ -709,6 +709,32 @@ div.creVent div.txts{
     /*display: none;*/
 }
 
+div.creVent div.txts.zoom{
+  background-color: #000;
+  color:#fff !important;
+}
+
+
+div.creVent div.txts.zoom div.titu{
+      background-color: #555555;
+      color: #F8F8F8;
+}
+
+div.creVent div.txts.zoom div.cambianav{
+  background-color: #fff;
+    color: #000;
+    font-weight: normal;
+    cursor: pointer;
+    padding: 5px 5px;
+    width: 130px;
+    margin: 0px auto;
+    margin-top: 15px;
+}
+
+div.creVent div.txts.zoom p{
+  color:#fff;
+}
+
 div.creVent div.metodo{
     margin: 260px auto;
     padding-bottom: 30px;
@@ -723,6 +749,7 @@ div.creVent div.txts div.cerrar{
     top:-15px;
     right:-15px;
     cursor: pointer;
+    border: 2px solid #fff;
 }
 
 div.creVent div.txts div.cate{
@@ -745,305 +772,6 @@ div.creVent div.txts div.nombre a{
 
 div.creVent div.txts div.nombre a:hover{
     color:#2B68A8;
-}
-
-/*///////TOOLS REFERENCIAS y SLIDERS////////*/
-
-section#tools{
-  width: 99%;
-  height: 80px;
-  display: inline-block;
-  border-top:1px solid #dadada;
-  text-align: center;
-  position: relative;
-  margin-top: 20px;
-}
-
-div.sliders{
-  width: 30%;
-  margin: 10px auto;
-  display: inline-block;
-  padding: 0px 20px;
-}
-
-div.referencias{
-  position: absolute;
-  top:25px;
-  left:10px;
-}
-
-div.referencias svg text{
-  font-family: Arial, Helvetica, sans-serif
-}
-
-
-section#tools div.contenedor, section#tools div.contenedor0{
-  width: 100%; 
-  max-width: 1360px;
-  position: absolute;
-  overflow: hidden;
-  height: 50px;
-  padding: 10px 0;
-  opacity: 0;
-  transition:all 0.2s;
-  margin-top:5px;
-}
-
-body.escuela section#tools div.contenedor0#refEscuelas,
-body.fuerza section#tools div.contenedor#refFuerza,
-body.difpaso section#tools div.contenedor2#refPaso,
-body.difpv section#tools div.contenedor2#refPaso
-{
-  opacity: 1;
-}
-
-
-section#tools div.contenedor p, section#tools div.contenedor0 p{
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px;
-  text-align: left;
-  color: rgb(179,179,179);
-  margin:0px;
-}
-
-section#tools div.contenedor0 p{
-  margin-top: 10px !important;
-}
-
-section#tools div.contenedor0 .como_leer, 
-section#tools div.contenedor .como_leer, 
-section#tools div.contenedor2 .como_leer{
-  width: 15%;
-    border-right: 1px solid rgb(179,179,179);
-    float: left;
-    height: 50px;
-    /* margin-top: 5px; */
-    padding-top: 6px;
-}
-
-section#tools div.contenedor0 .como_leer{
-  margin-left: 10%;
-    padding: 0px;
-    margin-top: 7px;
-    height: 40px;
-}
-
-section#tools div.contenedor0 h2, 
-section#tools div.contenedor  h2, 
-section#tools div.contenedor2 h2{
-  font-family: 'suecaslabmedium', georgia;
-  font-size: 11px;
-  text-align: right;
-  color: #000;
-  margin:0px;
-  margin-left: 35%;
-  width: 100px;
-  line-height: 16px;
-  padding-top: 6px
-}
-
-section#tools div.contenedor0 .explica, 
-section#tools div.contenedor .explica, 
-section#tools div.contenedor2 .explica {
-  width: 37%;
-  float: left;
-  margin-left: 1%;
-      margin-top: 3px;
-}
-
-section#tools div.contenedor0 .explica p, 
-section#tools div.contenedor .explica p, 
-section#tools div.contenedor2 .explica p{
-  width: 95%;
-  text-align: left;
-  margin:0px;
-}
-
-
-
-section#tools div.contenedor .escala{
-  float: left;
-    width: 120px;
-  height: 60px;
-  border-left: 1px solid rgb(179,179,179);
-}
-
-section#tools div.contenedor .escala p{
-  margin-left: 10%;
-margin-top: 17px;
-}
-
-section#tools div.contenedor .colores, section#tools div.contenedor0 .colores{
-  /*background: url("../img/hexag.svg") no-repeat center -37px #fff;*/
-  width: 262px;
-    height: 55px;
-  float: left;
-  border-left: 1px solid rgb(179,179,179);
-  position: relative;
-}
-
-section#tools div.contenedor0 .colores{
-  width: 125px;
-  height: 46px;
-  margin-top: 0px;
-  opacity: .7;
-}
-
-section#tools div.contenedor0 .colores div.circ{
-  width: 30px;
-  height: 30px;
-  border:1px solid #000;
-  display: inline-block;
-  border-radius:100px;
-  margin-top: 10px;
-  vertical-align: top;
-  margin-left: 17px;
-}
-
-section#tools div.contenedor0 .colores div.circ#c2{
-  width: 15px;
-  height: 15px;
-  margin-top: 19px;
-}
-
-section#tools div.contenedor0 .colores div.circ#c3{
-  width: 5px;
-  height: 5px;
-  margin-top: 25px;
-}
-
-section#tools div.contenedor .porcentajes{
-  width: 100%;
-  height: 30px;
-  padding-left: 4%;
-  margin-top: 6px;
-}
-section#tools div.contenedor .porcentajes p{
-  float: left;
-  margin-top: 7%;
-  width: calc(20% - 7px);
-}
-
-section#tools div.contenedor .hexagono{
-  background: url("../img/hexag.svg") no-repeat 0 8px #fff;
-  width: 5%;
-  height: 60px;
-  float: left;
-}
-
-section#tools div.contenedor .flecha{
-  background: url("../img/hexag.svg") no-repeat 15px -72px #fff;
-  width: 3%;
-  height: 60px;
-  float: left;
-  
-}
-
-section#tools div.contenedor2{
-  width: 100%; 
-  max-width: 1360px;
-  position: absolute;
-  overflow: hidden;
-  height: 50px;
-  padding: 10px 0;
-  opacity: 0;
-  transition:all 0.2s;
-  margin-top:5px;
-}
-
-section#tools div.contenedor2 p{
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px;
-  text-align: left;
-  color: rgb(179,179,179);
-}
-
-
-section#tools div.contenedor2 .escala{
-  float: left;
-      width: 165px;
-  height: 60px;
-  border-left: 1px solid rgb(179,179,179);
-}
-
-section#tools div.contenedor2 .escala p{
-  margin-left: 20px;
-    margin-top: 17px
-}
-
-section#tools div.contenedor2 .colores{
-       width: 236px;
-    height: 55px;
-  float: left;
-  border-left: 1px solid rgb(179,179,179);
-}
-
-section#tools div.contenedor2 .hexagono{
-  background: url("../img/hexagonos.svg") no-repeat center 3px #fff;
-  width: 40px;
-  height: 60px;
-  float: left;
-  margin-right: 20px;
-}
-
-section#tools div.contenedor2 .flecha{
-  background: url("../img/hexagonos.svg") no-repeat 6px -145px #fff;
-  width: 30px;
-  height: 60px;
-  float: left;
-}
-
-section#tools div.contenedor2 .perdio_gano{
-  width: 105%;
-  height: 60px;
-}
-
-section#tools div.contenedor2 .perdio, section#tools div.contenedor2  .gano{
-     width: calc(51% - 7px);
-  padding: 2px;
-  height: 50px;
-  position: relative;
-}
-section#tools div.contenedor2 .perdio{
-  /*background: url("../img/hexagonos.svg") no-repeat 82px -45px #fff;*/
-  float: left;
-  border-right: 1px solid rgb(179,179,179);
-}
-
-section#tools div.contenedor2 .gano{
-  /*background: url("../img/hexagonos.svg") no-repeat 0 -95px #fff;*/
-  float: right;
-}
-
-section#tools div.contenedor2 .perdio p{
-  text-align: right;
-    margin-right: 45px;
-    margin-top: 9px;
-    /* font-weight: bold; */
-    font-size: 11px;
-    color:black;
-
-}
-
-section#tools div.contenedor2 .perdio svg{
-  position: absolute;
-  top:8px;
-  right:0px;
-}
-
-section#tools div.contenedor2 .gano p{
-  text-align: left;
-  margin-left: 40px;
-  margin-top: 9px;
-   /* font-weight: bold; */
-    font-size: 11px;
-    color:black;
-}
-
-section#tools div.contenedor2 .gano svg{
-  position: absolute;
-  top:8px;
-  left:0px;
 }
 
 
