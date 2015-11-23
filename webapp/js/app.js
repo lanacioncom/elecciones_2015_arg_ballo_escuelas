@@ -51,7 +51,6 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
         _self.pymChild.onMessage('setShareUrl', function(parent_url) {
             
             var utoken = parent_url.split('?');
-            console.log(utoken)
             if (utoken.length > 1) {
                 var query_string = utoken[1]; 
                 ga.fire_analytics_event("permalink", query_string);
