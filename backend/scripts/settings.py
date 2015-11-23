@@ -5,6 +5,12 @@ DATABASE_URL = os.environ.get(
     'DATABASE_URL',
     'postgresql://username@localhost:5432/results')
 
+DOCUMENTCLOUD_USERNAME = os.environ.get('DOCUMENTCLOUD_USERNAME',
+                                        'juan.elosua@gmail.com')
+
+DOCUMENTCLOUD_PASSWORD = os.environ.get('DOCUMENTCLOUD_PASSWORD',
+                                        'laotraD1')
+
 cwd = os.path.dirname(__file__)
 INPUT_COMMON_PATH = os.path.join(cwd, '../data/comun')
 INPUT_PASO_PATH = os.path.join(cwd, '../data/paso')

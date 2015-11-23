@@ -5,7 +5,7 @@ import os
 from settings import DB
 
 # Restrict visible functions
-__all__ = ['run', 'run_query', 'run_scraper']
+__all__ = ['run', 'run_query', 'run_scraper', 'upload_dc']
 
 
 # LOCAL PATHS
@@ -19,6 +19,14 @@ def run():
     '''execute preprocessing tasks on the input datasets'''
     execute(run_query)
     execute(run_scraper)
+
+
+@task
+@runs_once
+def upload_dc():
+    '''upload to document cloud'''
+    with lcd(cwd):
+        local('python %s/upload_dc_telegrams.py' % (scripts_path))
 
 
 @task

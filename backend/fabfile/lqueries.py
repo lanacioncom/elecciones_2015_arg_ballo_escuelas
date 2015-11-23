@@ -10,6 +10,8 @@ DROP TABLE IF EXISTS paso_resultados_localizaciones;
 DROP TABLE IF EXISTS paso_totales_localizaciones;
 DROP TABLE IF EXISTS cache_paso_winner_establecimientos;
 DROP TABLE IF EXISTS cache_paso_winner_localizaciones;
+DROP TABLE IF EXISTS cache_paso_resultados_establecimientos;
+DROP TABLE IF EXISTS cache_paso_resultados_localizaciones;
 DROP TABLE IF EXISTS pv_resultados_establecimientos;
 DROP TABLE IF EXISTS pv_totales_establecimientos;
 DROP TABLE IF EXISTS pv_resultados_localizaciones;

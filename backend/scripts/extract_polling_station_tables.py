@@ -70,6 +70,7 @@ def extract_range(row=None):
             row['id_mesa'] = "{0:04d}".format(int(row['mesa_desde']))
             row['key_circ'] = generate_key(row, circ=True)
             row['key_wo_circ'] = generate_key(row, circ=False)
+            row['key_telegrama'] = generate_key_telegrama(row)
             return [row]
 
         # If there are more than one

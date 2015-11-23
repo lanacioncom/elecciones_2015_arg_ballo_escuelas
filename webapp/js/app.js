@@ -423,14 +423,15 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 // Control zoom issues with hexagons
                 if (ctxt.selected_tab != "escuela") {
                     if (ctxt.zoom > config.hex_zoom_threshold) {
-                        map.setZoom(config.hex_zoom_threshold);
+                        map.setZoom(config.hex_zoom_threshold, 
+                                    {'animate': false});
                     }
                     map.options.maxZoom = config.hex_zoom_threshold;
-                    map.fire('zoomend');
+                    map.fire('zoomend', {forced: true});
                 }
                 else {
                     map.options.maxZoom = 18;
-                    map.fire('zoomend');
+                    map.fire('zoomend', {forced: true});
                 }
                 d3.select("body").classed("escuela difpaso fuerza difpv", false);
                 $("body").addClass(btn_id);
@@ -614,8 +615,28 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             ctxt.zoom = current_zoom_level;
             // update layer only if needed
             if (ctxt.selected_tab != 'escuela') {
-                if (current_zoom_level <= config.hex_zoom_threshold) {
-                    cdb.update_layer();
+                cdb.update_layer();
+                if ((config.prev_zoom_level < current_zoom_level) && 
+                    (current_zoom_level == config.hex_zoom_threshold)) {
+                    // SHOW POPUP
+                    var append_to = d3.select('#append');
+                    append_to.html(templates.maxzoom_html).style('opacity', 0)
+                             .transition().style('opacity', 1);  
+                    d3.select('#append').on('click', function(){
+                        d3.select(".creVent")
+                          .transition().style('opacity', 0)
+                          .each('end', function(){append_to.html("");});
+                    }, false);
+
+                    /** change view to polling stations for low zoom levels */
+                    d3.select('div.cambianav').on('click', function(){ 
+                        ctxt.selected_tab = "escuela";
+                        update_nav(true);
+                        cdb.update_layer();
+                        permalink.set();
+                        map.options.maxZoom = 18;
+                        map.fire('zoomend', {forced: true});
+                    }, false);
                 }
             }
             config.prev_zoom_level = current_zoom_level;

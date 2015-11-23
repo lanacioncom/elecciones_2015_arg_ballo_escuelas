@@ -8,8 +8,8 @@ from joblib import Parallel, delayed
 from collections import defaultdict
 import joblib.parallel
 
-BASE_URL = 'http://www.resultados.gob.ar/nacionaltelegr'
-
+BASE_URL = 'http://www.resultados.gob.ar/bltgetelegr'
+# http://www.resultados.gob.ar/bltgetelegr/23/001/0001/230010001_0001.pdf
 
 # PARALLEL EXECUTION SETTINGS
 # Override joblib callback default callback behavior
@@ -47,19 +47,24 @@ def download_telegram(fext='pdf', row=None):
     OUTPUT_PATH = '%s/%s' % (INPUT_PATH, fext)
     fpath = '%s/%s.%s' % (
         OUTPUT_PATH,
-        row['key'],
+        row['key'].replace("/", "_"),
         fext)
     result['fpath'] = fpath
     url = '%s/%s.%s' % (BASE_URL, row['key'], fext)
+    print url
     if os.path.isfile(fpath):
+        print "already downloaded"
         pass
     else:
         try:
             response = requests.get(url, stream=True)
+            if (response.status_code != 200):
+                return result
             with open(fpath, 'wb') as of:
                 shutil.copyfileobj(response.raw, of)
             del response
-        except Exception:
+        except Exception, e:
+            print e
             print('Error while downloading {}...skipping'
                   .format(url))
     return result
@@ -85,8 +90,8 @@ def process_telegrams(fext='pdf'):
 
 def run():
     # Download telegrams
-    # process_telegrams(fext='pdf')
-    process_telegrams(fext='html')
+    process_telegrams(fext='pdf')
+    # process_telegrams(fext='html')
 
 if __name__ == '__main__':
     run()

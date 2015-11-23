@@ -3,5 +3,6 @@ logs/
 docs/
 data/DB/
 data/comun/
+data/telegrams/
 data/**/*.csv
 data/** !data/**/*.zip
