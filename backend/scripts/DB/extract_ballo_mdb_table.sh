@@ -1,7 +1,7 @@
 #!/bin/bash
 SCRIPTPATH=$( cd $(dirname $0) ; pwd -P )
 DB_DATA_PATH=$SCRIPTPATH'/../../data/DB/ballo'
-DATABASE_NAME=ARGENTINA2015.mdb
+DATABASE_NAME=B_ARGENTINA2015.mdb
 OUTPUT_PATH=$SCRIPTPATH'/../../data/ballo' 
 if [ $# -ne 1 ] 
 then

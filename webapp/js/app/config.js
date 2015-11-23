@@ -24,7 +24,7 @@ define(['cartodbjs'], function(dummy) {
         },
         carto_user: 'lndata',
         carto_layers:[], 
-        arg_center: [-40.647, -62.139],
+        arg_center: [-38.15, -65.916],
         izoom: 4,
         izoom_mob: 4,
         sql: null,
