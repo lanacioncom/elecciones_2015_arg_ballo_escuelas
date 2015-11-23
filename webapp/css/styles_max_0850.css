@@ -5,23 +5,21 @@
 
     }
 
-    #escuela {
-        margin-left: 0px;
-    }
-
     div.btn{
-       background-image: none;
-        width: 24.6%;
-        height: 33px;
-        padding-left: 30px;
-        margin-left: 1%;
-        font-family: 'suecaslabmedium', georgia;
-        font-size: 12px;
-        text-align: left;
-        color: rgba(0,0,0,.5);
-        line-height: 2.8;
-        border-radius: 25px;
-        text-align: center;
+            width: 14.6%;
+    height: auto;
+    padding: 5px 3%;
+    margin-left: 2%;
+    font-family: 'suecaslabmedium', georgia;
+    font-size: 12px;
+    text-align: left;
+    color: rgba(0,0,0,.5);
+    line-height: 2.8;
+    border-radius: 25px;
+    text-align: center;
+    display: inline-table;
+    line-height: 1.2;
+    text-indent: 0px;
     }
 
     #buscar.activo {

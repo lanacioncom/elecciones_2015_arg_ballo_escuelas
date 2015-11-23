@@ -20,4 +20,7 @@ v.agg_porc_paso as porc_paso,
 FROM cache_arg_ballo_hex_votos v, arg_ballo_hexagonos h
 WHERE h.id_hexagono = v.id_hexagono
 AND h.zoom_level = <%- zoom %>
+-- Only show if there is some party votes
+AND v.agg_pos != 0
 AND v.winner = 1
+

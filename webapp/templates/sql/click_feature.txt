@@ -13,4 +13,4 @@ abs(v.votos - v.votos_pv) as adiff_pv,
 (v.votos - v.votos_paso) as diff_paso
 FROM cache_arg_ballo_loc_votos v
 WHERE v.id_agrupado = {{id}}
-ORDER BY {{orden}} DESC;
+ORDER BY {{orden}} DESC

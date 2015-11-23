@@ -15,6 +15,9 @@ v.agg_votos_paso as votos_paso,
 v.agg_porc as porc,
 v.agg_porc_pv as porc_pv,
 v.agg_porc_paso as porc_paso,
+v.agg_pos as pos,
+v.agg_pos_pv as pos_pv,
+v.agg_pos_paso as pos_paso,
 (v.agg_votos - v.agg_votos_pv) as diff_pv,
 (v.agg_votos - v.agg_votos_paso) as diff_paso
 FROM cache_arg_ballo_hex_votos v, arg_ballo_hexagonos h
@@ -26,4 +29,12 @@ AND v.id_partido = '<%- id_partido %>'
 <%}%>
 <% if (fswing !== null) {%>
     AND v.swing = <%- +fswing %>
-<%}%>  
+<%}%>
+-- Only show if there is some party votes
+AND v.agg_pos != 0
+<% if (tab == 'difpaso') {%>
+    AND v.agg_pos_paso != <%- +0 %>
+<%}%>
+<% if (tab == 'difpv' || tab == 'fuerza') {%>
+    AND v.agg_pos_pv != <%- +0 %>
+<%}%>

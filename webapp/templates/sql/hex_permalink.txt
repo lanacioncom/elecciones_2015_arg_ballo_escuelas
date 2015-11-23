@@ -20,4 +20,4 @@ abs(v.agg_votos - v.agg_votos_paso) as adiff_paso
 FROM arg_ballo_hexagonos h, cache_arg_ballo_hex_votos v
 WHERE h.id_hexagono = {{id}}
 AND h.id_hexagono = v.id_hexagono
-ORDER BY votos DESC;
+ORDER BY votos DESC

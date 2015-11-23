@@ -1,16 +1,37 @@
-@media (max-width: 1100px) {
+@media (max-width: 1125px) {
     
-    .blanco{
-        width: 84%;
+    div.btn, #menu{
+        padding-left: 56px;
+        padding-right: 1%;
     }
 
-    div.btn, #menu {
-        width: 23.6%;
-    }
-    
     #escuela {
-    margin-left: 0%;
-}
+        margin-left: 3%;
+    }
+
+    #difpaso, #difpv {
+        background-position: -10px -116px;
+    }
+
+    .on#difpaso, .on#difpv {
+        background-position: -7px -316px;
+    }
+
+    #fuerza {
+        background-position: -10px -63px;
+    }
+
+    .on#fuerza {
+        background-position: -7px -263px;
+    }
+
+    #escuela {
+        background-position: -11px -169px;
+    }
+
+    .on#escuela {
+        background-position: -10px -369px;
+    }
 
     section#tools div.contenedor h2, section#tools div.contenedor2 h2{
         margin-left: 0px;

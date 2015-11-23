@@ -67,7 +67,8 @@ define(['app/context','app/config', 'app/templates'], function (ctxt, config, te
                     query = hex_party_sql_tpl({'zoom': ctxt.zoom,
                                                'id_partido': pid,
                                                'fwinner': ctxt.w,
-                                               'fswing': ctxt.sw});
+                                               'fswing': ctxt.sw,
+                                               'tab': ctxt.selected_tab});
                 }
                 break;
             case "difpaso":
@@ -81,7 +82,8 @@ define(['app/context','app/config', 'app/templates'], function (ctxt, config, te
                 query = hex_party_sql_tpl({'zoom': ctxt.zoom,
                                            'id_partido': pid,
                                            'fwinner': null,
-                                           'fswing': null});
+                                           'fswing': null,
+                                           'tab': ctxt.selected_tab});
                 break;
         }
 

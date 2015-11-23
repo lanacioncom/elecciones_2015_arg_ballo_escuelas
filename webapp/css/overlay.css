@@ -66,7 +66,8 @@ ul.overlay li.active span.radio_bg { background-position: -70px -43px}
 ul.overlay.filter li { opacity: .3;  background-image: url("../img/pat.png");  }
 ul.overlay.filter li.active { opacity: 1; background: #fff; }
 
-body.difpaso ul.overlay li.active span.radio_bg{
+body.difpaso ul.overlay li.active span.radio_bg,
+body.difpv ul.overlay li.active span.radio_bg{
     background-position: -9px -42px;
 }
 
@@ -292,4 +293,158 @@ div.crowd div.formu div.mensaje input#submit:hover {
 
 div.crowd div.formu.on div.mensaje{
     height: 105px;
+}
+
+/* ///// REFERENCIAS ///// */
+
+#overlay div.refes{
+    width: 40%;
+    position: absolute;
+    bottom:0px;
+    max-height: 315px;
+}
+
+#overlay.activo div.refes{
+    width: 100%;
+}
+
+#overlay div.refes div.titulo{
+    font-size:11px;
+    font-family:"suecaslabmedium", Georgia;
+}
+
+#overlay div.refes div.contenedor, 
+#overlay div.refes div.contenedor2{
+    display: none;
+}
+
+#overlay div.refes div.contenedor0 .colores{
+  width: 125px;
+  height: 46px;
+  margin-top: 5px;
+  opacity: .7;
+}
+
+#overlay div.refes div.contenedor0 div.circ{
+  width: 30px;
+  height: 30px;
+  border:1px solid #000;
+  display: inline-block;
+  border-radius:100px;
+  margin-top: 10px;
+  vertical-align: top;
+  margin-left: 2px;
+}
+
+#overlay div.refes div.contenedor0 div.circ#c2{
+  width: 15px;
+  height: 15px;
+  margin-top: 19px;
+}
+
+#overlay div.refes div.contenedor0 div.circ#c3{
+  width: 5px;
+  height: 5px;
+  margin-top: 25px;
+}
+
+#overlay div.refes div.contenedor0 p, 
+#overlay div.refes div.contenedor p,
+#overlay div.refes div.contenedor2 p{
+        width: 90%;
+    font-size: 12px;
+    color: #999;
+    margin-top: 15px;
+    margin-bottom: 27px;
+    line-height: 1.2;
+}
+
+#overlay div.refes div.contenedor div.porcentajes{
+        width: 40%;
+    margin-top: 0px;
+    margin-left: -8px;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+#overlay div.refes div.contenedor div.porcentajes svg{
+    height: 30px;
+    margin-bottom: -15px;
+
+}
+
+#overlay div.refes div.contenedor div.porcentajes div.escala{
+    font-size: 12px;
+    color:#999;
+    position: absolute;
+    font-family:"suecaslabmedium", Georgia;
+}
+
+#overlay div.refes div.contenedor div.porcentajes div.escala.min{
+    top:13px;
+    right: -10px;
+}
+
+#overlay div.refes div.contenedor div.porcentajes div.escala.max{
+    top:85px;
+    right: -20px;
+}
+
+#overlay div.refes div.contenedor div.porcentajes div.escala.ref{
+    top: 35px;
+    right: -32px;
+    width: 40px;
+    font-family: Arial, Helvetica, sans-serif;
+    color:#BEBDBD;
+    font-size: 11px;
+}
+
+
+#overlay.activo div.refes div.contenedor div.porcentajes{
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 40px;
+}
+
+#overlay.activo div.refes div.contenedor div.porcentajes div.escala.max{
+    top:33px;
+    left: 10px;
+}
+
+#overlay.activo div.refes div.contenedor div.porcentajes div.escala.min{
+        top: 33px;
+    left: 147px;
+}
+
+#overlay.activo div.refes div.contenedor div.porcentajes div.escala.ref{
+       left: 180px;
+    top: 12px;
+    width: 93px;
+    border-left: 1px solid #dadada;
+    padding: 5px 15px;
+}
+#overlay div.refes div.contenedor2 div.perdio_gano{
+    width: 100%;
+    margin-top: 10px;
+}
+
+#overlay div.refes div.contenedor2 div.hex{
+    width: 38%;
+    display:inline-block;
+}
+
+#overlay div.refes div.contenedor2 div.hex.perdio{
+    border-right:1px solid #dadada;
+    padding-right: 2px;
+}
+
+#overlay div.refes div.contenedor2 div.hex p.tit{
+    width: 42px;
+    margin-top: -2px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#overlay.activo div.refes div.contenedor2 div.hex{
+    width: 17%;
 }
