@@ -5,7 +5,8 @@ import os
 from settings import DB
 
 # Restrict visible functions
-__all__ = ['run', 'run_query', 'run_scraper', 'upload_dc']
+__all__ = ['run', 'run_query', 'run_scraper',
+           'upload_dc_fs', 'upload_dc_urls']
 
 
 # LOCAL PATHS
@@ -23,10 +24,20 @@ def run():
 
 @task
 @runs_once
-def upload_dc():
-    '''upload to document cloud'''
+def upload_dc_fs():
+    '''upload to document cloud from local fs'''
     with lcd(cwd):
-        local('python %s/upload_dc_telegrams.py' % (scripts_path))
+        local('python %s/upload_fs_telegrams_dc.py -f %s' % (scripts_path,
+                                                             'pdf2'))
+
+
+@task
+@runs_once
+def upload_dc_urls():
+    '''upload telegram urls to document cloud'''
+    with lcd(cwd):
+        local('python %s/upload_url_telegrams_dc.py -f %s' % (scripts_path,
+                                                              'pdf5'))
 
 
 @task

@@ -10,9 +10,9 @@ import cdbqueries
 __all__ = ['import_common',
            'import_shortcuts',
            'import_hexagons',
-           'import_ballo_loc_results',
-           'import_pv_loc_results',
-           'import_paso_loc_results',
+           'import_ballo_results',
+           'import_pv_results',
+           'import_paso_results',
            # 'import_hex_winners',
            # 'import_est_results',
            'crowdsource',
@@ -77,7 +77,7 @@ def import_shortcuts():
 
 @task
 @runs_once
-def import_ballo_loc_results():
+def import_ballo_results():
     '''import location csv files into cartodb using import && SQL APIs'''
     # execute(import_table, 'localizaciones', 'cache_arg_ballo_loc_ganador')
     execute(import_table, 'localizaciones', 'cache_arg_ballo_loc_votos')
@@ -86,7 +86,7 @@ def import_ballo_loc_results():
 
 @task
 @runs_once
-def import_pv_loc_results():
+def import_pv_results():
     '''import location csv files into cartodb using import && SQL APIs'''
     # execute(import_table, 'localizaciones', 'cache_arg_pv_loc_ganador')
     execute(import_table, 'localizaciones', 'cache_arg_pv_loc_votos')
@@ -95,7 +95,7 @@ def import_pv_loc_results():
 
 @task
 @runs_once
-def import_paso_loc_results():
+def import_paso_results():
     '''import location csv files into cartodb using import && SQL APIs'''
     # execute(import_table, 'localizaciones', 'cache_arg_paso_loc_ganador')
     execute(import_table, 'localizaciones', 'cache_arg_paso_loc_votos')
