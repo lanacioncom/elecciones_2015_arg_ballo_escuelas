@@ -28,7 +28,7 @@ def upload_dc_fs():
     '''upload to document cloud from local fs'''
     with lcd(cwd):
         local('python %s/upload_fs_telegrams_dc.py -f %s' % (scripts_path,
-                                                             'pdf2'))
+                                                             'pdf3'))
 
 
 @task

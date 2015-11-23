@@ -47,8 +47,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
         permalink.validate();
 
         //Limit bounds of map to Argentina + offset
-        // -78.92578125,-83.5399697192,-14.23828125,-7.5367643221
-        var southWest = L.latLng(-83.5399697192, -78.92578125),
+        var southWest = L.latLng(-83.5399697192, -110.92578125),
             northEast = L.latLng(-7.5367643221, -14.23828125),
             bounds = L.latLngBounds(southWest, northEast);
 
