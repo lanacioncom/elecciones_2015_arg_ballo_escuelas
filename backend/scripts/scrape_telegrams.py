@@ -34,6 +34,7 @@ joblib.parallel.CallBack = CallBack
 # GLOBAL SETTINGS
 cwd = os.path.dirname(__file__)
 INPUT_PATH = os.path.join(cwd, '../data/telegrams')
+CACHE_FILE = 'pdf'
 INPUT_FILE = 'telegrams'
 OUTPUT_FILE = 'telegrams_processed'
 HEADER = ['id_agrupado', 'id_distrito', 'id_seccion',
@@ -41,24 +42,23 @@ HEADER = ['id_agrupado', 'id_distrito', 'id_seccion',
 N_CORES = 7
 
 
-def download_telegram(fext='pdf', row=None):
+def download_telegram(downloaded=None, fext='pdf', row=None):
     '''Download an audio file'''
     result = row.copy()
     OUTPUT_PATH = '%s/%s' % (INPUT_PATH, fext)
-    fpath = '%s/%s.%s' % (
-        OUTPUT_PATH,
-        row['key'].replace("/", "_"),
-        fext)
+    fname = '%s.%s' % (row['key'].replace("/", "_"), fext)
+    fpath = '%s/%s' % (OUTPUT_PATH, fname)
     result['fpath'] = fpath
     url = '%s/%s.%s' % (BASE_URL, row['key'], fext)
-    print url
-    if os.path.isfile(fpath):
-        print "already downloaded"
-        pass
+    cached = fname in downloaded
+    if os.path.isfile(fpath) or cached:
+        return None
     else:
+        print "downloading %s" % (url)
         try:
             response = requests.get(url, stream=True)
             if (response.status_code != 200):
+                print "found error %s" % (response.status_code)
                 return result
             with open(fpath, 'wb') as of:
                 shutil.copyfileobj(response.raw, of)
@@ -70,7 +70,7 @@ def download_telegram(fext='pdf', row=None):
     return result
 
 
-def process_telegrams(fext='pdf'):
+def process_telegrams(fext='pdf', downloaded=None):
     '''Download telegrams from gov site'''
     # Create output files folder if needed
     OUTPUT_PATH = '%s/%s' % (INPUT_PATH, fext)
@@ -82,16 +82,29 @@ def process_telegrams(fext='pdf'):
         writer.writeheader()
         with open('%s/%s.csv' % (INPUT_PATH, INPUT_FILE), 'r') as f:
             reader = CSVKitDictReader(f)
-            r = Parallel(n_jobs=N_CORES)(delayed(download_telegram)(fext, row)
+            r = Parallel(n_jobs=N_CORES)(delayed(download_telegram)(downloaded,
+                                                                    fext,
+                                                                    row)
                                          for row in reader)
             print('finished processing {}.csv'.format(INPUT_FILE))
+            r = filter(None, r)
             writer.writerows(r)
+
+
+def load_prev_downloaded():
+    '''Download telegrams from gov site'''
+    s = None
+    # Create output files folder if needed
+    with open('%s/%s.csv' % (INPUT_PATH, CACHE_FILE), 'r') as f:
+        reader = CSVKitDictReader(f)
+        s = set([r['key'] for r in reader])
+    return s
 
 
 def run():
     # Download telegrams
-    process_telegrams(fext='pdf')
-    # process_telegrams(fext='html')
+    cache_set = load_prev_downloaded()
+    process_telegrams(fext='pdf', downloaded=cache_set)
 
 if __name__ == '__main__':
     run()

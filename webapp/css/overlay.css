@@ -32,8 +32,25 @@ a#comp_paso .check { margin: 0 0 0 10px; position: relative; top: -5px; }
 div#wrapper_ul_overlay { position: relative; overflow-x: hidden; overflow-y: auto; }
 ul.overlay{  position: relative; list-style: none;}
 ul.overlay li { 
-    /*padding-left: 27px;*/ border-bottom: 1px solid #eeeeee;; position: absolute;left: 0; cursor: pointer; 
+    /*padding-left: 27px;*/ 
+    border-bottom: 1px solid #eeeeee; 
+    position: absolute;
+    left: -9px; 
+    cursor: pointer; 
     width: 100%; 
+
+}
+
+ul.overlay li div.bg_li{
+    margin:5px 0px;
+}
+
+ul.overlay li#li_0131 div.bg_li { 
+    border-left:2px solid rgb(23, 150, 215);
+}
+
+ul.overlay li#li_0135 div.bg_li { 
+    border-left:2px solid rgb(254, 219, 48);
 }
 
 ul.overlay li span.radio_bg{
@@ -64,7 +81,7 @@ body.difpaso ul.overlay li.active span.radio_bg{
 ul.overlay li .description {
     width: 70px;
     height: 65px;
-    margin: 7px 9px;
+    margin: 0px 9px;
     margin-left: 26px;
     display: inline-block;
     border-radius: 50%;
@@ -109,7 +126,7 @@ li .foto.Rodriguez_Saa{
 }
  
 
-ul.overlay li .above_bar { height: 17px; padding-top: 14px; margin-bottom: 5px; width: 100%;}
+ul.overlay li .above_bar { height: 17px; padding-top: 9px; margin-bottom: 5px; width: 100%;}
 ul.overlay li .down_bar { padding-top: 4px;}
 
 ul.overlay li.active .cont_barra .above_bar {

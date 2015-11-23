@@ -47,8 +47,8 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
         permalink.validate();
 
         //Limit bounds of map to Argentina + offset
-        var southWest = L.latLng(-57.54, -78.97),
-            northEast = L.latLng(-9.84, -46.96),
+        var southWest = L.latLng(-83.5399697192, -110.92578125),
+            northEast = L.latLng(-7.5367643221, -14.23828125),
             bounds = L.latLngBounds(southWest, northEast);
 
         // Initialize map
@@ -444,12 +444,11 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                         ctxt.selected_party = '0000';
                         break;
                     case 'difpaso':
-                        // defaults to winner party
-                        ctxt.selected_party = '0131';
-                        break;
                     case 'difpv':
                         // defaults to winner party
-                        ctxt.selected_party = '0131';
+                        if (ctxt.selected_party == '0000') {
+                            ctxt.selected_party = '0135';
+                        }
                         break;
                 }
                 // Fire an update of the app
