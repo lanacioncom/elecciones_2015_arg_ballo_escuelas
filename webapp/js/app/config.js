@@ -62,18 +62,20 @@ define(['cartodbjs'], function(dummy) {
         //url_telegramas: 'http://www.resultados.gob.ar/nacionaltelegr/01/001/0001/010010001_0030.htm',
         base_layer: L.tileLayer(mapboxUrl, {
             id: 'lanacionmapas.363845a0',  
-            attribution: "OpenStreetMaps", 
+            attribution: "", 
             token: 'pk.eyJ1IjoibGFuYWNpb25tYXBhcyIsImEiOiJjaWdhNm5zYjIwNHZ4dHRtMXRzOHU0cWU3In0.K8BvqeEt2V2xrXL5Tk7snQ'}),
         initial_data: {
             'results': [
-                {"id_partido":"0131","votos_paso":8493753,"votos":9144031,"diferencia":650240, 'pct': 36.91},
-                {"id_partido":"0135","votos_paso":6665120,"votos":8474836,"diferencia":1809697, 'pct': 34.21}],
+                {"id_partido":"0135","votos_paso":6665120,"votos_pv":8474836,"votos":12903301,
+                 "diff_paso":1809697,"diff_pv":4428465, "porc": 51.4, "porc_pv": 34.21},
+                {"id_partido":"0131","votos_paso":8493753,"votos_pv":9144031,"votos":12198441,
+                 "diff_paso":650240, "diff_pv":3054410, "porc": 48.6, "porc_pv": 36.91}],
             'polling_totals': {
                 nombre: "Resultado Total",
-                electores: 32632646,
-                votantes:  24413915,
-                positivos: 24772286,
-                participacion: 74.81
+                electores: 32064684,
+                votantes:  25738560,
+                positivos: 25101742,
+                participacion: 80.89
             }
         },
         // Sharing default
