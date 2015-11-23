@@ -444,12 +444,11 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                         ctxt.selected_party = '0000';
                         break;
                     case 'difpaso':
-                        // defaults to winner party
-                        ctxt.selected_party = '0131';
-                        break;
                     case 'difpv':
                         // defaults to winner party
-                        ctxt.selected_party = '0131';
+                        if (ctxt.selected_party == '0000') {
+                            ctxt.selected_party = '0135';
+                        }
                         break;
                 }
                 // Fire an update of the app
