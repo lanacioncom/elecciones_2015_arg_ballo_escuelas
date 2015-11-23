@@ -114,7 +114,7 @@ nav{
 
 .blanco{
   background-color: #fff;
-  width: 80%;
+  width: 100%;
   height: 50px;
   margin: 0px auto;
 }
@@ -125,17 +125,16 @@ nav{
 }
 
 div.btn, #menu{
-    width: 22.6%;
+    width: 15.6%;
+    min-width: 200px;
     height: 36px;
-    /* padding-bottom: 13px; */
-    padding-left: 7.5%;
+    padding-left: 80px;
     margin-left: 1%;
     font-family: 'suecaslabmedium', georgia;
     font-size: 13px;
     text-align: left;
     color: rgba(0,0,0,.5);
     line-height: 2.8;
-    /* background-color: rgb(242,242,242); */
     background-image: url("../img/bots.svg");
     background-repeat: no-repeat;
     background-position: -3px -161px;
@@ -166,11 +165,11 @@ div.btn, #menu{
     background-position: 1px -263px;
 }
 
-#difpaso{
+#difpaso, #difpv{
     background-position: -2px -116px;
 }
 
-.on#difpaso {
+.on#difpaso, .on#difpv {
     background-position: 0px -316px;
 }
 
@@ -352,10 +351,10 @@ aside div.short{
     width: 75px;
     height: 70px;
     border-radius: 4px;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
     cursor: pointer;
     transition: all 0.5s;
-    background-image: url(../img/shortcuts_nuevo.svg);
+    background-image: url(../img/shortcuts.svg);
     background-position: 10px 10px;
     background-repeat: no-repeat;
     background-position: 0px 5000px;
@@ -376,25 +375,29 @@ div.short:hover{
   border:1px solid #ddd;
 }
 
+aside div#arg{
+      background-position: -70px -372px;
+}
+
 aside div#conurbano{
-  background-position: -76px -65px;
+      background-position: -70px -58px;
 }
 
 aside div#caba{
-  background-position: -76px 14px;
+      background-position: -71px 21px;
 }
 
 aside div#cordoba {
-  background-position: -76px -308px;
+      background-position: -71px -291px;
 }
 
 aside div#rosario {
-  background-position: -76px -146px;
+     background-position: -70px -136px;
   
 }
 
 aside div#laplata {
-background-position: -76px -227px;
+    background-position: -71px -213px;  
 }
 
 /* fotos candidatos */
@@ -489,7 +492,7 @@ div.leaflet-popup-content div.telegramas:hover{
 /*//////// MAP //////*/
 #map_container {
   width: 100%;
-  height: 534px;
+  height: 550px;
   overflow: hidden;
   float: left;
 
@@ -1123,5 +1126,7 @@ footer div.datos span{
 	background:#f1f1f1;
 }
 
-
+.leaflet-container .leaflet-control-attribution, .leaflet-container .leaflet-control-scale{
+  display: none;
+}
 
