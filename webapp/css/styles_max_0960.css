@@ -1,13 +1,20 @@
 @media (max-width: 960px) {
-    
-    .blanco{
-          width: 94%;
+    #escuela {
+        margin-left: 10px;
     }
 
     #buscar.activo {
       width: 89%;
       background-color: #f7f7f7;
   }
+
+    div.btn{
+      display: block;
+      background-image: none;
+      padding: 0px 1%;
+      padding-left: 4%;
+      width: auto;
+    }
 
     section#tools div.contenedor .explica, section#tools div.contenedor2 .explica {
         margin-top: 7px;

@@ -125,10 +125,11 @@ nav{
 }
 
 div.btn, #menu{
-    width: 15.6%;
-    min-width: 200px;
+        /* width: 15.6%; */
+    /* min-width: 200px; */
     height: 36px;
     padding-left: 80px;
+    padding-right: 2%;
     margin-left: 1%;
     font-family: 'suecaslabmedium', georgia;
     font-size: 13px;
@@ -146,11 +147,12 @@ div.btn, #menu{
     transition: background-color 0.2s;
     border-radius: 20px;
     border: solid #ccc 1px;
+    display: inline-block;
 }
 
 #escuela{
   background-position: 2px -169px;
-  margin-left: 4%;
+  margin-left: 3%;
 }
 
 .on#escuela{
@@ -222,7 +224,7 @@ div.visible{
 }
 
 #buscar.activo{
-  width: 86%;
+  width: 98%;
   background-color: #f7f7f7 ;
 }
 
