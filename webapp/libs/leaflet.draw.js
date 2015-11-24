@@ -2878,9 +2878,9 @@ L.EditToolbar.Delete = L.Handler.extend({
 
             this._deletableLayers.eachLayer(this._enableLayerDelete, this);
             this._deletedLayers = new L.LayerGroup();
-
-            this._tooltip = new L.Tooltip(this._map);
-            this._tooltip.updateContent({ text: L.drawLocal.edit.handlers.remove.tooltip.text });
+            //MAF Change: Dust bin deletes drawings. We don't use delete-tooltip.
+            // this._tooltip = new L.Tooltip(this._map);
+            // this._tooltip.updateContent({ text: L.drawLocal.edit.handlers.remove.tooltip.text });
 
             this._map.on('mousemove', this._onMouseMove, this);
         }
@@ -2890,9 +2890,9 @@ L.EditToolbar.Delete = L.Handler.extend({
         if (this._map) {
             this._deletableLayers.eachLayer(this._disableLayerDelete, this);
             this._deletedLayers = null;
-
-            this._tooltip.dispose();
-            this._tooltip = null;
+            //MAF Change: Dust bin deletes drawings. We don't use delete-tooltip.
+            // this._tooltip.dispose();
+            // this._tooltip = null;
 
             this._map.off('mousemove', this._onMouseMove, this);
         }
@@ -2912,31 +2912,33 @@ L.EditToolbar.Delete = L.Handler.extend({
 
     _enableLayerDelete: function (e) {
         var layer = e.layer || e.target || e;
-
-        layer.on('click', this._removeLayer, this);
+        //MAF Change: Dust bin deletes drawings. Don't know why this event is called when adding a new layer, we stop the deletion process here. We don't need the click event.
+        if (e.type != "layeradd"){
+            this._removeLayer(e);
+        }
+        // layer.on('click', this._removeLayer, this);
     },
 
     _disableLayerDelete: function (e) {
         var layer = e.layer || e.target || e;
-
-        layer.off('click', this._removeLayer, this);
-
+        //MAF Change: Dust bin deletes drawings. We don't need the click event or recovering the delete layers.
+        // layer.off('click', this._removeLayer, this);
         // Remove from the deleted layers so we can't accidently revert if the user presses cancel
-        this._deletedLayers.removeLayer(layer);
+        // this._deletedLayers.removeLayer(layer);
     },
 
     _removeLayer: function (e) {
         var layer = e.layer || e.target || e;
-
         this._deletableLayers.removeLayer(layer);
-
-        this._deletedLayers.addLayer(layer);
-
+        //MAF Change: Dust bin deletes drawings. We don't need to store deleted layers for recovering. We simulate the save button.
+        // this._deletedLayers.addLayer(layer);
         layer.fire('deleted');
+        this.save();
     },
 
     _onMouseMove: function (e) {
-        this._tooltip.updatePosition(e.latlng);
+        //MAF Change: Dust bin deletes drawings. We don't have delete-tooltip.
+        // this._tooltip.updatePosition(e.latlng);
     },
 
     _hasAvailableLayers: function () {
