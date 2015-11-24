@@ -213,9 +213,11 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             }
             map.closePopup();
         }
+        // To be used to delete the draw layers whenever we need it
+        var draw_layer;
 
         function draw_filter(e) {
-            var draw_layer, latlng = null;
+            var latlng = null;
             if (e.type === "draw:created") {
                 draw_layer = e.layer;
                 latlng = draw_layer.getBounds().getCenter(); 
@@ -515,6 +517,16 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             }
         }
 
+        //Delete the draw layers
+        function delete_draw(){
+            if (draw.drawnItems.getLayers().length){
+                map.fire("draw:deletestart");
+                draw.drawnItems.removeLayer(draw_layer);
+                map.fire("draw:deletestop");
+                map.fire('draw:deleted');
+            }
+        }
+
 /**************************** HTML EVENTS ***********************************/
 
         // filter buttons
@@ -547,7 +559,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
 
         /** credits button*/
         d3.select('#creditos').on('click', function(){
-           
+            
             var append_to = d3.select('#append');
             append_to.html(templates.creditos_html).style('opacity', 0).transition().style('opacity', 1);  
            
