@@ -186,7 +186,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 .done(function(data) {
                     var position = JSON.parse(data.rows[0].geo).coordinates;
                     var latlng = L.latLng(position[1], position[0]);
-                    map.panTo(latlng);
+                    map.setView(latlng, data.rows[0].zoom_level);
                     var d = data.rows[0];
                     featureClickDone(latlng, d, data);
                 });

@@ -1,4 +1,5 @@
 SELECT h.num_loc,
+h.zoom_level,
 h.electores, 
 h.votantes,
 h.validos,
