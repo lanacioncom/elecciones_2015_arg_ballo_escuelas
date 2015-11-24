@@ -77,7 +77,6 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
         //JET: Load sections 
         $.get("data/dict_partidos.json", function(data){
             config.diccionario_datos = data;
-            
             init();
         });
 
@@ -114,6 +113,9 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 layer.on("load", function() {
                     $(".loader").hide();
                     _self.overlay.update_ref();
+                    if (!(helpers.selected_feature())) {
+                        map.closePopup();
+                    }
                 });
                 var sublayer = layer.getSubLayer(0);
                 config.carto_layers.push(layer.getSubLayer(0));
@@ -195,14 +197,11 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             cdb.update_layer();
             
             // If there's a selected feature update data
-            if ((!helpers.is_empty(ctxt.selected_hex)) ||
-                (!helpers.is_empty(ctxt.selected_polling))) {
-                // We need to update the overlay completely
+            // if ((!helpers.is_empty(ctxt.selected_hex)) ||
+            //     (!helpers.is_empty(ctxt.selected_polling))) {
+            //     // We need to update the overlay completely
+            if (helpers.selected_feature()) {
                 update_selected_feature();
-            } else {
-                // We need to update the overlay references
-                // This is done when the tiles have loaded ignore
-                // _self.overlay.update_ref();
             }
         }
 
@@ -465,8 +464,10 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 var btn_id = $el.attr("id").replace('#','');
                 ga.fire_analytics_event("click",btn_id);
                 ctxt.selected_polling = null;
+                ctxt.selected_hex = null;
                 ctxt.w = null;
                 ctxt.sw = null;
+                permalink.set();
                 ctxt.selected_tab = btn_id;
                 // Control zoom issues with hexagons
                 if (ctxt.selected_tab != "escuela") {
@@ -505,10 +506,9 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 $(".refes").show();
                 $(".filtros").hide();
                 // Fire an update of the app
-                map.closePopup();
-                permalink.set();
                 _self.overlay.update_filter();
-                _self.overlay.fold();
+                map.closePopup();
+                //_self.overlay.fold();
                 cdb.update_layer();
                 return false;
             }
@@ -706,11 +706,6 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
         map.on('draw:deleted', draw_deleted);
         map.on('draw:created', draw_filter);
         map.on('draw:edited', draw_filter);
-
-        d3.select("#overlay .cerrar" ).on("click", function(){ // close overlay
-            map.closePopup();
-            _self.overlay.fold();
-        });
     
         /** crowdsource functionality */
         d3.select("input#submit").on("click", function() {

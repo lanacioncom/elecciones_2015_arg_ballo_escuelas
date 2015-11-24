@@ -82,7 +82,7 @@ define(['app/context', 'app/config', 'app/permalink',
                 _self.update_filter();
                 // We have moved this to the cartodb loaded event
                 //_self.update_ref();
-                _self.fold();
+                //_self.fold();
                 _self.map.closePopup();
                 // Get new map data
                 cdb.update_layer();
@@ -337,6 +337,8 @@ define(['app/context', 'app/config', 'app/permalink',
                 ctxt.sw = "0";
                 break;
         }
+        ctxt.selected_polling = null;
+        ctxt.selected_hex = null;
         permalink.set();
         update_data_filters();
         // Get new map data
@@ -346,7 +348,6 @@ define(['app/context', 'app/config', 'app/permalink',
     });
 
     function update_data_filters() {
-        
         var key, sub_key;
         if (helpers.is_empty(ctxt.w)) {
             // Reset data filters
