@@ -5,23 +5,22 @@ requirejs.config({
         'templates': '../templates', 
         'text': '../libs/requirejs-text/text',
         'd3': '../libs/d3/d3.min',
-        'jquery': '../libs/jquery/dist/jquery.min',
-        'jquery-ui': '../libs/jquery-ui/jquery-ui.min',
-        'cartodbjs': '../libs/cartodb.js/cartodb_nojquery'
+        // 'jquery': '../libs/jquery/dist/jquery.min',
+        // 'jquery-ui': '../libs/jquery-ui/jquery-ui.min',
+        // 'cartodbjs': '../libs/cartodb.js/cartodb'
     },
     shim: {
-        'draw': ['cartodbjs'],
-        'jquery-ui': ['jquery'],
-        'cartodbjs': ['jquery']
+        // 'draw': ['cartodbjs'],
+        // 'cartodbjs': ['jquery']
     }
 });
 
 requirejs(['app/context', 'app/config', 'app/templates', 'app/carto',
            'app/media', 'app/overlay', 'app/helpers', 'app/view_helpers',
            'app/draw', 'app/permalink', 'app/analytics', 'app/share',
-           'd3', 'cartodbjs','jquery-ui'],
+           'd3'],
 function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers, 
-         draw, permalink, ga, share, d3, dummy, dummy2) {
+         draw, permalink, ga, share, d3) {
     $(function() {
     "use strict";
         var _self = this;
