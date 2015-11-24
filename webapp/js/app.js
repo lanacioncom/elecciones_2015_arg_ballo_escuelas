@@ -90,7 +90,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
 
             config.screen_width = $(window).width();
             update_nav(true);
-            // initialize range 
+            // initialize overlay
             _self.overlay = new Overlay(map);
             // Add cartodb_layer that being asynchronous
             // launches update after loading
@@ -123,6 +123,8 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                      .on('featureOut', featureOut);
 
                 update();
+                // If we are using pym send the request for the parent_url
+                // and send the height to adjust the iframe 
                 _self.pymChild.sendMessage('pymEspecialesLoaded', 'ready');
                 _self.pymChild.sendHeight();
 
@@ -162,96 +164,44 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
         });
 
 
+        /** Determines if hex or polling station is selected
+            gets the data for the overlay and once done calls
+            featureClickDone with the data as if it had been
+            clicked by the user
+        */
+        function update_selected_feature() {
+            var poll = helpers.is_empty(ctxt.selected_polling) ? false : true;
+            var fid = poll ? ctxt.selected_polling : ctxt.selected_hex;
+            var query = poll ? "permalink_sql" : "permalink_hex_sql";
+            config.sql.execute(templates[query],{'id': fid})
+                .done(function(data) {
+                    var position = JSON.parse(data.rows[0].geo).coordinates;
+                    var latlng = L.latLng(position[1], position[0]);
+                    var d = data.rows[0];
+                    map.panTo(latlng);
+                    // Hexagons are specific to a zoom level for performance
+                    if (!poll) {
+                        map.setZoom(d.zoom_level);
+                    }
+                    featureClickDone(latlng, d, data);
+                });
+        }
+
+
         /** update vizualization based on the actual context */
         function update() {
-            var fid;
-            // Get new query, cartocss and interactivity
+            // Update the map data
             cdb.update_layer();
-
-            // After loading the data simulate click if needed
-            // If we have a selected polling station simulate click
-            // We only show the overlay 
-            if (ctxt.selected_polling) {
-                fid = ctxt.selected_polling;
-                config.sql.execute(templates.permalink_sql,{'id': fid})
-                .done(function(data) {
-                    var position = JSON.parse(data.rows[0].geo).coordinates;
-                    var latlng = L.latLng(position[1], position[0]);
-                    map.panTo(latlng);
-                    var d = data.rows[0];
-                    featureClickDone(latlng, d, data);
-                });
-            }
-
-            // If we have a selected polling station simulate click
-            // We only show the overlay 
-            if (ctxt.selected_hex) {
-                fid = ctxt.selected_hex;
-                config.sql.execute(templates.permalink_hex_sql,{'id': fid})
-                .done(function(data) {
-                    var position = JSON.parse(data.rows[0].geo).coordinates;
-                    var latlng = L.latLng(position[1], position[0]);
-                    map.setView(latlng, data.rows[0].zoom_level);
-                    var d = data.rows[0];
-                    featureClickDone(latlng, d, data);
-                });
-            }
-
-            $(".btn_filt.sub").addClass("off");
-            if (ctxt.w === 0) {
-                $(".btn_filt[data-key='l']").addClass("active");
-                if (ctxt.sw === 0) {
-                    $(".btn_filt.sub[data-key='lold']").removeClass("off");
-                }
-                else if (ctxt.sw == 1) {
-                    $(".btn_filt.sub[data-key='lnew']").removeClass("off");
-                } 
-                else {
-                    $(".btn_filt.sub[data-key='lall']").removeClass("off");
-                }
+            
+            // If there's a selected feature update data
+            if ((!helpers.is_empty(ctxt.selected_hex)) ||
+                (!helpers.is_empty(ctxt.selected_polling))) {
+                // We need to update the overlay completely
+                update_selected_feature();
             } else {
-                $(".btn_filt[data-key='l']").removeClass("active");
-            }
-
-
-            if (ctxt.w == 1) {
-                $(".btn_filt[data-key='w']").addClass("active");
-                if (ctxt.sw === 0) {
-                    $(".btn_filt.sub[data-key='wold']").removeClass("off");
-                }
-                else if (ctxt.sw == 1) {
-                    $(".btn_filt.sub[data-key='wnew']").removeClass("off");
-                } 
-                else {
-                    $(".btn_filt.sub[data-key='wall']").removeClass("off");
-                }
-            } else {
-                $(".btn_filt[data-key='w']").removeClass("active");
-            }
-
-
-            if (ctxt.selected_tab == 'escuela') {
-                if (ctxt.selected_party == '0000') {
-                    $(".refes").show();
-                    $(".filtros").hide();
-                } else {
-                    $(".refes").hide();
-                    $(".filtros").show();
-                }
-            }
-
-            if (ctxt.selected_tab == 'fuerza') {
-                if (ctxt.selected_party == '0000') {
-                    $(".refes").show();
-                    $(".filtros").hide();
-                } else {
-                    $(".refes").hide();
-                    $(".filtros").show();
-                }
-            }
-
-            if (ctxt.selected_tab.startsWith("dif")) {
-                $(".filtros").hide();
+                // We need to update the overlay references
+                // This is done when the tiles have loaded ignore
+                // _self.overlay.update_ref();
             }
         }
 

@@ -23,6 +23,9 @@ function(ctxt, config) {
         },
         get_party_color: function() {
             return config.diccionario_datos[ctxt.selected_party].color_partido;
+        },
+        is_empty: function(str) {
+            return (!str || 0 === str.length);
         }
     };
 
