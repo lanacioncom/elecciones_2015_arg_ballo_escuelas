@@ -54,6 +54,10 @@ define(['app/context', 'app/config', 'app/permalink',
                     }
                 } 
                 else {
+                    // Always clean filters
+                    $(".btn_filt.sub").addClass("off");
+                    $(".btn_filt").removeClass("active");
+                    
                     if (ctxt.selected_party != d.id_partido){
                         ctxt.selected_party = d.id_partido;
                         // Analytics
