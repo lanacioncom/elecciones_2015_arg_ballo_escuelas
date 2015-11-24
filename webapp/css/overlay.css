@@ -563,13 +563,14 @@ border:1px solid #999;
 #overlay div.filtros div#filtros_ganadores div.btn_filt div.submenu {
     width: 120%;
     height: 0px;
-    transition:all 0.5s;
+    transition: all 0.7s ease-in-out;
     margin-left: 10px;
     overflow: hidden;
 }
 
 #overlay div.filtros div#filtros_ganadores div.btn_filt.active div.submenu {
-    height: auto;
+    height: 180px;
+    /*transition: all 1s ease-in-out;*/
 }
 
 #overlay div.filtros div#filtros_ganadores div.btn_filt div.submenu div.sub {
