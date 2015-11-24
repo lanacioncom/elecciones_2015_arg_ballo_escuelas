@@ -261,6 +261,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 draw.drawControlFull.addTo(map);
                 $('svg.leaflet-zoom-animated').css('pointer-events','none');
             }
+            map.closePopup();
         }
 
         function draw_filter(e) {
@@ -375,6 +376,11 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                     'nombre': "Escuelas incluidas: "+votos_data.rows[0].num_loc
                 };
                 $("body").addClass("dibujo");
+                //Overlay calculation
+                var d = votos_data.rows;
+                d.forEach(function(d) {
+                    d.porc = (d.votos / d.positivos);
+                });
             }
             else if (ctxt.selected_tab != 'escuela') {
                 // establecimiento_data is null
