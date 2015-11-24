@@ -521,6 +521,7 @@ div.off#overlay div.filtros div#filtros_ganadores {
     padding-right: 30px;
     transition: all 0.5s;
     overflow: hidden;
+        font-family: "TheSans", Helvetica, arial;
 }
 
 #overlay div.filtros div#filtros_ganadores div.btn_filt.activo {
@@ -573,6 +574,7 @@ div.off#overlay div.filtros div#filtros_ganadores {
     padding-top: 10px;
     font-size: 11px;
     cursor: default;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 #overlay div.filtros div#filtros_ganadores div.btn_filt div.submenu div.sub span.circle{
