@@ -581,6 +581,10 @@ border:1px solid #999;
  
 }
 
+#overlay div.filtros div#filtros_ganadores div.btn_filt div.submenu div.sub:last-child {
+	border:0px;
+}
+
 #overlay div.filtros div#filtros_ganadores div.btn_filt div.submenu div.sub span.circle{
     top: 10px;
     left: -5px;
@@ -638,6 +642,30 @@ border:1px solid #999;
 
 
 #overlay div.filtros div.ayuFilt:before {
+    content:"";
+    width: 0; 
+    height: 0; 
+    border-top: 7px solid transparent;
+    border-bottom:7px solid transparent;
+    border-left: 7px solid #3FA9F5;
+    position: absolute;
+    top:12px;
+    right:-7px
+}
+
+#overlay div.ayuFilt1 {
+    padding: 7px 10px;
+    font-size: 11px;
+    color: #3FA9F5;
+    border: 1px solid #3FA9F5;
+    position: absolute;
+    top: 80px;
+    left: -174px;
+    width: 140px;
+    background-color: #fff;
+}
+
+#overlay div.ayuFilt1:before {
     content:"";
     width: 0; 
     height: 0; 
