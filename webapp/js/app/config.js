@@ -35,27 +35,27 @@ define(['cartodbjs'], function(dummy) {
         hex_zoom_threshold: 14,
         cities: {
             'arg': {
-                center: L.latLng(-40.647, -62.139),
+                center: L.latLng(-40.64, -62.13),
                 zoom: 4
             },
             'conurbano': {
-                center: L.latLng(-34.64902575352698, -58.54751586914063),
+                center: L.latLng(-34.64, -58.54),
                 zoom: 10
             },
             'caba': {
-                center: L.latLng(-34.606932330061724, -58.44829559326172),
+                center: L.latLng(-34.60, -58.44),
                 zoom: 12
             },
             'cordoba': {
-                center: L.latLng(-31.40844712033033, -64.21096801757812),
+                center: L.latLng(-31.40, -64.21),
                 zoom: 12
             },
             'rosario': {
-                center: L.latLng(-32.947318116407644, -60.68332672119141),
+                center: L.latLng(-32.94, -60.68),
                 zoom: 12
             },
             'laplata': {
-                center: L.latLng(-34.9140886169061, -57.96455383300781),
+                center: L.latLng(-34.91, -57.96),
                 zoom: 12
             }
         },
@@ -79,6 +79,6 @@ define(['cartodbjs'], function(dummy) {
             }
         },
         // Sharing default
-        url_parent: 'http://www.lanacion.com.ar'
+        parent_url: 'http://www.lanacion.com.ar'
     };
 });
