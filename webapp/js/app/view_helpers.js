@@ -34,7 +34,7 @@ define(function (config) {
             return dict[d.id_partido] ? dict[d.id_partido].nombre_corto : "";
         },
         get_url: function(key) {
-            return "http://www.resultados.gob.ar/nacionaltelegr/"+key+".htm";
+            return "http://www.resultados.gob.ar/bltgetelegr/"+key+".htm";
         },
         get_mesa: function(key) {
             return key.slice(-4);
