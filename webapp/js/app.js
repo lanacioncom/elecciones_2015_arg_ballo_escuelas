@@ -47,28 +47,6 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
 
         permalink.get();
         permalink.validate();
-         
-        _self.pymChild.onMessage('setShareUrl', function(parent_url) {
-            
-            var utoken = parent_url.split('?');
-            if (utoken.length > 1) {
-                var query_string = utoken[1]; 
-                ga.fire_analytics_event("permalink", query_string);
-                
-                permalink.get(query_string);
-                permalink.validate();
-
-                update_nav(true);
-                update();
-                _self.overlay.update_filter();
-            }
-
-            // init();
-            
-            share.activate_share(utoken[0]);
-
-
-        });
 
         //Limit bounds of map to Argentina + offset
         var southWest = L.latLng(-83.5399697192, -110.92578125),
@@ -139,10 +117,8 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                      .on('featureOver', featureOver)
                      .on('featureOut', featureOut);
 
-                update(function(){ _self.pymChild.sendMessage('pymEspecialesLoaded', 'ready'); });
-                
-                
-
+                update();
+                _self.pymChild.sendMessage('pymEspecialesLoaded', 'ready');
                 _self.pymChild.sendHeight();
 
                 $(window).resize(_.debounce(resizedw,500));
@@ -159,9 +135,30 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             }
         }
 
+        _self.pymChild.onMessage('setShareUrl', function(parent_url) {
+            
+            var utoken = parent_url.split('?');
+            if (utoken.length > 1) {
+                config.parent_url = parent_url;
+                var query_string = utoken[1]; 
+                ga.fire_analytics_event("permalink", query_string);
+                
+                permalink.get(query_string);
+                permalink.validate();
+
+                update_nav(true);
+                update();
+                _self.overlay.update_filter();
+
+                // Set map according to parentUrl
+                map.setView(L.latLng(ctxt.lat, ctxt.lng), ctxt.zoom); 
+            }
+            share.activate_share(utoken[0]);
+        });
+
 
         /** update vizualization based on the actual context */
-        function update( callback) {
+        function update() {
             var fid;
             // Get new query, cartocss and interactivity
             cdb.update_layer();
@@ -189,14 +186,10 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 .done(function(data) {
                     var position = JSON.parse(data.rows[0].geo).coordinates;
                     var latlng = L.latLng(position[1], position[0]);
-                    map.panTo(latlng);
+                    map.setView(latlng, data.rows[0].zoom_level);
                     var d = data.rows[0];
                     featureClickDone(latlng, d, data);
                 });
-            }
-
-            if(callback){
-                callback();
             }
         }
 
