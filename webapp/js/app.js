@@ -271,7 +271,6 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 $('div#help_draw').fadeOut(200); 
             }
             var fid;
-            debugger
             var latlng = L.latLng(loc[0], loc[1]); 
             move_to_position(latlng);
 
