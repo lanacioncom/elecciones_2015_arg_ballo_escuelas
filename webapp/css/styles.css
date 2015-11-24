@@ -716,12 +716,13 @@ div.creVent div.txts.zoom{
 
 
 div.creVent div.txts.zoom div.titu{
-      background-color: #555555;
-      color: #F8F8F8;
+ 
 }
 
 div.creVent div.txts.zoom div.cambianav{
-  background-color: #fff;
+       background-color: #f7f7f7;
+    border: 1px solid #dadada;
+    border-radius: 20px;
     color: #000;
     font-weight: normal;
     cursor: pointer;
@@ -731,9 +732,6 @@ div.creVent div.txts.zoom div.cambianav{
     margin-top: 15px;
 }
 
-div.creVent div.txts.zoom p{
-  color:#fff;
-}
 
 div.creVent div.metodo{
     margin: 260px auto;
