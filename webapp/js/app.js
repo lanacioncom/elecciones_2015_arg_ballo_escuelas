@@ -82,11 +82,6 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
 
         /** After data is loaded launch app */
         function init() {
-            // Set ref colors
-            var data = config.diccionario_datos["0000"].rango.slice(0).reverse();
-            d3.select(".porcentajes").selectAll("polygon").data(data)
-              .style("fill", function(d) {return d;});
-
             config.screen_width = $(window).width();
             update_nav(true);
             // initialize overlay
@@ -112,7 +107,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 // Check if the layer has loaded
                 layer.on("load", function() {
                     $(".loader").hide();
-                    //_self.overlay.update_ref();
+                    _self.overlay.update_ref();
                     if (!(helpers.selected_feature())) {
                         map.closePopup();
                     }
@@ -457,6 +452,9 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 var selector = ".btn#"+ctxt.selected_tab;
                 $(selector).addClass("on");
                 $("body").addClass(ctxt.selected_tab);
+                if (helpers.show_party_help()) {
+                    $("div.ayuFilt1").fadeIn();
+                }
             }
             else if (!this.classList.contains("on")) {
                 d3.selectAll(".btn").classed('on', false);
@@ -473,6 +471,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 ctxt.selected_tab = btn_id;
                 // Control zoom issues with hexagons
                 if (ctxt.selected_tab != "escuela") {
+                    $("div.ayuFilt1").fadeOut();
                     if (ctxt.zoom > config.hex_zoom_threshold) {
                         map.setZoom(config.hex_zoom_threshold, 
                                     {'animate': false});
@@ -481,6 +480,9 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                     map.fire('zoomend', {forced: true});
                 }
                 else {
+                    if (helpers.show_party_help()) {
+                        $("div.ayuFilt1").fadeIn();
+                    }
                     map.options.maxZoom = 18;
                     map.fire('zoomend', {forced: true});
                 }
@@ -500,7 +502,6 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                         if (ctxt.selected_party == '0000') {
                             ctxt.selected_party = '0135';
                         }
-                        _self.overlay.update_ref();
                         break;
                 }
                 // Always hide filters

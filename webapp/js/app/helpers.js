@@ -35,7 +35,15 @@ function(ctxt, config) {
                 return true;
             }
             return false;
-        }
+        },
+        show_party_help: function() {
+            if (ctxt.selected_tab == "escuela" && 
+                ctxt.selected_party == "0000" &&
+                config.show_party_help) {
+                return true;
+            }
+            return false;
+        } 
     };
 
     return helpers;

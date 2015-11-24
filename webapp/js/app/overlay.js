@@ -44,6 +44,7 @@ define(['app/context', 'app/config', 'app/permalink',
                 });
             })
             .on("click", function(d){
+                // Has to have one party selected
                 if (ctxt.selected_tab.startsWith("dif")) {
                     if (ctxt.selected_party == d.id_partido) {
                         return false;
@@ -53,17 +54,23 @@ define(['app/context', 'app/config', 'app/permalink',
                         ga.fire_analytics_event("partido",ctxt.selected_party);
                     }
                 } 
+                else if (ctxt.selected_tab == "fuerza"){
+                    if (ctxt.selected_party != d.id_partido){
+                        ctxt.selected_party = d.id_partido;
+                    } 
+                    else {
+                        ctxt.selected_party = "0000";
+                    }
+                } 
                 else {
-                    // Always clean filters
-                    $(".btn_filt.sub").addClass("off");
-                    $(".btn_filt").removeClass("active");
-                    
+                    config.show_party_help = false;
+                    $("div.ayuFilt1").fadeOut();
                     if (ctxt.selected_party != d.id_partido){
                         ctxt.selected_party = d.id_partido;
                         // Analytics
                         ga.fire_analytics_event("partido",ctxt.selected_party);
                         // Hide references
-                        $(".refes").hide();
+                        $(".refes").fadeOut(100);
                         $(".filtros").fadeIn(100);
                     } 
                     else {
@@ -73,14 +80,13 @@ define(['app/context', 'app/config', 'app/permalink',
                         ctxt.selected_party = "0000";
                         // Show references
                         $(".filtros").fadeOut(100);
-                        $(".refes").show();
+                        $(".refes").fadeIn(100);
                     }
                 }
                 
                 // Set permalink
                 permalink.set();
                 _self.update_filter();
-                _self.update_ref();
                 _self.map.closePopup();
                 // Get new map data
                 cdb.update_layer();
@@ -210,14 +216,22 @@ define(['app/context', 'app/config', 'app/permalink',
             d3.select("#hexdif_1").style("fill", helpers.get_party_color());
             $(".refes").show();
             $(".filtros").hide();
-        } else {
+        }
+        else if (ctxt.selected_tab == 'fuerza') {
+            var data = helpers.get_party_colors();
+            d3.select(".porcentajes").selectAll("polygon")
+              .data(data)
+              .style("fill", function(d) {return d;});
+            $(".refes").show();
+            $(".filtros").hide();
+        } 
+        else {
             // If we have a party selected toggle filters or references
             if (ctxt.selected_party == '0000') {
                 $(".refes").show();
                 $(".filtros").hide();
             } else {
                 $(".refes").hide();
-                //update data filters and show them
                 update_data_filters();
                 $(".filtros").show();
             }
@@ -275,11 +289,15 @@ define(['app/context', 'app/config', 'app/permalink',
     };
 
     /************** EVENTOS HTML **************************/
+    $(".ayuFilt").click(function() {
+        $(this).fadeOut(100);
+    });
+
     /** filters when a candidate is selected */
     $("div.btn_filt").click(function(){
         $el = this;
         //Get rid of hint
-        $(".ayuFilt").hide(); 
+        $(".ayuFilt").fadeOut(); 
 
         switch($el.dataset.key) {
             case 'w':
