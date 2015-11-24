@@ -303,7 +303,6 @@ div.crowd div.formu.on div.mensaje{
     width: 40%;
     position: absolute;
     bottom:0px;
-    display: none;
 }
 
 #overlay.activo div.refes{
@@ -462,7 +461,7 @@ div.crowd div.formu.on div.mensaje{
 /* ////// FILTROS /////*/
 
 #overlay div.filtros{
-    display: inherit;
+    display: none;
 }
 
 #overlay div.filtros div.titulo{
@@ -513,7 +512,7 @@ div.off#overlay div.filtros div#filtros_ganadores {
     margin-bottom: 10px;
 }
 #overlay div.filtros div#filtros_ganadores div.btn_filt { 
-        width: 70%;
+        width: 68%;
     cursor: pointer;
     border-bottom: 1px dotted #dadada;
     color: #999;
@@ -615,3 +614,30 @@ div.off#overlay div.filtros div#filtros_ganadores {
     width: 98%;
 }
 
+/* //// AYUDA FILTRO ////  */
+
+#overlay div.filtros div.ayuFilt {
+    padding: 7px 10px;
+    font-size: 11px;
+    color: #3FA9F5;
+    border: 1px solid #3FA9F5;
+    position: absolute;
+    top: 26px;
+    left: -164px;
+    width: 130px;
+    background-color: #fff;
+}
+
+
+#overlay div.filtros div.ayuFilt:before {
+    content:"";
+    width: 0; 
+    height: 0; 
+    border-top: 7px solid transparent;
+    border-bottom:7px solid transparent;
+    
+    border-left: 7px solid #3FA9F5;
+    position: absolute;
+    top:12px;
+    right:-7px
+}

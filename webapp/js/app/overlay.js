@@ -86,7 +86,7 @@ define(['app/context', 'app/config', 'app/permalink',
 
         
         if(_self.anchoWrapper < 450){
-            resta = 65;
+            resta = 55;
         }else{
             resta = 95;
         }
