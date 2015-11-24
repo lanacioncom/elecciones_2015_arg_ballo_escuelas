@@ -112,7 +112,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 // Check if the layer has loaded
                 layer.on("load", function() {
                     $(".loader").hide();
-                    _self.overlay.update_ref();
+                    //_self.overlay.update_ref();
                     if (!(helpers.selected_feature())) {
                         map.closePopup();
                     }
@@ -498,6 +498,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                         if (ctxt.selected_party == '0000') {
                             ctxt.selected_party = '0135';
                         }
+                        _self.overlay.update_ref();
                         break;
                 }
                 // Always hide filters

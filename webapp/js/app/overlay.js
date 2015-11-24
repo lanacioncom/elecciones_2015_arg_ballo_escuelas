@@ -80,9 +80,7 @@ define(['app/context', 'app/config', 'app/permalink',
                 // Set permalink
                 permalink.set();
                 _self.update_filter();
-                // We have moved this to the cartodb loaded event
-                //_self.update_ref();
-                //_self.fold();
+                _self.update_ref();
                 _self.map.closePopup();
                 // Get new map data
                 cdb.update_layer();
