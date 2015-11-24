@@ -9,12 +9,18 @@
         overflow: visible;
     }
 
+        #overlay div.refes div.contenedor#refFuerza div.colores div.porcentajes {
+        width: 63% !important;
+        margin-left: -13px;
+    }
+
+
     #data_container{
         margin-top: 40px;
     }
     
     #map_container {
-        width: 82%;
+        width: 78%;
         height: 430px;
     }
 
@@ -24,7 +30,7 @@
 
     .blanco {
         margin-left: -5px;
-        width: calc(100% - 85px);
+            width: 100% ;
     }
 
     #buscar{
@@ -37,9 +43,9 @@
 
     div.btn {
         line-height: 0.5;
-        padding: 10px 10px;
+        padding: 10px 0px;
         height: auto;
-        width: 99%;
+        width: 101%;
         text-align: left;
         font-size: 13px;
         border-top: 1px solid #dadada;
@@ -60,15 +66,15 @@
     }
     
     #menu {
-     display: inherit !important;
+    display: inherit !important;
     right: -5px;
     z-index: 1000;
     border-radius: 3px;
     height: 39px;
     padding-left: 0px;
-    width: 60px !important;
+    width: 40px !important;
     background-color: #fff;
-    background-position: 0px -158px;
+    background-position: 0px -103px;
     }
 
     div.on{
@@ -92,7 +98,7 @@
 
     #overlay {
         width: 120px !important;
-        padding-left: 0px ;
+        padding-left: 10px ;
     }
 
     ul.overlay li .cont_barra .barra {
@@ -194,12 +200,72 @@
 
     div.creVent div.txts{
         width: 76%;
-            margin: 44px auto;
+            margin: 24px auto;
 
     }
 
+    div.creVent div.titu {
+        display: none;
+    }
+
+    div.creVent div.txts div.cate {
+        padding: 8px 0px;
+        margin-top: 8px;
+    }
+
     div.creVent div.metodo {
-        margin: 260px auto;
+        margin: 50px auto;
+    }
+
+    .compartir{
+        display: none;
+    }
+
+    .refes p{
+        display: none !important;
+    
+    }
+
+    #overlay div.refes div.titulo, #overlay div.filtros div.titulo {
+        display: none;
+    }
+
+    #overlay div.refes div.contenedor2 div.hex {
+        width: 83%;
+    }
+
+    #overlay div.refes div.contenedor2 div.hex.perdio {
+        border-right: 0px solid #dadada;
+        border-bottom: 1px solid #dadada;
+    }
+
+    #overlay div.refes div.contenedor2 div.hex p.tit{
+        display: inherit !important;
+    }
+
+    div.on {
+        background-color: rgb(251, 251, 251) !important;
+        border-color: #dadada;
+
+    }
+
+    div.filtros, .contenedor0{
+        display: none !important;
+    }
+
+
+    #menu{
+        border-radius: 0px;
+        border-left:0px;
+    }
+
+    #telegramas_list a{
+        color:#1E3344;
+        font-weight: bold;
+        background-color: #f2f2f2;
+        border-radius: 5px;
+        border:1px solid #dadada;
+        padding: 5px 10px;
     }
 
  }
