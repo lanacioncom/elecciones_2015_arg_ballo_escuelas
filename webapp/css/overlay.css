@@ -468,6 +468,7 @@ div.crowd div.formu.on div.mensaje{
 #overlay div.filtros div.titulo{
     font-size: 13px;
     width: 80px;
+        margin-bottom: 10px;
 }
 
 
@@ -596,4 +597,12 @@ div.off#overlay div.filtros div#filtros_ganadores {
      border-radius: 20px;
     width: 0px;
     height: 0px
+}
+
+#overlay.activo div.filtros{
+    width: 100%;
+}
+
+#overlay div.filtros div#filtros_ganadores {
+    width: 90%;
 }
