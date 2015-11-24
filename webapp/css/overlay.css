@@ -473,7 +473,7 @@ div.crowd div.formu.on div.mensaje{
 
 #overlay div.filtros div#filtros_ganadores { 
     width: 100%;
-    height: 315px;
+    height: 324px;
     overflow: hidden;
     padding: 0px 10px;
     padding-left: 0px;
@@ -622,8 +622,8 @@ div.off#overlay div.filtros div#filtros_ganadores {
     color: #3FA9F5;
     border: 1px solid #3FA9F5;
     position: absolute;
-    top: 26px;
-    left: -164px;
+        top: 26px;
+    left: -174px;
     width: 130px;
     background-color: #fff;
 }
