@@ -30,7 +30,7 @@ gulp.task('watch', function () {
 gulp.task('server_prod', function() {
     connect.server({
         root: cfg.dest,
-        port: 8888
+        port: 9000
     });
 });
 

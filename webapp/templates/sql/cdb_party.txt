@@ -13,6 +13,9 @@ v.swing as swing,
 v.votos as votos,
 v.votos_pv as votos_pv,
 v.votos_paso as votos_paso,
+v.pos as pos,
+v.pos_pv as pos_pv,
+v.pos_paso as pos_paso,
 v.porc as porc,
 v.porc_pv as porc_pv,
 v.porc_paso as porc_paso,
@@ -27,5 +30,8 @@ AND v.id_partido = '<%- id_partido %>'
 <%}%>
 <% if (fswing !== null) {%>
     AND v.swing = <%- +fswing %>
-<%}%> 
-ORDER BY <%- orden %> DESC;
+<%}%>
+-- Only show if there is some party votes
+AND v.pos != 0
+AND v.pos_pv != 0
+ORDER BY <%- orden %> DESC

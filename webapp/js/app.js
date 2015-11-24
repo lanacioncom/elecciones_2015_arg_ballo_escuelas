@@ -7,7 +7,7 @@ requirejs.config({
         'd3': '../libs/d3/d3.min',
         'jquery': '../libs/jquery/dist/jquery.min',
         'jquery-ui': '../libs/jquery-ui/jquery-ui.min',
-        'cartodbjs': '../libs/cartodb.js/cartodb.uncompressed'
+        'cartodbjs': '../libs/cartodb.js/cartodb_nojquery'
     },
     shim: {
         'draw': ['cartodbjs'],
@@ -43,8 +43,32 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
 
 
         // First get permalink status and set context accordingly
+        // If we are inside the CMS and 
+
         permalink.get();
         permalink.validate();
+         
+        _self.pymChild.onMessage('setShareUrl', function(parent_url) {
+            
+            var utoken = parent_url.split('?');
+            if (utoken.length > 1) {
+                var query_string = utoken[1]; 
+                ga.fire_analytics_event("permalink", query_string);
+                
+                permalink.get(query_string);
+                permalink.validate();
+
+                update_nav(true);
+                update();
+                _self.overlay.update_filter();
+            }
+
+            // init();
+            
+            share.activate_share(utoken[0]);
+
+
+        });
 
         //Limit bounds of map to Argentina + offset
         var southWest = L.latLng(-83.5399697192, -110.92578125),
@@ -75,6 +99,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
         //JET: Load sections 
         $.get("data/dict_partidos.json", function(data){
             config.diccionario_datos = data;
+            
             init();
         });
 
@@ -87,6 +112,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             // Add cartodb_layer that being asynchronous
             // launches update after loading
             add_cartodb_layer();
+            
         }
 
         // Set initial zoom level for responsiveness
@@ -112,12 +138,15 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 layer.on('featureClick', featureClick)
                      .on('featureOver', featureOver)
                      .on('featureOut', featureOut);
-                update();
+
+                update(function(){ _self.pymChild.sendMessage('pymEspecialesLoaded', 'ready'); });
+                
+                
 
                 _self.pymChild.sendHeight();
+
                 $(window).resize(_.debounce(resizedw,500));
 
-                _self.pymChild.sendMessage('pymEspecialesLoaded', 'ready');
             })
             .on('error', function(err) {console.log(err);});
         }
@@ -130,23 +159,9 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             }
         }
 
-        // If we are inside the CMS and 
-        _self.pymChild.onMessage('setShareUrl', function(parent_url) {
-            console.log(parent_url);
-            var utoken = parent_url.split('#');
-            if (utoken.length > 1) {
-                query_string = utoken[1]; 
-                ga.fire_analytics_event("permalink", query_string);
-                permalink.get(query_string);
-                update_nav(true);
-                update();
-                _self.overlay.update_filter();
-            }
-        });
-
 
         /** update vizualization based on the actual context */
-        function update() {
+        function update( callback) {
             var fid;
             // Get new query, cartocss and interactivity
             cdb.update_layer();
@@ -178,6 +193,10 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                     var d = data.rows[0];
                     featureClickDone(latlng, d, data);
                 });
+            }
+
+            if(callback){
+                callback();
             }
         }
 
