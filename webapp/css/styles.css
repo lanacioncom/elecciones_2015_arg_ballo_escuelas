@@ -676,7 +676,7 @@ div.creVent div.titu{
 div.creVent{
     width: 100%;
     max-width: 1360px;
-    height: 707px;
+    height: 800px;
     position: absolute;
     top:-70px;
     left:0px;
@@ -939,6 +939,7 @@ footer div.datos span{
 	display:inline-block;
 	padding:5px 10px;
 	border:solid white 1px;
+      margin-bottom: 10px;
 	}
 	
 #telegramas_list li:hover{
