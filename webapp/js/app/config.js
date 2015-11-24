@@ -79,6 +79,9 @@ define([], function() {
             }
         },
         // Sharing default
-        parent_url: 'http://www.lanacion.com.ar'
+        parent_url: 'http://www.lanacion.com.ar',
+        // Store user help visibility
+        show_party_help: true,
+        show_data_help: true
     };
 });

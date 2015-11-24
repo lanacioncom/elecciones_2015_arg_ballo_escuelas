@@ -54,7 +54,6 @@ define(['app/context', 'app/config', 'app/permalink',
                         ga.fire_analytics_event("partido",ctxt.selected_party);
                     }
                 } 
-                // Clicking
                 else if (ctxt.selected_tab == "fuerza"){
                     if (ctxt.selected_party != d.id_partido){
                         ctxt.selected_party = d.id_partido;
@@ -63,7 +62,9 @@ define(['app/context', 'app/config', 'app/permalink',
                         ctxt.selected_party = "0000";
                     }
                 } 
-                else {          
+                else {
+                    config.show_party_help = false;
+                    $("div.ayuFilt1").fadeOut();
                     if (ctxt.selected_party != d.id_partido){
                         ctxt.selected_party = d.id_partido;
                         // Analytics
