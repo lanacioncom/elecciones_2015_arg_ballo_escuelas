@@ -581,6 +581,10 @@ border:1px solid #999;
  
 }
 
+#overlay div.filtros div#filtros_ganadores div.btn_filt div.submenu div.sub:last-child {
+	border:0px;
+}
+
 #overlay div.filtros div#filtros_ganadores div.btn_filt div.submenu div.sub span.circle{
     top: 10px;
     left: -5px;
