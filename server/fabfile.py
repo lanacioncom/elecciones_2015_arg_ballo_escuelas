@@ -30,16 +30,10 @@ def mount_esp(server_ix='10'):
 
 
 @task
-def umount_esp_warn(server_ix='10'):
+def umount_esp(server_ix='10'):
     with lcd(cwd):
         with settings(warn_only=True):
             local('umount mnt%s' % (server_ix))
-
-
-@task
-def umount_esp(server_ix='10'):
-    with lcd(cwd):
-        local('umount mnt%s' % (server_ix))
 
 
 @task
@@ -51,7 +45,7 @@ def deploy_esp(server_ix='10'):
     # mount especiales server
     mounted_path = os.path.join(cwd, 'mnt%s' % (server_ix))
     if not os.path.exists('%s/15' % (mounted_path)):
-        execute(umount_esp_warn, server_ix=server_ix)
+        execute(umount_esp, server_ix=server_ix)
         execute(mount_esp, server_ix=server_ix)
 
     mnt_tmp_path = os.path.join(mounted_path, tmp_path)
