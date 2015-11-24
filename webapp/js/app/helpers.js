@@ -1,6 +1,10 @@
 define(['app/context', 'app/config'],
 
 function(ctxt, config) {
+
+    function is_empty(str) {
+        return (!str || 0 === str.length);
+    }
     
     var helpers = {
         animate_barras: function() {
@@ -23,6 +27,14 @@ function(ctxt, config) {
         },
         get_party_color: function() {
             return config.diccionario_datos[ctxt.selected_party].color_partido;
+        },
+        is_empty: is_empty,
+        selected_feature: function() {
+            if ((!is_empty(ctxt.selected_hex)) ||
+                (!is_empty(ctxt.selected_polling))) {
+                return true;
+            }
+            return false;
         }
     };
 

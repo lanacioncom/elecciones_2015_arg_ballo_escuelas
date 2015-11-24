@@ -80,11 +80,11 @@ define(['app/context', 'app/config', 'app/permalink',
                 // Set permalink
                 permalink.set();
                 _self.update_filter();
-                // We moved this to the cartodb loaded event
+                // We have moved this to the cartodb loaded event
                 //_self.update_ref();
-                _self.fold();
+                //_self.fold();
                 _self.map.closePopup();
-                // Get new query, cartocss and interactivity
+                // Get new map data
                 cdb.update_layer();
             });
 
@@ -111,11 +111,11 @@ define(['app/context', 'app/config', 'app/permalink',
         var $overlay = $('#overlay');
         var por_hidden = $overlay.width() - resta;
         $overlay.animate({right:-por_hidden},'fast');
-        // Updated selected party based on context
+        // Updated selected party status based on context
         _self.update_filter();
-        // Updated selected party based on context
-        _self.update_ref();
     };
+
+
 
     Overlay.prototype.fold = function() {
         var $overlay = $('#overlay');
@@ -205,12 +205,24 @@ define(['app/context', 'app/config', 'app/permalink',
         wrapper.height(h);
     };
 
+    //* Update references and data filters if needed */
     Overlay.prototype.update_ref = function() {
-        switch (ctxt.selected_tab) {
-            case 'difpaso':
-            case 'difpv':
-                d3.select("#hexdif_1").style("fill", helpers.get_party_color());
-                break;
+        var _self = this;
+        if (ctxt.selected_tab.startsWith("dif")) {
+            d3.select("#hexdif_1").style("fill", helpers.get_party_color());
+            $(".refes").show();
+            $(".filtros").hide();
+        } else {
+            // If we have a party selected toggle filters or references
+            if (ctxt.selected_party == '0000') {
+                $(".refes").show();
+                $(".filtros").hide();
+            } else {
+                $(".refes").hide();
+                //update data filters and show them
+                update_data_filters();
+                $(".filtros").show();
+            }
         }
     };
 
@@ -263,6 +275,114 @@ define(['app/context', 'app/config', 'app/permalink',
             $help.remove();
         }
     };
+
+    /************** EVENTOS HTML **************************/
+    /** filters when a candidate is selected */
+    $("div.btn_filt").click(function(){
+        $el = this;
+        //Get rid of hint
+        $(".ayuFilt").hide(); 
+
+        switch($el.dataset.key) {
+            case 'w':
+                ctxt.sw = null;
+                if (!$el.classList.contains("active")) {
+                    ctxt.w = "1";
+                } else {
+                    ctxt.w = null;
+                }
+                break;
+            case 'wall':
+                // Ignore if elements is selected
+                if (!($el.classList.contains("off"))) return false;
+                ctxt.w = "1";
+                ctxt.sw = null;
+                break;
+            case 'wnew':
+                // Ignore if elements is selected
+                if (!($el.classList.contains("off"))) return false;
+                ctxt.w = "1";
+                ctxt.sw = "1";
+                break;
+            case 'wold':
+                // Ignore if elements is selected
+                if (!($el.classList.contains("off"))) return false;
+                ctxt.w = "1";
+                ctxt.sw = "0";
+                break;
+            case 'l':
+                ctxt.sw = null;
+                if (!$el.classList.contains("active")) {
+                    ctxt.w = "0";
+                } else {
+                    ctxt.w = null;
+                }
+                break;
+            case 'lall':
+                // Ignore if elements is selected
+                if (!($el.classList.contains("off"))) return false;
+                ctxt.w = "0";
+                ctxt.sw = null;
+                break;
+            case 'lnew':
+                // Ignore if elements is selected
+                if (!($el.classList.contains("off"))) return false;
+                ctxt.w = "0";
+                ctxt.sw = "1";
+                break;
+            case 'lold':
+                // Ignore if elements is selected
+                if (!($el.classList.contains("off"))) return false;
+                ctxt.w = "0";
+                ctxt.sw = "0";
+                break;
+        }
+        ctxt.selected_polling = null;
+        ctxt.selected_hex = null;
+        permalink.set();
+        update_data_filters();
+        // Get new map data
+        cdb.update_layer();
+
+        return false;
+    });
+
+    function update_data_filters() {
+        var key, sub_key;
+        if (helpers.is_empty(ctxt.w)) {
+            // Reset data filters
+            $(".btn_filt[data-key='w']").removeClass("active");
+            $(".btn_filt[data-key='l']").removeClass("active");
+            //Clear all subfilters
+            $(".btn_filt.sub").addClass("off");
+        }
+        else {
+            // First clear all subfilters
+            $(".btn_filt.sub").addClass("off");
+            // Activate the corresponding data filter && sub_filter
+            key = (+ctxt.w) ? 'w' : 'l';
+            nokey = (+ctxt.w) ? 'l' : 'w';
+            if (helpers.is_empty(ctxt.sw)) {
+                sub_key = key+'all';
+            } else {
+                sub_key = (+ctxt.sw) ? key+'new' : key+'old';
+            }
+            update_key_filter(key);
+            update_sub_key_filter(sub_key);
+        }
+
+        //** Updates the class of the filter to activate it*/
+        function update_key_filter(key) {
+            var nokey = (key == "w") ? 'l': 'w';
+            $(".btn_filt[data-key='"+key+"']").addClass("active");
+            $(".btn_filt[data-key='"+nokey+"']").removeClass("active");
+        }
+
+        //** Updates the class of the subfilters to activate it*/
+        function update_sub_key_filter(sub_key) {
+            $(".btn_filt.sub[data-key='"+sub_key+"']").removeClass("off");
+        }
+    }
 
     return Overlay;
 });
