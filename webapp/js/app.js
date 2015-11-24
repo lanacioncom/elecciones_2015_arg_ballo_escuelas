@@ -11,7 +11,8 @@ requirejs.config({
     },
     shim: {
         'draw': ['cartodbjs'],
-        'jquery-ui': ['jquery']
+        'jquery-ui': ['jquery'],
+        'cartodbjs': ['jquery']
     }
 });
 
