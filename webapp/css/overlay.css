@@ -360,7 +360,7 @@ div.crowd div.formu.on div.mensaje{
 #overlay div.refes div.contenedor0 p, 
 #overlay div.refes div.contenedor p,
 #overlay div.refes div.contenedor2 p{
-        width: 90%;
+    width: 86%;
     font-size: 12px;
     color: #999;
     margin-top: 15px;
@@ -545,6 +545,10 @@ div.off#overlay div.filtros div#filtros_ganadores {
     background-color: #fff;
 }
 
+#overlay div.filtros div#filtros_ganadores div.btn_filt span.black {
+border:1px solid #999;
+}
+
 #overlay div.filtros div#filtros_ganadores div.btn_filt.active span.circle{
     background-position: -124px -219px;
 }
@@ -577,7 +581,7 @@ div.off#overlay div.filtros div#filtros_ganadores {
 }
 
 #overlay div.filtros div#filtros_ganadores div.btn_filt div.submenu div.sub span.circle{
-       top: 10px;
+    top: 10px;
     left: -5px;
     background-position: -19px -297px;
     border: 0px;
@@ -591,13 +595,15 @@ div.off#overlay div.filtros div#filtros_ganadores {
     color:#999;
 }
 
+
 #overlay div.filtros div#filtros_ganadores div.btn_filt.active div.submenu div.sub.off span.circle{
     background-position: -40px -297px;
     border:1px solid #dadada;
-     border-radius: 20px;
+    border-radius: 20px;
     width: 0px;
     height: 0px
 }
+
 
 #overlay.activo div.filtros{
     width: 100%;
@@ -623,7 +629,7 @@ div.off#overlay div.filtros div#filtros_ganadores {
     color: #3FA9F5;
     border: 1px solid #3FA9F5;
     position: absolute;
-        top: 26px;
+    top: 26px;
     left: -174px;
     width: 140px;
     background-color: #fff;
@@ -636,7 +642,6 @@ div.off#overlay div.filtros div#filtros_ganadores {
     height: 0; 
     border-top: 7px solid transparent;
     border-bottom:7px solid transparent;
-    
     border-left: 7px solid #3FA9F5;
     position: absolute;
     top:12px;
@@ -647,3 +652,5 @@ div.off#overlay div.filtros div#filtros_ganadores {
     padding-top: 12px;
     padding-left: 23px;
 }
+
+
