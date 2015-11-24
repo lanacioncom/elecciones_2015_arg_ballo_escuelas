@@ -653,6 +653,30 @@ border:1px solid #999;
     right:-7px
 }
 
+#overlay div.filtros div.ayuFilt1 {
+    padding: 7px 10px;
+    font-size: 11px;
+    color: #3FA9F5;
+    border: 1px solid #3FA9F5;
+    position: absolute;
+    top: -150px;
+    left: -174px;
+    width: 140px;
+    background-color: #fff;
+}
+
+#overlay div.filtros div.ayuFilt1:before {
+    content:"";
+    width: 0; 
+    height: 0; 
+    border-top: 7px solid transparent;
+    border-bottom:7px solid transparent;
+    border-left: 7px solid #3FA9F5;
+    position: absolute;
+    top:12px;
+    right:-7px
+}
+
 #overlay.activo div.filtros div#filtros_ganadores div.btn_filt{
     padding-top: 12px;
     padding-left: 23px;
