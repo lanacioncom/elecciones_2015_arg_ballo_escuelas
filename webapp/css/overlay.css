@@ -303,7 +303,6 @@ div.crowd div.formu.on div.mensaje{
     width: 40%;
     position: absolute;
     bottom:0px;
-    display: none;
 }
 
 #overlay.activo div.refes{
@@ -462,7 +461,7 @@ div.crowd div.formu.on div.mensaje{
 /* ////// FILTROS /////*/
 
 #overlay div.filtros{
-    display: inherit;
+    display: none;
 }
 
 #overlay div.filtros div.titulo{

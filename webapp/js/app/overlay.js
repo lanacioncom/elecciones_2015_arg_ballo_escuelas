@@ -55,11 +55,21 @@ define(['app/context', 'app/config', 'app/permalink',
                     ctxt.selected_party = d.id_partido;
                     // Analytics
                     ga.fire_analytics_event("partido",ctxt.selected_party);
+                    // Hide references
+                    if (ctxt.selected_tab == 'escuela') {
+                        $("div#refEscuelas").hide();
+                        $(".filtros").fadeIn(100);
+                    }
                 }else {
                     // Reset filters
                     ctxt.w = null;
                     ctxt.sw = null;
                     ctxt.selected_party = "0000";
+                    // Show references
+                    if (ctxt.selected_tab == 'escuela') {
+                        $(".filtros").fadeOut(100);
+                        $("div#refEscuelas").show();
+                    }
                 }
                 // Set permalink
                 permalink.set();

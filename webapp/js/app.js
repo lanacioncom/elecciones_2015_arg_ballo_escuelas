@@ -192,6 +192,63 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                     featureClickDone(latlng, d, data);
                 });
             }
+
+            $(".btn_filt.sub").addClass("off");
+            if (ctxt.w == 0) {
+                $(".btn_filt[data-key='l']").addClass("active");
+                if (ctxt.sw == 0) {
+                    $(".btn_filt.sub[data-key='lold']").removeClass("off");
+                }
+                else if (ctxt.sw == 1) {
+                    $(".btn_filt.sub[data-key='lnew']").removeClass("off");
+                } 
+                else {
+                    $(".btn_filt.sub[data-key='lall']").removeClass("off");
+                }
+            } else {
+                $(".btn_filt[data-key='l']").removeClass("active");
+            }
+
+
+            if (ctxt.w == 1) {
+                $(".btn_filt[data-key='w']").addClass("active");
+                if (ctxt.sw == 0) {
+                    $(".btn_filt.sub[data-key='wold']").removeClass("off");
+                }
+                else if (ctxt.sw == 1) {
+                    $(".btn_filt.sub[data-key='wnew']").removeClass("off");
+                } 
+                else {
+                    $(".btn_filt.sub[data-key='wall']").removeClass("off");
+                }
+            } else {
+                $(".btn_filt[data-key='w']").removeClass("active");
+            }
+
+
+            if (ctxt.selected_tab == 'escuela') {
+                if (ctxt.selected_party == '0000') {
+                    $("div#refEscuelas").show();
+                    $(".filtros").hide();
+                } else {
+                    $("div#refEscuelas").hide();
+                    $(".filtros").show();
+                }
+            }
+
+            if (ctxt.selected_tab == 'fuerza') {
+                if (ctxt.selected_party == '0000') {
+                    $("div#refFuerza").show();
+                    $(".filtros").hide();
+                } else {
+                    $("div#refFuerza").hide();
+                    $(".filtros").show();
+                }
+            }
+
+            if (ctxt.selected_tab.startsWith("dif")) {
+                $(".filtros").hide();
+            }
         }
 
         function draw_deleted(e) {
@@ -462,6 +519,8 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                         if (ctxt.selected_party == '0000') {
                             ctxt.selected_party = '0135';
                         }
+                        // Always hide filters
+                        $(".filtros").hide();
                         break;
                 }
                 // Fire an update of the app
@@ -531,6 +590,48 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                     .each('end', function(){append_to.html("");});
                 }, false);
         }, false);
+
+        /** filters when a candidate is selected */
+        $("div.btn_filt").click(function(){
+            switch(this.dataset.key) {
+                case 'w':
+                    ctxt.w = 1;
+                    ctxt.sw = null;
+                    break;
+                case 'wall':
+                    ctxt.w = 1;
+                    ctxt.sw = null;
+                    break;
+                case 'wnew':
+                    ctxt.w = 1;
+                    ctxt.sw = 1;
+                    break;
+                case 'wold':
+                    ctxt.w = 1;
+                    ctxt.sw = 0;
+                    break;
+                case 'l':
+                    ctxt.w = 0;
+                    ctxt.sw = null;
+                    break;
+                case 'lall':
+                    ctxt.w = 0;
+                    ctxt.sw = null;
+                    break;
+                case 'lnew':
+                    ctxt.w = 0;
+                    ctxt.sw = 1;
+                    break;
+                case 'lold':
+                    ctxt.w = 0;
+                    ctxt.sw = 0;
+                    break;
+            }
+            permalink.set();
+            update();
+
+            return false;
+        });
 
         
         //Search
