@@ -249,10 +249,19 @@
 
     }
 
-    div.filtros, .contenedor0{
-        display: none !important;
-    }
 
+#overlay div.filtros div#filtros_ganadores div.btn_filt b {
+	font-size:10px;
+	
+}
+
+#overlay div.filtros div#filtros_ganadores div.btn_filt {
+	line-height:11px;
+}
+
+  .refes{
+  	display:none;
+  }
 
     #menu{
         border-radius: 0px;
