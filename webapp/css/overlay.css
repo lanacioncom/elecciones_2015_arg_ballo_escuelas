@@ -603,6 +603,15 @@ div.off#overlay div.filtros div#filtros_ganadores {
     width: 100%;
 }
 
-#overlay div.filtros div#filtros_ganadores {
+#overlay.activo div.filtros div#filtros_ganadores { 
     width: 90%;
 }
+
+#overlay.activo div.filtros div#filtros_ganadores div.btn_filt {
+    width: 97%;
+}
+
+#overlay.activo div.filtros div#filtros_ganadores div.btn_filt div.submenu div.sub{
+    width: 98%;
+}
+
