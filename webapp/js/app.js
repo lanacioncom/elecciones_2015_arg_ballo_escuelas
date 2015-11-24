@@ -77,7 +77,6 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
         //JET: Load sections 
         $.get("data/dict_partidos.json", function(data){
             config.diccionario_datos = data;
-            
             init();
         });
 
@@ -90,7 +89,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
 
             config.screen_width = $(window).width();
             update_nav(true);
-            // initialize range 
+            // initialize overlay
             _self.overlay = new Overlay(map);
             // Add cartodb_layer that being asynchronous
             // launches update after loading
@@ -114,6 +113,9 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 layer.on("load", function() {
                     $(".loader").hide();
                     _self.overlay.update_ref();
+                    if (!(helpers.selected_feature())) {
+                        map.closePopup();
+                    }
                 });
                 var sublayer = layer.getSubLayer(0);
                 config.carto_layers.push(layer.getSubLayer(0));
@@ -123,6 +125,8 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                      .on('featureOut', featureOut);
 
                 update();
+                // If we are using pym send the request for the parent_url
+                // and send the height to adjust the iframe 
                 _self.pymChild.sendMessage('pymEspecialesLoaded', 'ready');
                 _self.pymChild.sendHeight();
 
@@ -162,96 +166,42 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
         });
 
 
+        /** Determines if hex or polling station is selected
+            gets the data for the overlay and once done calls
+            featureClickDone with the data as if it had been
+            clicked by the user
+        */
+        function update_selected_feature() {
+            var poll = helpers.is_empty(ctxt.selected_polling) ? false : true;
+            var fid = poll ? ctxt.selected_polling : ctxt.selected_hex;
+            var query = poll ? "permalink_sql" : "permalink_hex_sql";
+            config.sql.execute(templates[query],{'id': fid})
+                .done(function(data) {
+                    var position = JSON.parse(data.rows[0].geo).coordinates;
+                    var latlng = L.latLng(position[1], position[0]);
+                    if (poll) {
+                        move_to_position(latlng);
+                    } else {
+                        var z = data.rows[0].zoom_level;
+                        move_to_position(latlng, z, true);    
+                    }
+                    var d = data.rows[0];
+                    featureClickDone(latlng, d, data);
+                });
+        }
+
+
         /** update vizualization based on the actual context */
         function update() {
-            var fid;
-            // Get new query, cartocss and interactivity
+            // Update the map data
             cdb.update_layer();
-
-            // After loading the data simulate click if needed
-            // If we have a selected polling station simulate click
-            // We only show the overlay 
-            if (ctxt.selected_polling) {
-                fid = ctxt.selected_polling;
-                config.sql.execute(templates.permalink_sql,{'id': fid})
-                .done(function(data) {
-                    var position = JSON.parse(data.rows[0].geo).coordinates;
-                    var latlng = L.latLng(position[1], position[0]);
-                    map.panTo(latlng);
-                    var d = data.rows[0];
-                    featureClickDone(latlng, d, data);
-                });
-            }
-
-            // If we have a selected polling station simulate click
-            // We only show the overlay 
-            if (ctxt.selected_hex) {
-                fid = ctxt.selected_hex;
-                config.sql.execute(templates.permalink_hex_sql,{'id': fid})
-                .done(function(data) {
-                    var position = JSON.parse(data.rows[0].geo).coordinates;
-                    var latlng = L.latLng(position[1], position[0]);
-                    map.setView(latlng, data.rows[0].zoom_level);
-                    var d = data.rows[0];
-                    featureClickDone(latlng, d, data);
-                });
-            }
-
-            $(".btn_filt.sub").addClass("off");
-            if (ctxt.w === 0) {
-                $(".btn_filt[data-key='l']").addClass("active");
-                if (ctxt.sw === 0) {
-                    $(".btn_filt.sub[data-key='lold']").removeClass("off");
-                }
-                else if (ctxt.sw == 1) {
-                    $(".btn_filt.sub[data-key='lnew']").removeClass("off");
-                } 
-                else {
-                    $(".btn_filt.sub[data-key='lall']").removeClass("off");
-                }
-            } else {
-                $(".btn_filt[data-key='l']").removeClass("active");
-            }
-
-
-            if (ctxt.w == 1) {
-                $(".btn_filt[data-key='w']").addClass("active");
-                if (ctxt.sw === 0) {
-                    $(".btn_filt.sub[data-key='wold']").removeClass("off");
-                }
-                else if (ctxt.sw == 1) {
-                    $(".btn_filt.sub[data-key='wnew']").removeClass("off");
-                } 
-                else {
-                    $(".btn_filt.sub[data-key='wall']").removeClass("off");
-                }
-            } else {
-                $(".btn_filt[data-key='w']").removeClass("active");
-            }
-
-
-            if (ctxt.selected_tab == 'escuela') {
-                if (ctxt.selected_party == '0000') {
-                    $(".refes").show();
-                    $(".filtros").hide();
-                } else {
-                    $(".refes").hide();
-                    $(".filtros").show();
-                }
-            }
-
-            if (ctxt.selected_tab == 'fuerza') {
-                if (ctxt.selected_party == '0000') {
-                    $(".refes").show();
-                    $(".filtros").hide();
-                } else {
-                    $(".refes").hide();
-                    $(".filtros").show();
-                }
-            }
-
-            if (ctxt.selected_tab.startsWith("dif")) {
-                $(".filtros").hide();
+            
+            // If there's a selected feature update data
+            // if ((!helpers.is_empty(ctxt.selected_hex)) ||
+            //     (!helpers.is_empty(ctxt.selected_polling))) {
+            //     // We need to update the overlay completely
+            if (helpers.selected_feature()) {
+                update_selected_feature();
             }
         }
 
@@ -297,14 +247,31 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             });
         }
 
-        function featureClick(event, latlng, pos, data, layerNumber) {
+        //** move to the selected position 
+        //   and update context accordingly*/
+        function move_to_position(latlng, zoom, z_changed) {
+            if (z_changed) {
+                ctxt.zoom = zoom;
+            }
+            ctxt.lat = +(latlng.lat).toFixed(2);
+            ctxt.lng = +(latlng.lng).toFixed(2);
+            permalink.set();
+            config.current_ltlng = latlng;
+            if (z_changed) {
+                map.setView(latlng, zoom);
+            } else {
+                map.panTo(latlng);
+            }
+        }
+
+        function featureClick(event, loc, pos, data, layerNumber) {
             // Get rid of helper texts
             if ($('div#help_draw').is(":visible")) {
                 $('div#help_draw').fadeOut(200); 
             }
             var fid;
-            config.current_ltlng = latlng;
-            map.panTo(latlng);
+            var latlng = L.latLng(loc[0], loc[1]); 
+            move_to_position(latlng);
 
             if (ctxt.selected_tab != "escuela") {
                 // Get hexagon data from DB
@@ -312,7 +279,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 permalink.set();
 
                 //Analytics
-                if (latlng !== null) {
+                if (loc !== null) {
                     ga.fire_analytics_event("hexagono",ctxt.selected_hex);
                 }
 
@@ -322,7 +289,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 }
                 config.sql.execute(templates.click_hex_sql,{'id': fid,
                                                             'orden': 'votos'})
-                    .done(_.partial(featureClickDone, latlng, data))
+                    .done(_.partial(featureClickDone, loc, data))
                     .error(function(errors) {
                         console.log(errors);
                     });
@@ -332,7 +299,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 permalink.set();
 
                 //Analytics
-                if (latlng !== null) {
+                if (loc !== null) {
                     ga.fire_analytics_event("establecimiento",ctxt.selected_polling);
                 }
 
@@ -344,7 +311,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 var query = templates.click_feature_sql;
                 var params = {'id': fid, 'orden': 'votos'};
                 config.sql.execute(query, params)
-                      .done(_.partial(featureClickDone, latlng, data))
+                      .done(_.partial(featureClickDone, loc, data))
                       .error(function(errors) {
                             console.log(errors);
                       });
@@ -497,8 +464,10 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 var btn_id = $el.attr("id").replace('#','');
                 ga.fire_analytics_event("click",btn_id);
                 ctxt.selected_polling = null;
+                ctxt.selected_hex = null;
                 ctxt.w = null;
                 ctxt.sw = null;
+                permalink.set();
                 ctxt.selected_tab = btn_id;
                 // Control zoom issues with hexagons
                 if (ctxt.selected_tab != "escuela") {
@@ -537,10 +506,9 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 $(".refes").show();
                 $(".filtros").hide();
                 // Fire an update of the app
-                map.closePopup();
-                permalink.set();
                 _self.overlay.update_filter();
-                _self.overlay.fold();
+                map.closePopup();
+                //_self.overlay.fold();
                 cdb.update_layer();
                 return false;
             }
@@ -556,20 +524,18 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             var city = $(this).attr('id');
             // Google analytics
             ga.fire_analytics_event("shortcut", city);
-            // Set the new context and save in permalink
-            ctxt.lat = config.cities[city].center.lat;
-            ctxt.lng = config.cities[city].center.lng;
-            ctxt.zoom = config.cities[city].zoom;
-            permalink.set();
-            if (map.getZoom() >= ctxt.zoom) {
-                map.setView(config.cities[city].center, 
-                            config.cities[city].zoom);
+
+            if (map.getZoom() >= config.cities[city].zoom) {
+                move_to_position(config.cities[city].center,
+                                 config.cities[city].zoom,
+                                 true);
             } else {
                 cdb.update_layer();
-                // Finally setView
-                setTimeout(function(){ // wait to avoid hex
-                    map.setView(config.cities[city].center, 
-                            config.cities[city].zoom);
+                // wait to avoid bloated hex
+                setTimeout(function(){ 
+                    move_to_position(config.cities[city].center,
+                                     config.cities[city].zoom,
+                                     true);
                 }, 1000);
             }
         }, false);
@@ -603,51 +569,6 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                     .each('end', function(){append_to.html("");});
                 }, false);
         }, false);
-
-        /** filters when a candidate is selected */
-        $("div.btn_filt").click(function(){
-            $(".ayuFilt").hide();
-
-            switch(this.dataset.key) {
-                case 'w':
-                    ctxt.w = 1;
-                    ctxt.sw = null;
-                    break;
-                case 'wall':
-                    ctxt.w = 1;
-                    ctxt.sw = null;
-                    break;
-                case 'wnew':
-                    ctxt.w = 1;
-                    ctxt.sw = 1;
-                    break;
-                case 'wold':
-                    ctxt.w = 1;
-                    ctxt.sw = 0;
-                    break;
-                case 'l':
-                    ctxt.w = 0;
-                    ctxt.sw = null;
-                    break;
-                case 'lall':
-                    ctxt.w = 0;
-                    ctxt.sw = null;
-                    break;
-                case 'lnew':
-                    ctxt.w = 0;
-                    ctxt.sw = 1;
-                    break;
-                case 'lold':
-                    ctxt.w = 0;
-                    ctxt.sw = 0;
-                    break;
-            }
-            permalink.set();
-            update();
-
-            return false;
-        });
-
         
         //Search
         $(".lupa").click(function(){
@@ -728,6 +649,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             ctxt.lat = +(cnt.lat).toFixed(2);
             ctxt.lng = +(cnt.lng).toFixed(2);
             permalink.set();
+            config.current_ltlng = cnt;
         });
 
         map.on('zoomstart', function(e) {
@@ -784,11 +706,6 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
         map.on('draw:deleted', draw_deleted);
         map.on('draw:created', draw_filter);
         map.on('draw:edited', draw_filter);
-
-        d3.select("#overlay .cerrar" ).on("click", function(){ // close overlay
-            map.closePopup();
-            _self.overlay.fold();
-        });
     
         /** crowdsource functionality */
         d3.select("input#submit").on("click", function() {
