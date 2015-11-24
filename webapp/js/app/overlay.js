@@ -205,42 +205,6 @@ define(['app/context', 'app/config', 'app/permalink',
         wrapper.height(h);
     };
 
-    Overlay.prototype.update_data_filters = function() {
-        
-        var key, sub_key;
-        
-        if (helpers.is_empty(ctxt.w)) {
-            // Reset data filters
-            $(".btn_filt[data-key='w']").removeClass("active");
-            $(".btn_filt[data-key='l']").removeClass("active");
-            //Clear all subfilters
-            $(".btn_filt.sub").addClass("off");
-        }
-        else {
-            // First clear all subfilters
-            $(".btn_filt.sub").addClass("off");
-            // Activate the corresponding data filter && sub_filter
-            key = (ctxt.w) ? 'w' : 'l';
-            if (helpers.is_empty(ctxt.sw)) {
-                sub_key = key+'all';
-            } else {
-                sub_key = (ctxt.sw) ? key+'new' : key+'old';
-            }
-            update_key_filter(key);
-            update_sub_key_filter(sub_key);
-        }
-
-        //** Updates the class of the filter to activate it*/
-        function update_key_filter(key) {
-            $(".btn_filt[data-key='"+key+"']").addClass("active");
-        }
-
-        //** Updates the class of the subfilters to activate it*/
-        function update_sub_key_filter(sub_key) {
-            $(".btn_filt.sub[data-key='"+sub_key+"']").removeClass("off");
-        }
-    };
-
     //* Update references and data filters if needed */
     Overlay.prototype.update_ref = function() {
         var _self = this;
@@ -256,7 +220,7 @@ define(['app/context', 'app/config', 'app/permalink',
             } else {
                 $(".refes").hide();
                 //update data filters and show them
-                _self.update_data_filters();
+                update_data_filters();
                 $(".filtros").show();
             }
         }
@@ -311,6 +275,113 @@ define(['app/context', 'app/config', 'app/permalink',
             $help.remove();
         }
     };
+
+    /************** EVENTOS HTML **************************/
+    /** filters when a candidate is selected */
+    $("div.btn_filt").click(function(){
+        $el = this;
+        //Get rid of hint
+        $(".ayuFilt").hide(); 
+
+        switch($el.dataset.key) {
+            case 'w':
+                ctxt.sw = null;
+                if (!$el.classList.contains("active")) {
+                    ctxt.w = "1";
+                } else {
+                    ctxt.w = null;
+                }
+                break;
+            case 'wall':
+                // Ignore if elements is selected
+                if (!($el.classList.contains("off"))) return false;
+                ctxt.w = "1";
+                ctxt.sw = null;
+                break;
+            case 'wnew':
+                // Ignore if elements is selected
+                if (!($el.classList.contains("off"))) return false;
+                ctxt.w = "1";
+                ctxt.sw = "1";
+                break;
+            case 'wold':
+                // Ignore if elements is selected
+                if (!($el.classList.contains("off"))) return false;
+                ctxt.w = "1";
+                ctxt.sw = "0";
+                break;
+            case 'l':
+                ctxt.sw = null;
+                if (!$el.classList.contains("active")) {
+                    ctxt.w = "0";
+                } else {
+                    ctxt.w = null;
+                }
+                break;
+            case 'lall':
+                // Ignore if elements is selected
+                if (!($el.classList.contains("off"))) return false;
+                ctxt.w = "0";
+                ctxt.sw = null;
+                break;
+            case 'lnew':
+                // Ignore if elements is selected
+                if (!($el.classList.contains("off"))) return false;
+                ctxt.w = "0";
+                ctxt.sw = "1";
+                break;
+            case 'lold':
+                // Ignore if elements is selected
+                if (!($el.classList.contains("off"))) return false;
+                ctxt.w = "0";
+                ctxt.sw = "0";
+                break;
+        }
+        permalink.set();
+        update_data_filters();
+        // Get new map data
+        cdb.update_layer();
+
+        return false;
+    });
+
+    function update_data_filters() {
+        
+        var key, sub_key;
+        if (helpers.is_empty(ctxt.w)) {
+            // Reset data filters
+            $(".btn_filt[data-key='w']").removeClass("active");
+            $(".btn_filt[data-key='l']").removeClass("active");
+            //Clear all subfilters
+            $(".btn_filt.sub").addClass("off");
+        }
+        else {
+            // First clear all subfilters
+            $(".btn_filt.sub").addClass("off");
+            // Activate the corresponding data filter && sub_filter
+            key = (+ctxt.w) ? 'w' : 'l';
+            nokey = (+ctxt.w) ? 'l' : 'w';
+            if (helpers.is_empty(ctxt.sw)) {
+                sub_key = key+'all';
+            } else {
+                sub_key = (+ctxt.sw) ? key+'new' : key+'old';
+            }
+            update_key_filter(key);
+            update_sub_key_filter(sub_key);
+        }
+
+        //** Updates the class of the filter to activate it*/
+        function update_key_filter(key) {
+            var nokey = (key == "w") ? 'l': 'w';
+            $(".btn_filt[data-key='"+key+"']").addClass("active");
+            $(".btn_filt[data-key='"+nokey+"']").removeClass("active");
+        }
+
+        //** Updates the class of the subfilters to activate it*/
+        function update_sub_key_filter(sub_key) {
+            $(".btn_filt.sub[data-key='"+sub_key+"']").removeClass("off");
+        }
+    }
 
     return Overlay;
 });

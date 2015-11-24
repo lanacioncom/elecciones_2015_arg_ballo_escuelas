@@ -177,12 +177,13 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 .done(function(data) {
                     var position = JSON.parse(data.rows[0].geo).coordinates;
                     var latlng = L.latLng(position[1], position[0]);
-                    var d = data.rows[0];
-                    map.panTo(latlng);
-                    // Hexagons are specific to a zoom level for performance
-                    if (!poll) {
-                        map.setZoom(d.zoom_level);
+                    if (poll) {
+                        move_to_position(latlng);
+                    } else {
+                        var z = data.rows[0].zoom_level;
+                        move_to_position(latlng, z, true);    
                     }
+                    var d = data.rows[0];
                     featureClickDone(latlng, d, data);
                 });
         }
@@ -247,14 +248,32 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             });
         }
 
-        function featureClick(event, latlng, pos, data, layerNumber) {
+        //** move to the selected position 
+        //   and update context accordingly*/
+        function move_to_position(latlng, zoom, z_changed) {
+            if (z_changed) {
+                ctxt.zoom = zoom;
+            }
+            ctxt.lat = +(latlng.lat).toFixed(2);
+            ctxt.lng = +(latlng.lng).toFixed(2);
+            permalink.set();
+            config.current_ltlng = latlng;
+            if (z_changed) {
+                map.setView(latlng, zoom);
+            } else {
+                map.panTo(latlng);
+            }
+        }
+
+        function featureClick(event, loc, pos, data, layerNumber) {
             // Get rid of helper texts
             if ($('div#help_draw').is(":visible")) {
                 $('div#help_draw').fadeOut(200); 
             }
             var fid;
-            config.current_ltlng = latlng;
-            map.panTo(latlng);
+            debugger
+            var latlng = L.latLng(loc[0], loc[1]); 
+            move_to_position(latlng);
 
             if (ctxt.selected_tab != "escuela") {
                 // Get hexagon data from DB
@@ -262,7 +281,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 permalink.set();
 
                 //Analytics
-                if (latlng !== null) {
+                if (loc !== null) {
                     ga.fire_analytics_event("hexagono",ctxt.selected_hex);
                 }
 
@@ -272,7 +291,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 }
                 config.sql.execute(templates.click_hex_sql,{'id': fid,
                                                             'orden': 'votos'})
-                    .done(_.partial(featureClickDone, latlng, data))
+                    .done(_.partial(featureClickDone, loc, data))
                     .error(function(errors) {
                         console.log(errors);
                     });
@@ -282,7 +301,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 permalink.set();
 
                 //Analytics
-                if (latlng !== null) {
+                if (loc !== null) {
                     ga.fire_analytics_event("establecimiento",ctxt.selected_polling);
                 }
 
@@ -294,7 +313,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 var query = templates.click_feature_sql;
                 var params = {'id': fid, 'orden': 'votos'};
                 config.sql.execute(query, params)
-                      .done(_.partial(featureClickDone, latlng, data))
+                      .done(_.partial(featureClickDone, loc, data))
                       .error(function(errors) {
                             console.log(errors);
                       });
@@ -506,20 +525,18 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             var city = $(this).attr('id');
             // Google analytics
             ga.fire_analytics_event("shortcut", city);
-            // Set the new context and save in permalink
-            ctxt.lat = config.cities[city].center.lat;
-            ctxt.lng = config.cities[city].center.lng;
-            ctxt.zoom = config.cities[city].zoom;
-            permalink.set();
-            if (map.getZoom() >= ctxt.zoom) {
-                map.setView(config.cities[city].center, 
-                            config.cities[city].zoom);
+
+            if (map.getZoom() >= config.cities[city].zoom) {
+                move_to_position(config.cities[city].center,
+                                 config.cities[city].zoom,
+                                 true);
             } else {
                 cdb.update_layer();
-                // Finally setView
-                setTimeout(function(){ // wait to avoid hex
-                    map.setView(config.cities[city].center, 
-                            config.cities[city].zoom);
+                // wait to avoid bloated hex
+                setTimeout(function(){ 
+                    move_to_position(config.cities[city].center,
+                                     config.cities[city].zoom,
+                                     true);
                 }, 1000);
             }
         }, false);
@@ -553,51 +570,6 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                     .each('end', function(){append_to.html("");});
                 }, false);
         }, false);
-
-        /** filters when a candidate is selected */
-        $("div.btn_filt").click(function(){
-            $(".ayuFilt").hide();
-
-            switch(this.dataset.key) {
-                case 'w':
-                    ctxt.w = 1;
-                    ctxt.sw = null;
-                    break;
-                case 'wall':
-                    ctxt.w = 1;
-                    ctxt.sw = null;
-                    break;
-                case 'wnew':
-                    ctxt.w = 1;
-                    ctxt.sw = 1;
-                    break;
-                case 'wold':
-                    ctxt.w = 1;
-                    ctxt.sw = 0;
-                    break;
-                case 'l':
-                    ctxt.w = 0;
-                    ctxt.sw = null;
-                    break;
-                case 'lall':
-                    ctxt.w = 0;
-                    ctxt.sw = null;
-                    break;
-                case 'lnew':
-                    ctxt.w = 0;
-                    ctxt.sw = 1;
-                    break;
-                case 'lold':
-                    ctxt.w = 0;
-                    ctxt.sw = 0;
-                    break;
-            }
-            permalink.set();
-            update();
-
-            return false;
-        });
-
         
         //Search
         $(".lupa").click(function(){
@@ -678,6 +650,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             ctxt.lat = +(cnt.lat).toFixed(2);
             ctxt.lng = +(cnt.lng).toFixed(2);
             permalink.set();
+            config.current_ltlng = cnt;
         });
 
         map.on('zoomstart', function(e) {
