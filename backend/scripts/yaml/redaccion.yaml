@@ -6,5 +6,5 @@ common:
 
 exports:
 
-  - query: "SELECT r.id_agrupado as id_escuela, r.id_partido, r.votos, p.nombre as partido, p.siglas, t.id_distrito, t.distrito, t.id_seccion, t.seccion, t.nombre as escuela, t.direccion, t.localidad, t.cod_postal, t.electores, t.votantes, t.validos, t.positivos, t.blancos, t.nulos FROM ballo_resultados_localizaciones r, cache_localizaciones_totales t, partidos p WHERE r.id_agrupado = t.id_agrupado AND r.id_partido = p.id_partido ORDER BY r.id_agrupado, r.votos desc;"
+  - query: "SELECT r.id_agrupado as id_escuela, r.id_partido, r.votos, r.votos_pv, r.votos_paso, p.nombre as partido, p.siglas, t.id_distrito, t.distrito, t.id_seccion, t.seccion, t.nombre as escuela, t.direccion, t.localidad, t.cod_postal, t.electores, t.votantes, t.validos, t.positivos, t.blancos, t.nulos FROM cache_ballo_resultados_localizaciones r, cache_localizaciones_totales t, partidos p WHERE r.id_agrupado = t.id_agrupado AND r.id_partido = p.id_partido ORDER BY r.id_agrupado, r.votos desc;"
     filename: "resultados_partido_escuela.csv"

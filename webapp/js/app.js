@@ -71,7 +71,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
         map.addLayer(config.base_layer);
         //Draw controls
         map.addControl(draw.drawControlFull);
-        //Draw control
+        //Draw layer
         map.addLayer(draw.drawnItems);
 
         //JET: Load sections 
@@ -517,8 +517,8 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             }
         }
 
-        //Delete the draw layers
-        function delete_draw(){
+        //Remove drawing selection
+        function remove_draw_layer(){
             if (draw.drawnItems.getLayers().length){
                 map.fire("draw:deletestart");
                 draw.drawnItems.removeLayer(draw_layer);

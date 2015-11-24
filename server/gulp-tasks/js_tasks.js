@@ -42,14 +42,14 @@ gulp.task('js', ['test_js'], function () {
         .pipe(sourcemaps.init())
         .pipe(uglify())
         .pipe(concat(js_min))
-        // .pipe(sourcemaps.write('./'))
+        .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(cfg.dest+'js'));
     
     var libs = gulp.src(['libs/requirejs/require.js'], { cwd: cfg.cwd })
         .pipe(sourcemaps.init())
         .pipe(uglify())
         .pipe(concat(libs_min))
-        // .pipe(sourcemaps.write('./'))
+        .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(cfg.dest+'libs'));
 
     return merge(js,libs);
