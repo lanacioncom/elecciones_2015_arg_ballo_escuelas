@@ -44,33 +44,35 @@ define(['app/context', 'app/config', 'app/permalink',
                 });
             })
             .on("click", function(d){
-
-                if ((ctxt.selected_tab == "difpaso" ||
-                     ctxt.selected_tab == "difpv") &&
-                    ctxt.selected_party == d.id_partido) {
-                    return false;
+                if (ctxt.selected_tab.startsWith("dif")) {
+                    if (ctxt.selected_party == d.id_partido) {
+                        return false;
+                    } else {
+                        ctxt.selected_party = d.id_partido;
+                        // Analytics
+                        ga.fire_analytics_event("partido",ctxt.selected_party);
+                    }
+                } 
+                else {
+                    if (ctxt.selected_party != d.id_partido){
+                        ctxt.selected_party = d.id_partido;
+                        // Analytics
+                        ga.fire_analytics_event("partido",ctxt.selected_party);
+                        // Hide references
+                        $(".refes").hide();
+                        $(".filtros").fadeIn(100);
+                    } 
+                    else {
+                        // Reset filters
+                        ctxt.w = null;
+                        ctxt.sw = null;
+                        ctxt.selected_party = "0000";
+                        // Show references
+                        $(".filtros").fadeOut(100);
+                        $(".refes").show();
+                    }
                 }
                 
-                if(ctxt.selected_party != d.id_partido){
-                    ctxt.selected_party = d.id_partido;
-                    // Analytics
-                    ga.fire_analytics_event("partido",ctxt.selected_party);
-                    // Hide references
-                    if (ctxt.selected_tab == 'escuela') {
-                        $("div#refEscuelas").hide();
-                        $(".filtros").fadeIn(100);
-                    }
-                }else {
-                    // Reset filters
-                    ctxt.w = null;
-                    ctxt.sw = null;
-                    ctxt.selected_party = "0000";
-                    // Show references
-                    if (ctxt.selected_tab == 'escuela') {
-                        $(".filtros").fadeOut(100);
-                        $("div#refEscuelas").show();
-                    }
-                }
                 // Set permalink
                 permalink.set();
                 _self.update_filter();
@@ -201,16 +203,6 @@ define(['app/context', 'app/config', 'app/permalink',
 
     Overlay.prototype.update_ref = function() {
         switch (ctxt.selected_tab) {
-            case 'escuela':
-                d3.selectAll("div.circ")
-                  .style("background-color", helpers.get_party_color());
-                break;
-            case 'fuerza':
-                var data = helpers.get_party_colors();
-                d3.select(".porcentajes").selectAll("polygon")
-                  .data(data)
-                  .style("fill", function(d) {return d;});
-                break;
             case 'difpaso':
             case 'difpv':
                 d3.select("#hexdif_1").style("fill", helpers.get_party_color());

@@ -84,6 +84,11 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
 
         /** After data is loaded launch app */
         function init() {
+            // Set ref colors
+            var data = config.diccionario_datos["0000"].rango.slice(0).reverse();
+            d3.select(".porcentajes").selectAll("polygon").data(data)
+              .style("fill", function(d) {return d;});
+
             config.screen_width = $(window).width();
             update_nav(true);
             // initialize range 
@@ -194,9 +199,9 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             }
 
             $(".btn_filt.sub").addClass("off");
-            if (ctxt.w == 0) {
+            if (ctxt.w === 0) {
                 $(".btn_filt[data-key='l']").addClass("active");
-                if (ctxt.sw == 0) {
+                if (ctxt.sw === 0) {
                     $(".btn_filt.sub[data-key='lold']").removeClass("off");
                 }
                 else if (ctxt.sw == 1) {
@@ -212,7 +217,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
 
             if (ctxt.w == 1) {
                 $(".btn_filt[data-key='w']").addClass("active");
-                if (ctxt.sw == 0) {
+                if (ctxt.sw === 0) {
                     $(".btn_filt.sub[data-key='wold']").removeClass("off");
                 }
                 else if (ctxt.sw == 1) {
@@ -228,20 +233,20 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
 
             if (ctxt.selected_tab == 'escuela') {
                 if (ctxt.selected_party == '0000') {
-                    $("div#refEscuelas").show();
+                    $(".refes").show();
                     $(".filtros").hide();
                 } else {
-                    $("div#refEscuelas").hide();
+                    $(".refes").hide();
                     $(".filtros").show();
                 }
             }
 
             if (ctxt.selected_tab == 'fuerza') {
                 if (ctxt.selected_party == '0000') {
-                    $("div#refFuerza").show();
+                    $(".refes").show();
                     $(".filtros").hide();
                 } else {
-                    $("div#refFuerza").hide();
+                    $(".refes").hide();
                     $(".filtros").show();
                 }
             }
@@ -519,10 +524,13 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                         if (ctxt.selected_party == '0000') {
                             ctxt.selected_party = '0135';
                         }
-                        // Always hide filters
-                        $(".filtros").hide();
                         break;
                 }
+                // Always hide filters
+                $(".btn_filt.sub").addClass("off");
+                $(".btn_filt").removeClass("active");
+                $(".refes").show();
+                $(".filtros").hide();
                 // Fire an update of the app
                 map.closePopup();
                 permalink.set();
@@ -593,6 +601,8 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
 
         /** filters when a candidate is selected */
         $("div.btn_filt").click(function(){
+            $(".ayuFilt").hide();
+
             switch(this.dataset.key) {
                 case 'w':
                     ctxt.w = 1;
