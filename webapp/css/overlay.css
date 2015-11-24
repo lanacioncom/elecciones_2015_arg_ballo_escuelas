@@ -653,19 +653,19 @@ border:1px solid #999;
     right:-7px
 }
 
-#overlay div.filtros div.ayuFilt1 {
+#overlay div.ayuFilt1 {
     padding: 7px 10px;
     font-size: 11px;
     color: #3FA9F5;
     border: 1px solid #3FA9F5;
     position: absolute;
-    top: -150px;
+    top: 80px;
     left: -174px;
     width: 140px;
     background-color: #fff;
 }
 
-#overlay div.filtros div.ayuFilt1:before {
+#overlay div.ayuFilt1:before {
     content:"";
     width: 0; 
     height: 0; 
