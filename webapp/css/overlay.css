@@ -624,7 +624,7 @@ div.off#overlay div.filtros div#filtros_ganadores {
     position: absolute;
         top: 26px;
     left: -174px;
-    width: 130px;
+    width: 140px;
     background-color: #fff;
 }
 
@@ -640,4 +640,9 @@ div.off#overlay div.filtros div#filtros_ganadores {
     position: absolute;
     top:12px;
     right:-7px
+}
+
+#overlay.activo div.filtros div#filtros_ganadores div.btn_filt{
+    padding-top: 12px;
+    padding-left: 23px;
 }

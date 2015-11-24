@@ -261,6 +261,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 draw.drawControlFull.addTo(map);
                 $('svg.leaflet-zoom-animated').css('pointer-events','none');
             }
+            map.closePopup();
         }
 
         function draw_filter(e) {
