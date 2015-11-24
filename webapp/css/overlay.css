@@ -313,10 +313,17 @@ div.crowd div.formu.on div.mensaje{
     font-family:"suecaslabmedium", Georgia;
 }
 
+#overlay div.refes div.contenedor0, 
 #overlay div.refes div.contenedor, 
 #overlay div.refes div.contenedor2{
     display: none;
 }
+
+.escuela #overlay div.refes div.contenedor0{ display: inherit; }
+.fuerza #overlay div.refes div.contenedor{ display: inherit; }
+.difpaso #overlay div.refes div.contenedor2,
+.difpv #overlay div.refes div.contenedor2{ display: inherit; }
+
 
 #overlay div.refes div.contenedor0 .colores{
   width: 125px;
