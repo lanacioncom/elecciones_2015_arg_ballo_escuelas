@@ -256,8 +256,41 @@
 }
 
 #overlay div.filtros div#filtros_ganadores div.btn_filt {
+	line-height:10px;
+}
+
+#overlay div.filtros div#filtros_ganadores {
+	height:345px;
+}
+
+#overlay div.filtros div#filtros_ganadores div.btn_filt div.submenu {
+	margin-top:5px;
+	margin-left:0px;
+	width: 173%;
+}
+
+#overlay div.filtros div#filtros_ganadores div.btn_filt div.submenu div.sub {
+	font-size: 9px;
+	text-decoration: underline;
+	color:#1796D7;
+	padding: 10px 0px;
 	line-height:11px;
 }
+
+#overlay.activo div.filtros div#filtros_ganadores div.btn_filt{
+	width:55%;
+}
+
+#overlay.activo div.filtros div#filtros_ganadores div.btn_filt div.submenu div.sub {
+    width: 70%;
+    line-height:13px;
+    font-size:12px;
+}
+
+#overlay div.filtros div#filtros_ganadores div.btn_filt div.submenu div.sub span.circle {
+	display:none;
+}
+
 
   .refes{
   	display:none;
