@@ -5,22 +5,20 @@ requirejs.config({
         'templates': '../templates', 
         'text': '../libs/requirejs-text/text',
         'd3': '../libs/d3/d3.min',
-        // 'jquery': '../libs/jquery/dist/jquery.min',
-        // 'jquery-ui': '../libs/jquery-ui/jquery-ui.min',
-        // 'cartodbjs': '../libs/cartodb.js/cartodb'
+        'jquery': '../libs/jquery/dist/jquery.min',
+        'jquery-ui': '../libs/jquery-ui/jquery-ui.min'
     },
     shim: {
-        // 'draw': ['cartodbjs'],
-        // 'cartodbjs': ['jquery']
+        'jquery-ui': ['jquery']
     }
 });
 
 requirejs(['app/context', 'app/config', 'app/templates', 'app/carto',
            'app/media', 'app/overlay', 'app/helpers', 'app/view_helpers',
            'app/draw', 'app/permalink', 'app/analytics', 'app/share',
-           'd3'],
+           'd3', 'jquery-ui'],
 function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers, 
-         draw, permalink, ga, share, d3) {
+         draw, permalink, ga, share, d3, dummy) {
     $(function() {
     "use strict";
         var _self = this;

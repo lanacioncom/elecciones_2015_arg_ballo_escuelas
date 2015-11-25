@@ -30,9 +30,8 @@ gulp.task('copy', function () {
         .pipe(minifyHTML(opts))
         .pipe(gulp.dest(cfg.dest));
 
-    var libs = gulp.src(['libs/jquery/dist/jquery.min.js',
-                         'libs/jquery-ui/jquery-ui.min.js'], { cwd: cfg.cwd })
-        .pipe(gulp.dest(cfg.dest+'libs'));
+    var libs = gulp.src(['libs/cartodb.min.js'], { cwd: cfg.cwd })
+                         .pipe(gulp.dest(cfg.dest+'libs'));
     
     var favicon = gulp.src('favicon.ico', { cwd: cfg.cwd })
         .pipe(gulp.dest(cfg.dest));
