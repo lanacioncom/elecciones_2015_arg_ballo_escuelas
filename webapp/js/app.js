@@ -108,9 +108,6 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 layer.on("load", function() {
                     $(".loader").hide();
                     _self.overlay.update_ref();
-                    if (!(helpers.selected_feature())) {
-                        map.closePopup();
-                    }
                 });
                 var sublayer = layer.getSubLayer(0);
                 config.carto_layers.push(layer.getSubLayer(0));
@@ -208,11 +205,12 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             }
             map.closePopup();
         }
-        // To be used to delete the draw layers whenever we need it
-        var draw_layer;
 
         function draw_filter(e) {
+
+            var draw_layer = null;
             var latlng = null;
+            
             if (e.type === "draw:created") {
                 draw_layer = e.layer;
                 latlng = draw_layer.getBounds().getCenter(); 
@@ -434,6 +432,8 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
         }
 
         function my_popup_close(e) {
+            // Close draw layer if needed
+            remove_draw_layer();
             ctxt.selected_polling = null;
             ctxt.selected_hex = null;
             permalink.set();
@@ -520,9 +520,11 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
 
         //Remove drawing selection
         function remove_draw_layer(){
-            if (draw.drawnItems.getLayers().length){
+            var l = draw.drawnItems.getLayers();
+            if (l.length){
+                //only one layer allowed
                 map.fire("draw:deletestart");
-                draw.drawnItems.removeLayer(draw_layer);
+                draw.drawnItems.removeLayer(l[0]);
                 map.fire("draw:deletestop");
                 map.fire('draw:deleted');
             }

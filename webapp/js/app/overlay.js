@@ -45,7 +45,7 @@ define(['app/context', 'app/config', 'app/permalink',
             })
             .on("click", function(d){
                 // Has to have one party selected
-                if (ctxt.selected_tab.startsWith("dif")) {
+                if (ctxt.selected_tab.substring(0,3) == "dif") {
                     if (ctxt.selected_party == d.id_partido) {
                         return false;
                     } else {
@@ -212,7 +212,7 @@ define(['app/context', 'app/config', 'app/permalink',
     //* Update references and data filters if needed */
     Overlay.prototype.update_ref = function() {
         var _self = this;
-        if (ctxt.selected_tab.startsWith("dif")) {
+        if (ctxt.selected_tab.substring(0,3) === "dif") {
             d3.select("#hexdif_1").style("fill", helpers.get_party_color());
             $(".refes").show();
             $(".filtros").hide();
@@ -293,6 +293,10 @@ define(['app/context', 'app/config', 'app/permalink',
         $(this).fadeOut(100);
     });
 
+    $(".ayuFilt1").click(function() {
+        $(this).fadeOut(100);
+    });
+
     /** filters when a candidate is selected */
     $("div.btn_filt").click(function(){
         $el = this;
@@ -357,6 +361,13 @@ define(['app/context', 'app/config', 'app/permalink',
         ctxt.selected_hex = null;
         permalink.set();
         update_data_filters();
+        // TODO: Do this better
+        var popup = $(".leaflet-popup-close-button");
+        if (popup.length) {
+            // Force popup close prior to loading new data
+            popup[0].click();
+        }
+        $(".leaflet-popup-close-button").click();
         // Get new map data
         cdb.update_layer();
 
