@@ -45,7 +45,7 @@ define(['app/context', 'app/config', 'app/permalink',
             })
             .on("click", function(d){
                 // Has to have one party selected
-                if (ctxt.selected_tab.startsWith("dif")) {
+                if (ctxt.selected_tab.substring(0,3) == "dif") {
                     if (ctxt.selected_party == d.id_partido) {
                         return false;
                     } else {
@@ -212,7 +212,7 @@ define(['app/context', 'app/config', 'app/permalink',
     //* Update references and data filters if needed */
     Overlay.prototype.update_ref = function() {
         var _self = this;
-        if (ctxt.selected_tab.startsWith("dif")) {
+        if (ctxt.selected_tab.substring(0,3) === "dif") {
             d3.select("#hexdif_1").style("fill", helpers.get_party_color());
             $(".refes").show();
             $(".filtros").hide();
