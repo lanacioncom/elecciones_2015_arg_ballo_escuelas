@@ -67,10 +67,12 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
         });
         // Add base layer
         map.addLayer(config.base_layer);
-        //Draw controls
-        map.addControl(draw.drawControlFull);
-        //Draw layer
-        map.addLayer(draw.drawnItems);
+        config.screen_width = $(window).width();
+        if (config.screen_width > 768) {
+            map.addControl(draw.drawControlFull);
+            //Draw layer
+            map.addLayer(draw.drawnItems);        
+        }
 
         //JET: Load sections 
         $.get("data/dict_partidos.json", function(data){
@@ -80,7 +82,6 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
 
         /** After data is loaded launch app */
         function init() {
-            config.screen_width = $(window).width();
             update_nav(true);
             // initialize overlay
             _self.overlay = new Overlay(map);
@@ -630,17 +631,16 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
               },
               minLength: 3,
               select: function( event, ui ) {
+                map.closePopup();
                 ctxt.selected_polling = ui.item.value.split("-")[0].trim();
                 ga.fire_analytics_event("search",ctxt.selected_polling);
-                if (ctxt.selected_tab != "escuela") {
-                    ctxt.selected_tab = "escuela";
-                    cdb.update_layer();
-                }
                 ctxt.w = null;
                 ctxt.sw = null;
-                map.closePopup();
-                ctxt.selected_party = "0000";
+                if (ctxt.selected_tab != "escuela") {
+                    ctxt.selected_party = "0000";
+                }
                 permalink.set();
+                cdb.update_layer();
                 update_nav(true);
                 var id_agrupado = ctxt.selected_polling;
                 d3.select("body").classed("escuela difpaso difpv fuerza", false);
