@@ -465,7 +465,6 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 ctxt.selected_hex = null;
                 ctxt.w = null;
                 ctxt.sw = null;
-                permalink.set();
                 ctxt.selected_tab = btn_id;
                 // Control zoom issues with hexagons
                 if (ctxt.selected_tab != "escuela") {
@@ -502,6 +501,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                         }
                         break;
                 }
+                permalink.set();
                 // Always hide filters
                 $(".btn_filt.sub").addClass("off");
                 $(".btn_filt").removeClass("active");
