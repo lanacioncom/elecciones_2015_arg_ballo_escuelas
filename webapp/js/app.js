@@ -538,19 +538,22 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             var city = $(this).attr('id');
             // Google analytics
             ga.fire_analytics_event("shortcut", city);
-
             if (map.getZoom() >= config.cities[city].zoom) {
                 move_to_position(config.cities[city].center,
                                  config.cities[city].zoom,
                                  true);
             } else {
-                cdb.update_layer();
+                if (ctxt.selected_tab != "escuela") {
+                    // TODO: Much better
+                    ctxt.zoom = 14;
+                    cdb.update_layer();
+                }
                 // wait to avoid bloated hex
                 setTimeout(function(){ 
                     move_to_position(config.cities[city].center,
                                      config.cities[city].zoom,
                                      true);
-                }, 1000);
+                }, 500);
             }
         }, false);
         
