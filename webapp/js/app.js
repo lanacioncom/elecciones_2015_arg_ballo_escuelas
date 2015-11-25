@@ -636,6 +636,10 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                     ctxt.selected_tab = "escuela";
                     cdb.update_layer();
                 }
+                ctxt.w = null;
+                ctxt.sw = null;
+                map.closePopup();
+                ctxt.selected_party = "0000";
                 permalink.set();
                 update_nav(true);
                 var id_agrupado = ctxt.selected_polling;
@@ -718,7 +722,11 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
         });
 
         /** DRAW LAYER EVENTS */
-        map.on('draw:drawstart', draw.drawstart);
+        map.on('draw:drawstart', function(e){
+            // Clear selected feature
+            map.closePopup();
+            draw.drawstart(e);
+        });
         map.on('draw:drawstop', draw.drawstop);
         map.on('draw:deleted', draw_deleted);
         map.on('draw:created', draw_filter);
