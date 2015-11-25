@@ -108,9 +108,6 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 layer.on("load", function() {
                     $(".loader").hide();
                     _self.overlay.update_ref();
-                    if (!(helpers.selected_feature())) {
-                        map.closePopup();
-                    }
                 });
                 var sublayer = layer.getSubLayer(0);
                 config.carto_layers.push(layer.getSubLayer(0));

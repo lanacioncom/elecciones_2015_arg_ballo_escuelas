@@ -293,6 +293,10 @@ define(['app/context', 'app/config', 'app/permalink',
         $(this).fadeOut(100);
     });
 
+    $(".ayuFilt1").click(function() {
+        $(this).fadeOut(100);
+    });
+
     /** filters when a candidate is selected */
     $("div.btn_filt").click(function(){
         $el = this;
@@ -357,6 +361,13 @@ define(['app/context', 'app/config', 'app/permalink',
         ctxt.selected_hex = null;
         permalink.set();
         update_data_filters();
+        // TODO: Do this better
+        var popup = $(".leaflet-popup-close-button");
+        if (popup.length) {
+            // Force popup close prior to loading new data
+            popup[0].click();
+        }
+        $(".leaflet-popup-close-button").click();
         // Get new map data
         cdb.update_layer();
 
