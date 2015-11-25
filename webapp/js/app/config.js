@@ -67,9 +67,9 @@ define([], function() {
         initial_data: {
             'results': [
                 {"id_partido":"0135","votos_paso":6665120,"votos_pv":8474836,"votos":12903301,
-                 "diff_paso":1809697,"diff_pv":4428465, "porc": 51.4, "porc_pv": 34.21},
+                 "diff_paso":1809697,"diff_pv":4428465, "porc": 0.514, "porc_pv": 34.21},
                 {"id_partido":"0131","votos_paso":8493753,"votos_pv":9144031,"votos":12198441,
-                 "diff_paso":650240, "diff_pv":3054410, "porc": 48.6, "porc_pv": 36.91}],
+                 "diff_paso":650240, "diff_pv":3054410, "porc": 0.486, "porc_pv": 36.91}],
             'polling_totals': {
                 nombre: "Resultado Total",
                 electores: 32064684,
