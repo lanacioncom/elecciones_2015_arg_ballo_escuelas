@@ -75,7 +75,7 @@ define([], function() {
                 electores: 32064684,
                 votantes:  25738560,
                 positivos: 25101742,
-                participacion: 80.89
+                participacion: 0.809
             }
         },
         // Sharing default
