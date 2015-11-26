@@ -6,7 +6,7 @@ from settings import DB
 
 # Restrict visible functions
 __all__ = ['run', 'run_query', 'run_scraper',
-           'upload_dc_fs', 'upload_dc_urls']
+           'upload_dc_fs', 'upload_dc_urls', 'upload_rest_dc_fs']
 
 
 # LOCAL PATHS
@@ -29,6 +29,23 @@ def upload_dc_fs():
     with lcd(cwd):
         local('python %s/upload_fs_telegrams_dc.py -f %s' % (scripts_path,
                                                              'pdf2'))
+
+
+@task
+@runs_once
+def upload_rest_dc_fs():
+    '''upload to document cloud from local fs'''
+    with lcd(cwd):
+        # local('python %s/upload_rest_fs_telegrams.py -f %s' % (scripts_path,
+        #                                                        'pdf1'))
+        # local('python %s/upload_rest_fs_telegrams.py -f %s' % (scripts_path,
+        #                                                        'pdf2'))
+        # local('python %s/upload_rest_fs_telegrams.py -f %s' % (scripts_path,
+        #                                                        'pdf3'))
+        local('python %s/upload_rest_fs_telegrams.py -f %s' % (scripts_path,
+                                                               'pdf4'))
+        local('python %s/upload_rest_fs_telegrams.py -f %s' % (scripts_path,
+                                                               'pdf5'))
 
 
 @task
