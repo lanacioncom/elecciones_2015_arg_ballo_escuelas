@@ -38,6 +38,19 @@ define(function (config) {
         },
         get_mesa: function(key) {
             return key.slice(-4);
+        },
+        get_dc_telegram_id: function(dc_id, dc_title) {
+            var telegram_id = dc_id+"-"+dc_title;
+            return telegram_id;
+        },
+        get_dc_id: function(key) {
+            return key.split("-")[1];
+        },
+        get_dc_complete_id: function(key) {
+            return key.slice(2);
+        },
+        get_key_telegrama: function(key) {
+            return key.split("-")[2];
         }
     };
 });
