@@ -7,10 +7,7 @@
             <ul id="telegramas_list">
                 <% _.each(data, function(d) { %>
                     <li>
-                        <!--<a class="dc_telegram" id="k-<%-vh.get_dc_telegram_id(d.dc_id, d.dc_title)%>" href="#"><%- vh.get_mesa(d.key_telegrama)%> en DocumentCloud</a>-->
-                        <a target="_blank" href="<%- vh.get_url(d.key_telegrama) %>">
-                            <%- vh.get_mesa(d.key_telegrama)%>
-                        </a>
+                        <div class="dc_telegram" id="k-<%-vh.get_dc_telegram_id(d.dc_id, d.dc_title)%>"><%- vh.get_mesa(d.key_telegrama)%></div>
                     </li>
                 <% }); %>
             </ul>
