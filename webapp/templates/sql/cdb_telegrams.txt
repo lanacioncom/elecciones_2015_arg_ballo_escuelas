@@ -1,2 +1,2 @@
-SELECT t.key_telegrama FROM arg_ballo_loc_telegramas t
+SELECT t.key_telegrama, t.dc_title, t.dc_id FROM arg_ballo_loc_telegramas t
 WHERE t.id_agrupado = {{id}};

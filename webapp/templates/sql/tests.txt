@@ -140,3 +140,9 @@ ORDER BY id_hexagono, agg_v desc;
 SELECT h.id_hexagono, st_asewkt(h.wkb_geometry_3857) as wkb_geometry_3857,
 h.zoom_level, h.hex_size, h.num_loc, h.arr_loc
 FROM hexagonos h;
+
+------CARTODB TEXTS----------
+2015 ballottage presidential elections in Argentina.
+Shortcuts to official papers
+
+2015_arg_ballo elections online

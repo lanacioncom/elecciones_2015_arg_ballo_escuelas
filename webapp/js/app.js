@@ -38,6 +38,8 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
         var popup_diff_tpl = _.template(templates.popup_diff_html);
         // Telegram template
         var telegram_tpl = _.template(templates.telegramas_html);
+        // Telegram template
+        var dc_embed_tpl = _.template(templates.telegrama_embed_html);
 
 
         // First get permalink status and set context accordingly
@@ -393,13 +395,32 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                         append_to.html(telegram_tpl(params))
                                  .style('opacity', 0)
                                  .transition()
-                                 .style('opacity', 1);  
+                                 .style('opacity', 1);
                         d3.select('#append').on('click', function(){
                             d3.select(".creVent")
                               .transition().style('opacity', 0)
                               .each('end', function(){append_to.html("");});
+                        }, false);
+
+                        //DocumentCloud embedded telegrams viewer
+                        d3.selectAll('.dc_telegram').on('click', function(){
+                            var id = d3.select(this).attr("id");
+                            var append_to = d3.select('#dc_embed');
+                            var params = {'data': id,
+                                          'vh': view_helpers};
+                            append_to.html(dc_embed_tpl(params))
+                                     .style('opacity', 0)
+                                     .transition()
+                                     .style('opacity', 1);  
+                            d3.select('#dc_embed div.cerrar')
+                              .on('click', function(){
+                                d3.select(".creVent")
+                                  .transition().style('opacity', 0)
+                                  .each('end', function(){append_to.html("");});
+                                }, false);
                             }, false);
-                        }, false)
+
+                    })
                     .error(function(errors) {
                         console.log(errors);
                     });
