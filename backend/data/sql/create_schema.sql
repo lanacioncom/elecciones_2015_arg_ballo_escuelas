@@ -247,3 +247,16 @@ WITH (
   OIDS=FALSE
 );
 
+-- Table: ballo_document_cloud
+DROP TABLE IF EXISTS ballo_document_cloud;
+CREATE TABLE ballo_document_cloud
+(
+  id_document character varying(8) NOT NULL,
+  title character varying(30),
+  id_project character varying(8),
+  CONSTRAINT ballo_document_cloud_pkey PRIMARY KEY (id_document)
+)
+WITH (
+  OIDS=FALSE
+);
+

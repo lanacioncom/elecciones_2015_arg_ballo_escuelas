@@ -6,7 +6,8 @@ from settings import DB
 
 # Restrict visible functions
 __all__ = ['run', 'run_query', 'run_scraper',
-           'upload_dc_fs', 'upload_dc_urls', 'upload_rest_dc_fs']
+           'upload_dc_fs', 'upload_dc_urls', 'upload_rest_dc_fs',
+           'delete_dc_docs', 'get_project_dc_docs']
 
 
 # LOCAL PATHS
@@ -27,8 +28,8 @@ def run():
 def upload_dc_fs():
     '''upload to document cloud from local fs'''
     with lcd(cwd):
-        local('python %s/upload_fs_telegrams_dc.py -f %s' % (scripts_path,
-                                                             'pdf2'))
+        local('python %s/telegrams_upload_fs_dc.py -f %s' % (scripts_path,
+                                                             'pdf1'))
 
 
 @task
@@ -36,16 +37,8 @@ def upload_dc_fs():
 def upload_rest_dc_fs():
     '''upload to document cloud from local fs'''
     with lcd(cwd):
-        # local('python %s/upload_rest_fs_telegrams.py -f %s' % (scripts_path,
-        #                                                        'pdf1'))
-        # local('python %s/upload_rest_fs_telegrams.py -f %s' % (scripts_path,
-        #                                                        'pdf2'))
-        # local('python %s/upload_rest_fs_telegrams.py -f %s' % (scripts_path,
-        #                                                        'pdf3'))
-        local('python %s/upload_rest_fs_telegrams.py -f %s' % (scripts_path,
-                                                               'pdf4'))
-        local('python %s/upload_rest_fs_telegrams.py -f %s' % (scripts_path,
-                                                               'pdf5'))
+        local('python %s/telegrams_upload_rest_fs.py -f %s' % (scripts_path,
+                                                               'pdf1'))
 
 
 @task
@@ -53,8 +46,29 @@ def upload_rest_dc_fs():
 def upload_dc_urls():
     '''upload telegram urls to document cloud'''
     with lcd(cwd):
-        local('python %s/upload_url_telegrams_dc.py -f %s' % (scripts_path,
+        local('python %s/telegrams_upload_url_dc.py -f %s' % (scripts_path,
                                                               'pdf5'))
+
+
+@task
+@runs_once
+def delete_dc_docs():
+    '''delete document cloud docs based on csv with ids'''
+    with lcd(cwd):
+        local('python %s/telegrams_delete_dup_dc.py -f %s' % (scripts_path,
+                                                              'duplicates'))
+
+
+@task
+@runs_once
+def get_project_dc_docs(proj=None):
+    '''get document cloud docs from project passed by arguments to the task'''
+    f = "proj_%s_docs" % (proj)
+    with lcd(cwd):
+        local('python %s/telegrams_get_proj_docs_dc.py -p %s -f %s' % (
+            scripts_path,
+            proj,
+            f))
 
 
 @task
@@ -70,4 +84,4 @@ def run_query():
 def run_scraper():
     '''run scraper in parallel to get all the pdfs'''
     with lcd(cwd):
-        local('python %s/scrape_telegrams.py' % (scripts_path))
+        local('python %s/telegrams_scrape.py' % (scripts_path))

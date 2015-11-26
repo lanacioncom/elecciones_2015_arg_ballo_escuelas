@@ -70,3 +70,16 @@ ALTER SEQUENCE pv_resultados_mesas_id_seq RESTART WITH 1;
 TRUNCATE paso_resultados_mesas;
 ALTER SEQUENCE paso_resultados_mesas_id_seq RESTART WITH 1;
 '''
+
+update_loc_telegrams_title = '''
+UPDATE localizaciones_telegramas
+SET dc_title = replace(key_telegrama, '/', '_')
+'''
+
+update_loc_telegrams_dc = '''
+UPDATE localizaciones_telegramas
+SET dc_id = d.id_document,
+    dc_proj = d.id_project
+FROM (SELECT id_document, title, id_project FROM ballo_document_cloud) as d
+WHERE dc_title = UPPER(d.title)
+'''

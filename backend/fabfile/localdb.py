@@ -123,7 +123,8 @@ def load_initial():
         ('partidos', 'comun'),
         ('establecimientos', 'comun'),
         ('relaciones', 'comun'),
-        ('hexagonos', 'comun')
+        ('hexagonos', 'comun'),
+        ('ballo_document_cloud', 'ballo/output', 'documentcloud')
     ]
     # Load tables with serials (needs cols)
     load_wcols(t_wcols)

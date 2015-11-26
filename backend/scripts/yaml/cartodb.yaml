@@ -6,6 +6,9 @@ common:
 
 exports:
 
+  - query: "SELECT t.id_agrupado, t.key_telegrama, t.dc_title, t.dc_id FROM localizaciones_telegramas t ORDER BY t.id_agrupado"
+    filename: "arg_ballo_loc_telegramas.csv"
+
   - query: "SELECT p.id_partido, p.siglas, p.nombre FROM partidos p ORDER BY p.id_partido;"
     filename: "arg_ballo_partidos.csv"
 
@@ -14,9 +17,6 @@ exports:
 
   - query: "SELECT t.id_establecimiento, t.id_agrupado FROM relaciones t ORDER BY t.id_establecimiento"
     filename: "arg_ballo_rel_est_loc.csv"
-
-  - query: "SELECT t.id_agrupado, t.key_telegrama FROM localizaciones_telegramas t ORDER BY t.id_agrupado"
-    filename: "arg_ballo_loc_telegramas.csv"
 
   - query: "SELECT w.id_agrupado, w.keys_sie, w.establecimientos, w.id_distrito, w.distrito, w.id_seccion, w.seccion, w.circuitos, w.rangos_mesas, w.num_mesas, w.nombre, w.direccion, w.localidad, w.cod_postal, w.electores, w.votantes, w.positivos, w.sqrt_positivos as raiz_positivos, w.id_partido, w.votos, w.margin_victory as margen_victoria, ST_asText(w.geom) as the_geom FROM cache_ballo_winner_localizaciones w WHERE w.positivos > 0 ORDER BY w.id_agrupado;"
     filename: "cache_arg_ballo_loc_ganador.csv"

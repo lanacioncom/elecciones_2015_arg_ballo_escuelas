@@ -1,7 +1,7 @@
 # coding: utf-8
 import argparse
 import os
-from csvkit.py2 import CSVKitDictReader
+from csvkit.py2 import CSVKitDictReader, CSVKitDictWriter
 from documentcloud import DocumentCloud
 from time import time
 from settings import DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD
@@ -33,56 +33,42 @@ joblib.parallel.CallBack = CallBack
 
 # GLOBAL SETTINGS
 cwd = os.path.dirname(__file__)
-INPUT_PATH = os.path.join(cwd, '../data/telegrams')
+OUTPUT_PATH = os.path.join(cwd, '../data/telegrams')
+HEADER = ['document_id', 'document_title', 'project_id']
 N_CORES = 4
 
 
-def upload_telegram(folder=None, client=None, row=None):
-    '''Upload pdf from fs'''
-    title = row['key'].replace(".pdf", "")
-    fpath = '%s/%s/%s' % (INPUT_PATH, folder, row['key'])
-    print fpath
-    obj_list = client.documents.search(
-        'title:%s' % (title),
-        page=1,
-        per_page=10)
-    print obj_list
-    if not len(obj_list):
-        new_id = client.documents.upload(
-            fpath,
-            title=title,
-            access='public',
-            source='http://www.resultados.gob.ar/'
-        )
-        print new_id
-        return new_id
-    else:
-        return None
+def get_proj_docs_dc(client=None, proj=None):
+    '''delete pdf from DocumentCloud'''
+    result = []
+    obj = client.projects.get(id=proj)
+    print len(obj.document_ids)
+    for doc in obj.document_ids:
+        id = doc.split("-")[0]
+        title = doc.split("-")[1]
+        r = {'document_id': id, 'document_title': title, 'project_id': proj}
+        print r
+        result.append(r)
+    return result
 
 
-def process_telegrams(fname=None):
+def process_telegrams(fname=None, proj=None):
     '''Download telegrams from gov site'''
     # Create output files folder if needed
     client = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
-    # Create the project
-    project, created = client.projects.get_or_create_by_title("2015 Elecciones Ballottage Telegramas")
-    with open('%s/%s.csv' % (INPUT_PATH, fname), 'r') as f:
-        reader = CSVKitDictReader(f)
-        r = Parallel(n_jobs=N_CORES)(delayed(upload_telegram)(fname, client, row)
-                                     for row in reader)
+    with open('%s/%s.csv' %
+              (OUTPUT_PATH, fname), 'w') as fout:
+        writer = CSVKitDictWriter(fout, fieldnames=HEADER)
+        writer.writeheader()
+        r = get_proj_docs_dc(client, proj)
+        writer.writerows(r)
 
         print('finished processing {}.csv'.format(fname))
-        r = filter(None, r)
-        if len(r):
-            print len(r)
-            project.document_list = r
-            # Save the changes to the project
-            project.put()
 
 
 def run(args):
     '''Let DC get the telegrams for us'''
-    process_telegrams(args.file)
+    process_telegrams(args.file, args.project)
 
 if __name__ == '__main__':
     # Arguments handling
@@ -92,5 +78,10 @@ if __name__ == '__main__':
                         type=str,
                         required=True,
                         help="index file with telegram keys")
+    parser.add_argument("-p",
+                        "--project",
+                        type=str,
+                        required=True,
+                        help="project id in DC")
     args = parser.parse_args()
     run(args)
