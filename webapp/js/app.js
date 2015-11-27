@@ -90,7 +90,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             // Add cartodb_layer that being asynchronous
             // launches update after loading
             add_cartodb_layer();
-            
+            $("#help_draw").show();
         }
 
         // Set initial zoom level for responsiveness
@@ -188,11 +188,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
         function update() {
             // Update the map data
             cdb.update_layer();
-            
-            // If there's a selected feature update data
-            // if ((!helpers.is_empty(ctxt.selected_hex)) ||
-            //     (!helpers.is_empty(ctxt.selected_polling))) {
-            //     // We need to update the overlay completely
+
             if (helpers.selected_feature()) {
                 update_selected_feature();
             }
@@ -202,7 +198,6 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             if (!draw.drawnItems.getLayers().length) {
                 draw.drawControlEditOnly.removeFrom(map);
                 draw.drawControlFull.addTo(map);
-                $('svg.leaflet-zoom-animated').css('pointer-events','none');
             }
             map.closePopup();
         }
@@ -218,9 +213,6 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 draw.drawnItems.addLayer(draw_layer);
                 draw.drawControlFull.removeFrom(map);
                 draw.drawControlEditOnly.addTo(map);
-                //Hack around the issue with two svgs inside leaflet-overlay-pane
-                //Allow pointer events only when a shape is drawn
-                $('svg.leaflet-zoom-animated').css('pointer-events','auto');
             }
             else {
                 draw_layer = e.layers.getLayers()[0];
@@ -659,6 +651,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 ctxt.sw = null;
                 if (ctxt.selected_tab != "escuela") {
                     ctxt.selected_party = "0000";
+                    ctxt.selected_tab = "escuela";
                 }
                 permalink.set();
                 cdb.update_layer();

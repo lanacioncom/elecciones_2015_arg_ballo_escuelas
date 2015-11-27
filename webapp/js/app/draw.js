@@ -76,9 +76,6 @@ define(['draw', 'app/config', 'app/context'], function (dummy, config, ctxt) {
     function drawstop(e) {
         // Re-enable cartodb interaction to avoid collitions
         config.carto_layers[0].setInteraction(true);
-        if (!drawnItems.getLayers().length) {
-            $('svg.leaflet-zoom-animated').css('pointer-events','none');
-        }
     }
 
     return {
