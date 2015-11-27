@@ -30,7 +30,6 @@ define([], function() {
         sql: null,
         screen_width: null,
         diccionario_datos: null,
-        current_latlng: null,
         prev_zoom_level: null,
         hex_zoom_threshold: 14,
         cities: {
@@ -82,6 +81,8 @@ define([], function() {
         parent_url: 'http://www.lanacion.com.ar',
         // Store user help visibility
         show_party_help: true,
-        show_data_help: true
+        show_data_help: true,
+        show_draw_help: true,
+        popup: null
     };
 });

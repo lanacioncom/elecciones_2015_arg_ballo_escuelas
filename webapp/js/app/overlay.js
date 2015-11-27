@@ -49,6 +49,8 @@ define(['app/context', 'app/config', 'app/permalink',
                     if (ctxt.selected_party == d.id_partido) {
                         return false;
                     } else {
+                        // Only close popup if the info needs to be updated
+                        _self.map.closePopup();
                         ctxt.selected_party = d.id_partido;
                         // Analytics
                         ga.fire_analytics_event("partido",ctxt.selected_party);
@@ -87,7 +89,6 @@ define(['app/context', 'app/config', 'app/permalink',
                 // Set permalink
                 permalink.set();
                 _self.update_filter();
-                _self.map.closePopup();
                 // Get new map data
                 cdb.update_layer();
             });
@@ -362,12 +363,7 @@ define(['app/context', 'app/config', 'app/permalink',
         permalink.set();
         update_data_filters();
         // TODO: Do this better
-        var popup = $(".leaflet-popup-close-button");
-        if (popup.length) {
-            // Force popup close prior to loading new data
-            popup[0].click();
-        }
-        $(".leaflet-popup-close-button").click();
+        helpers.sim_click(".leaflet-popup-close-button");
         // Get new map data
         cdb.update_layer();
 

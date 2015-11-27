@@ -60,7 +60,8 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             minZoom: 4,
             maxZoom: 18,
             attributionControl: false,
-            maxBounds: bounds
+            maxBounds: bounds,
+            closePopupOnClick: false
         });
 
         // Init SQL API
@@ -272,9 +273,6 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 }
 
                 fid = ctxt.selected_hex;
-                if (ctxt.selected_hex && ctxt.selected_hex != fid) {
-                    map.closePopup();
-                }
                 config.sql.execute(templates.click_hex_sql,{'id': fid,
                                                             'orden': 'votos'})
                     .done(_.partial(featureClickDone, loc, data))
@@ -292,10 +290,6 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
                 }
 
                 fid = data.id_agrupado;
-                if (ctxt.selected_polling && ctxt.selected_polling != fid) {
-                    map.closePopup();
-                }
-
                 var query = templates.click_feature_sql;
                 var params = {'id': fid, 'orden': 'votos'};
                 config.sql.execute(query, params)
@@ -310,18 +304,15 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
         //Called when the Cartodb SQL has finished
         //Origin featureClick or a draw selection
         function featureClickDone(latlng, establecimiento_data, votos_data) {
-            var popup = null;
 
             // ONLY WHEN DRAWING
             if (!votos_data.total_rows) {
                 var msg_header = "Error";
                 var msg_body = "No se ha encontrado ninguna "+
                                "escuela con la selección actual";
-                popup = L.popup()
-                         .setLatLng(latlng)
-                         .setContent(popup_tpl({message_header: msg_header,
-                                                message_body: msg_body}))
-                         .openOn(map);
+                var content = popup_tpl({message_header: msg_header,
+                                         message_body: msg_body});
+                set_map_popup(latlng, content);
                 return false;
             }
 
@@ -359,17 +350,14 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             if (ctxt.selected_tab == "difpaso" || 
                 ctxt.selected_tab == "difpv") {
                 // Remove unused party data
-                ttip_data.v.rows = _.where(ttip_data.v.rows, {id_partido: ctxt.selected_party});
-                popup = L.popup().setLatLng(latlng)
-                                 .setContent(popup_diff_tpl(ttip_data))
-                                 .openOn(map);
+                ttip_data.v.rows = _.where(ttip_data.v.rows, 
+                                           {id_partido: ctxt.selected_party});
+                // Differences tooltip
+                set_map_popup(latlng, popup_diff_tpl(ttip_data));
                 return false;
             }
-
-            //Tooltip
-            popup = L.popup().setLatLng(latlng)
-                             .setContent(popup_perc_tpl(ttip_data))
-                             .openOn(map);
+            // Feature tooltip
+            set_map_popup(latlng, popup_perc_tpl(ttip_data));
 
             // Show the list of linked telegrams
             d3.select("div.telegramas").on('click', function(d) {
@@ -432,28 +420,18 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
             $('#map_container').css('cursor', 'auto');
         }
 
-        /** RESET EVENTS */
-        function reset_map() {
-            // Reset map position
-            if (is_small_screen()) {
-                map.setView(config.arg_center, config.izoom_mob);
-            }
-            else {
-                map.setView(config.arg_center, config.izoom);
-            }
-        }
 
-        function my_popup_close(e) {
-            // Close draw layer if needed
-            remove_draw_layer();
-            ctxt.selected_polling = null;
-            ctxt.selected_hex = null;
-            permalink.set();
-            setTimeout(function(){ // wait to see if it is just a feature change
-                if (!ctxt.selected_polling && !ctxt.selected_hex) {
-                    _self.overlay.fold();
-                }
-            }, 200);
+        /** Create or update a map popup depending 
+        on context and current status */
+        function set_map_popup(latlng, content) {
+            if (!config.popup) {
+                config.popup = L.popup();
+            }
+            if (config.popup._map) {
+                config.popup.setLatLng(latlng).setContent(content).update();
+            } else {
+                config.popup.setLatLng(latlng).setContent(content).openOn(map);
+            }
         }
 
         /** Can be accessed on init or tab click */
@@ -644,21 +622,20 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
               },
               minLength: 3,
               select: function( event, ui ) {
-                map.closePopup();
                 ctxt.selected_polling = ui.item.value.split("-")[0].trim();
                 ga.fire_analytics_event("search",ctxt.selected_polling);
-                ctxt.w = null;
-                ctxt.sw = null;
                 if (ctxt.selected_tab != "escuela") {
-                    ctxt.selected_party = "0000";
-                    ctxt.selected_tab = "escuela";
+                    helpers.sim_click("div#escuela");
                 }
+                else {
+                    ctxt.w = null;
+                    ctxt.sw = null;
+                    remove_draw_layer();
+                    cdb.update_layer();
+                }
+                ctxt.selected_polling = ui.item.value.split("-")[0].trim();
                 permalink.set();
-                cdb.update_layer();
-                update_nav(true);
                 var id_agrupado = ctxt.selected_polling;
-                d3.select("body").classed("escuela difpaso difpv fuerza", false);
-                $("body").addClass("escuela");
                 config.sql.execute(templates.permalink_sql,
                                    {'id': id_agrupado})
                 .done(function(data) {
@@ -677,7 +654,8 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
 
         // Hide overlay if dragged position is out of bounds
         map.on('dragend', function(e) {
-            if (config.current_latlng !== null && !map.getBounds().contains(config.current_latlng)) {
+            if (config.popup !== null && 
+                !map.getBounds().contains(config.popup.getLatLng())) {
                 map.closePopup();
             }
             var cnt = map.getCenter();
@@ -690,7 +668,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
         map.on('zoomstart', function(e) {
             var prev_zoom_level = map.getZoom();
             config.prev_zoom_level = prev_zoom_level;
-            if (ctxt.selected_polling || ctxt.selected_hex) {
+            if (ctxt.selected_hex) {
                 map.closePopup();
             }
         });
@@ -732,7 +710,11 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
 
         // Close popup and overlay
         map.on('popupclose', function(e) {
-            my_popup_close(e);
+            remove_draw_layer();
+            ctxt.selected_polling = null;
+            ctxt.selected_hex = null;
+            permalink.set();
+            _self.overlay.fold();
         });
 
         /** DRAW LAYER EVENTS */
@@ -745,6 +727,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
         map.on('draw:deleted', draw_deleted);
         map.on('draw:created', draw_filter);
         map.on('draw:edited', draw_filter);
+
     
         /** crowdsource functionality */
         d3.select("input#submit").on("click", function() {

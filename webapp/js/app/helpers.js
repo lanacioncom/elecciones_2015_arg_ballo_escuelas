@@ -36,6 +36,14 @@ function(ctxt, config) {
             }
             return false;
         },
+        sim_click: function(selector) {
+            // Simulate a click on an existing element
+            // If there are many pick the first one.
+            var a_selector = $(selector);
+            if (a_selector.length) {
+                a_selector[0].click();
+            }
+        },
         show_party_help: function() {
             if (ctxt.selected_tab == "escuela" && 
                 ctxt.selected_party == "0000" &&
