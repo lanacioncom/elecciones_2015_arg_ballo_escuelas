@@ -693,14 +693,7 @@ function(ctxt, config, templates, cdb, media, Overlay, helpers, view_helpers,
 
                     /** change view to polling stations for low zoom levels */
                     d3.select('div.cambianav').on('click', function(){ 
-                        ctxt.selected_tab = "escuela";
-                        ctxt.selected_party = "0000";
-                        permalink.set();
-                        cdb.update_layer();
-                        map.options.maxZoom = 18;
-                        map.fire('zoomend', {forced: true});
-                        d3.select("body").classed("escuela difpaso fuerza difpv", false);
-                        update_nav(true);
+                        helpers.sim_click("div#escuela");
                     }, false);
                 }
             }
