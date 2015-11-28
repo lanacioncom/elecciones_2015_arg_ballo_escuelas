@@ -19,7 +19,8 @@ define(['app/context','app/config', 'app/templates'], function (ctxt, config, te
                     "votos, votos_pv, votos_paso,"+
                     "porc, porc_pv, porc_paso,"+
                     "diff_pv, diff_paso";
-        var i_nohex = "id_agrupado, nombre, direccion, id_partido, ganador, swing,"+
+        var i_nohex = "id_agrupado, nombre, direccion,"+
+                      "id_partido, ganador, swing,"+
                       "votos, votos_pv, votos_paso,"+
                       "porc, porc_pv, porc_paso,"+
                       "diff_pv, diff_paso, adiff_pv";

@@ -5,15 +5,6 @@ div.ttip_header {
     font-weight: bold;
     line-height:14px;
 }
-/*div.ttip_header {
-    width: 160px;
-    font-size:13px;
-    font-weight: bold;
-    padding-bottom: 5px;
-    line-height:14px;
-    border-bottom: 1px dashed #dadada;
-    margin-bottom: 5px;
-}*/
 
 div.ttip_body {
     width: 160px;

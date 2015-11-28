@@ -9,11 +9,10 @@ define(['app/context', 'app/config', 'app/permalink',
         var _self = this;
         _self.map = map;
         _self.anchoWrapper = $(window).width();
-        _self.ayuda.init();
+        _self.offset = $(window).width() < 450 ? 65 : 95;
         _self.create();
     };
 
-    var resta;
     Overlay.prototype.create = function(){
         /** update overlay */
         var _self = this;
@@ -65,8 +64,12 @@ define(['app/context', 'app/config', 'app/permalink',
                     }
                 } 
                 else {
-                    config.show_party_help = false;
-                    $("div.ayuFilt1").fadeOut();
+                    // Remove helper text
+                    helpers.sim_click("div.ayuFilt1");
+                    // TODO: Do this better
+                    if (helpers.data_filtered()) {
+                        _self.map.closePopup();    
+                    }
                     if (ctxt.selected_party != d.id_partido){
                         ctxt.selected_party = d.id_partido;
                         // Analytics
@@ -104,17 +107,10 @@ define(['app/context', 'app/config', 'app/permalink',
         li.style("top", function( d, i){
             return li_height * i + "px";
         });
-
-        
-        if(_self.anchoWrapper < 450){
-            resta = 55;
-        }else{
-            resta = 95;
-        }
         
         // Once the hidden overlay is filled show only in folded mode
         var $overlay = $('#overlay');
-        var por_hidden = $overlay.width() - resta;
+        var por_hidden = $overlay.width() - _self.offset;
         $overlay.animate({right:-por_hidden},'fast');
         // Updated selected party status based on context
         _self.update_filter();
@@ -123,9 +119,10 @@ define(['app/context', 'app/config', 'app/permalink',
 
 
     Overlay.prototype.fold = function() {
+        var _self = this;
         var $overlay = $('#overlay');
         d3.selectAll("li.candidato").classed('active', false);
-        var por_hidden = $overlay.width() - resta;
+        var por_hidden = $overlay.width() - _self.offset;
         $overlay.animate({right:-por_hidden},'fast');
         this.update();
         $overlay.removeClass("activo");
@@ -161,8 +158,10 @@ define(['app/context', 'app/config', 'app/permalink',
 
         li.each(function(d, i){
             var el = d3.select(this);
-            el.select(".porc").html(view_helpers.get_formatted_num(d.porc*100,1) + "%");
-            el.select(".votos").html(view_helpers.get_formatted_num(d.votos,0) + " votos");
+            el.select(".porc")
+              .html(view_helpers.get_formatted_num(d.porc*100,1) + "%");
+            el.select(".votos")
+              .html(view_helpers.get_formatted_num(d.votos,0) + " votos");
             // update width bars TODO
         });
 
@@ -181,9 +180,14 @@ define(['app/context', 'app/config', 'app/permalink',
                 var el = d3.select(this);
                 // update width bars
                 var bar_w = (+d.votos / +max)*w_content;
-                el.select(".barra").transition().duration(500).style("width", bar_w+"px");
-                el.select(".porc").html(view_helpers.get_formatted_num(d.porc*100,1) + "%");
-                el.select(".votos").html(view_helpers.get_formatted_num(d.votos,0) + " votos");
+                el.select(".barra")
+                  .transition()
+                  .duration(500)
+                  .style("width", bar_w+"px");
+                el.select(".porc")
+                  .html(view_helpers.get_formatted_num(d.porc*100,1) + "%");
+                el.select(".votos")
+                  .html(view_helpers.get_formatted_num(d.votos,0) + " votos");
 
             });
         // update selected party visually
@@ -239,70 +243,12 @@ define(['app/context', 'app/config', 'app/permalink',
         }
     };
 
-
-    Overlay.prototype.ayuda = {
-        'init': function(){ 
-            var help = this; 
-            $(".ayuda_overlay").on("click", function(){
-                help.remove(); 
-                return false;
-            }); 
-        },
-        'update_position': function(){
-            var $help = $(".ayuda_overlay");
-            if($help.length){
-                var $ul = $("ul#overlay_ul");
-                var pos = $ul.offset();
-                
-                var left = $help.width() + -8,
-                    top = ($('li:first-child', $ul).height() / 2 ) - 25;
-                
-                var window_width = $(window).width();
-                
-                if (window_width <= 768){
-                    this.remove();
-                    
-                } else if (window_width <= 850) { 
-                    top -= 60;
-                    left += 20;
-                } else if (window_width <= 1103){
-                    left += 20;
-                }
-                
-                $help.css('top', pos.top + top);
-                $help.css('left', -left);
-                
-            }
-        },
-        'hide': function (){
-            var $help = $(".ayuda_overlay");
-            $help.fadeOut();
-        },
-        'show': function() {
-            var $help = $(".ayuda_overlay");
-            $help.fadeIn();
-
-        },
-        'remove': function(){
-            var $help = $(".ayuda_overlay");
-            $help.remove();
-        }
-    };
-
     /************** EVENTOS HTML **************************/
-    $(".ayuFilt").click(function() {
-        $(this).fadeOut(100);
-    });
-
-    $(".ayuFilt1").click(function() {
-        $(this).fadeOut(100);
-    });
-
     /** filters when a candidate is selected */
     $("div.btn_filt").click(function(){
         $el = this;
-        //Get rid of hint
-        $(".ayuFilt").fadeOut(); 
+        // Remove helper text
+        helpers.sim_click("div.ayuFilt");
 
         switch($el.dataset.key) {
             case 'w':

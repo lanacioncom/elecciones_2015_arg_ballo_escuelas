@@ -1,22 +1,7 @@
 define(['app/context'], function(ctxt){
 
 
-    function set(share){
-        // var context;
-        // min2share();
-        // if (share) {
-        //     var ctxtbis = ctxt.clone();
-        //     c = min2share();
-        //     context = c.replace(/\"|\{|\}/g, '')
-        //                .replace(/,/g, "&")
-        //                .replace(/:/g, "=");
-        // } else {
-        //     var c = JSON.stringify(ctxt);
-        //     context = c.replace(/\"|\{|\}/g, '')
-        //                .replace(/,/g, "&")
-        //                .replace(/:/g, "=");
-        // }
-
+    function set(){
         location.hash = min2share();
     }
 
@@ -57,10 +42,12 @@ define(['app/context'], function(ctxt){
         }
     };
 
+    /** Get url data and store it in the app context */
     function get(u){
-        /*jshint evil:true */
+    /*jshint evil:true */
         var re = /^([1-9]\d*\.?\d+|true|false|null|0\.\d+)$/;
         
+        // If a URL is passed use that, use the location hash otherwise
         u = u ? u : location.hash.replace("#", "");
         if(u){
             u = u.split(/\&/);
@@ -81,18 +68,16 @@ define(['app/context'], function(ctxt){
         }
     }
 
-    /** return */
+    /** minimizes the context data to set the permalink of the app */
     function min2share(){
         var ctxtMin = {};
         
         for (var k in  ctxt){
-            
             var key_short = ctxtDict.toShort[k];
-
             ctxtMin[key_short] = ctxt[k];
-            
             if(!key_short){
-                console.log("Esta key del contexto no esta definida en el diccionario: %s", k);
+                console.log("Esta key del contexto no esta definida"+
+                            " en el diccionario: %s", k);
             }
         }
 

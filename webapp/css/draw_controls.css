@@ -1,7 +1,3 @@
-div#instructivo.disabled {
-  opacity: 0;
-}
-
 div.leaflet-draw.disabled {
   display: none;
 }

@@ -6,7 +6,7 @@ function(ctxt, config) {
         return (!str || 0 === str.length);
     }
     
-    var helpers = {
+    return {
         animate_barras: function() {
             var w_content = $(".cont_barra").width();
             $("#overlay .cont_barra .barra").each(function(i, el){
@@ -51,8 +51,13 @@ function(ctxt, config) {
                 return true;
             }
             return false;
-        } 
+        },
+        data_filtered: function() {
+            if ((!is_empty(ctxt.w))|| 
+                (!is_empty(ctxt.sw))) {
+                return true;
+            }
+            return false;
+        }
     };
-
-    return helpers;
 });
