@@ -166,7 +166,7 @@ function(ctxt, config, templates, cdb, responsive, Overlay,
                 _self.overlay.update_filter();
 
                 // Set map according to parentUrl
-                move_to_position(L.latLng(ctxt.lat, ctxt.lng), ctxt.zoom);
+                move_to_position(L.latLng(ctxt.lat, ctxt.lng), ctxt.zoom, true);
             }
             share.activate_share(utoken[0]);
         });
@@ -442,6 +442,8 @@ function(ctxt, config, templates, cdb, responsive, Overlay,
 
         /** Initialize tab appearance based on context */
         function init_nav() {
+            d3.select("body")
+              .classed("escuela difpaso fuerza difpv", false);
             d3.selectAll(".btn").classed("on", false);
             var selector = ".btn#"+ctxt.selected_tab;
             $(selector).addClass("on");
@@ -452,6 +454,9 @@ function(ctxt, config, templates, cdb, responsive, Overlay,
             else {
                 if (helpers.show_party_help()) {
                     $("div.ayuFilt1").fadeIn();
+                }
+                else {
+                    $("div.ayuFilt1").hide();
                 }
             }
         }

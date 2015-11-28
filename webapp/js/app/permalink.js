@@ -64,6 +64,9 @@ define(['app/context'], function(ctxt){
                         ctxt[key_long] = c[1];
                     }
                 }
+                else {
+                    ctxt[key_long] = null;
+                }
             });
         }
     }

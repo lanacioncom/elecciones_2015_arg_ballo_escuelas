@@ -51,6 +51,10 @@ define([], function() {
         hex_zoom_threshold: 14,
         // Shortcut buttons target map position
         cities: {
+            "arg": {
+                center: L.latLng(-40.64, -62.13),
+                zoom: 4
+            },
             "conurbano": {
                 center: L.latLng(-34.64, -58.54),
                 zoom: 10
