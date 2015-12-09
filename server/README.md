@@ -5,7 +5,7 @@ Server usage
 
 We use gulp to launch our development web server using live reloading of assets.
 
-We also use gulp tasks in order to optimize, minimify, uglify and build our app.
+We also use gulp tasks in order to optimize, minify, uglify and build our app.
 
 We have used the [_gulp-requirejs_](https://www.npmjs.com/package/gulp-requirejs) node package to integrate the requirejs optimization in our gulp deployment process.
 
