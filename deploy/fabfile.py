@@ -88,9 +88,6 @@ def deploy_esp(server_ix='10', test=False):
             # Derive the project name from the parent folder name
             project_folder = os.path.basename(os.path.abspath(os.path.join(cwd,
                                                               '../')))
-            msg = "project_folder: %s" % (project_folder)
-            puts(msg, flush=True)
-
         dest_path = os.path.join(parent_path, project_folder)
 
     # mount especiales server
@@ -134,7 +131,7 @@ def umount():
 def deploy():
     '''deploy build to especiales 10 & 11'''
     execute(deploy_esp, server_ix='10')
-    # execute(deploy_esp, server_ix='11')
+    execute(deploy_esp, server_ix='11')
 
 
 @task
