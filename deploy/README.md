@@ -5,7 +5,7 @@ Deployment usage
 
 This deployment uses SMB protocol to mount the server target folder, then use fabric to copy the files from the build folder into it and finally unmount the server.
 
-** This process is internal to La Nación and thus not interesting for others to reuse, anyhow we publish the source because maybe someone needs to adapt it to their needs and still find it useful**
+**This process is internal to La Nación and thus not interesting for others to reuse, anyhow we publish the source because maybe someone needs to adapt it to their needs and still find it useful**
 
 ## Requirements
 * Python 2.7.\* && virtualenv && pip installed 

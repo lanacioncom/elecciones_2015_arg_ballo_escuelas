@@ -13,7 +13,7 @@ After obtaining all the source files in an appropiate format we have launch a tr
 
 2. Preprocessing the input datasets to facilitate the aggregation process.
 
-3. Running the main transformation script (uses [_dataset_](https://dataset.readthedocs.org/en/latest/))that aggregates the results by polling station.
+3. Running the main transformation script (uses [_dataset_](https://dataset.readthedocs.org/en/latest/)) that aggregates the results by polling station.
 
 4. Running the script that generates and calculates the hexagons for the required zoom levels.
 
