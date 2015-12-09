@@ -79,7 +79,7 @@ def import_shortcuts():
 @runs_once
 def import_ballo_results():
     '''import location csv files into cartodb using import && SQL APIs'''
-    # execute(import_table, 'localizaciones', 'cache_arg_ballo_loc_ganador')
+    # execute(import_table, 'localizaciones', 'cache_arg_ballo_loc_ganador')
     execute(import_table, 'localizaciones', 'cache_arg_ballo_loc_votos')
     execute(import_table, 'hexagonos', 'cache_arg_ballo_hex_votos')
 
@@ -106,7 +106,7 @@ def import_paso_results():
 @runs_once
 def import_hex_winners():
     '''import hex winners for each election'''
-    # UNUSED
+    # UNUSED
     execute(import_table, 'hexagonos', 'cache_arg_ballo_hex_ganador')
     execute(import_table, 'hexagonos', 'cache_arg_pv_hex_ganador')
     execute(import_table, 'hexagonos', 'cache_arg_paso_hex_ganador')
@@ -176,4 +176,3 @@ def crowdsource():
         execute(run_query, cdbqueries.crowd_index_sql)
         execute(run_query, cdbqueries.crowd_editor_sql)
         execute(run_query, cdbqueries.crowd_function_sql)
-

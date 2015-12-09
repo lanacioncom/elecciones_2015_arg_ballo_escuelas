@@ -1,8 +1,3 @@
-
-We have used the [_gulp-requirejs_](https://www.npmjs.com/package/gulp-requirejs) node package to integrate the requirejs optimization in our gulp deployment process.
-
-Usage info: [here](server/README.md)
-
 Deployment usage
 ================
 
@@ -10,7 +5,7 @@ Deployment usage
 
 This deployment uses SMB protocol to mount the server target folder, then use fabric to copy the files from the build folder into it and finally unmount the server.
 
-**This process is internal to La Nación and thus not interesting for others to reuse, anyhow we publish the source because maybe someone needs to adapt it to their needs and still find it useful**
+** This process is internal to La Nación and thus not interesting for others to reuse, anyhow we publish the source because maybe someone needs to adapt it to their needs and still find it useful**
 
 ## Requirements
 * Python 2.7.\* && virtualenv && pip installed 
@@ -28,11 +23,12 @@ This deployment uses SMB protocol to mount the server target folder, then use fa
 
         $ pip install -r requirements.txt
 
-4. Setup required environment variables or change defaults in fabfile.py
+4. Set up required environment variables or change defaults in fabfile.py
     * SAMBA_CONN10: The SMB connection command to be ran for server 10
     * SAMBA_CONN11: The SMB connection command to be ran for server 11
-    * PROJECT_PATH: The path on the server where the app will be deployed
-    * TMP_PATH: A test path to ensure that the deployment process is working prior to actual deployment
+    * SERVER_PARENT_PATH: The parent path into where the deployment is going to be performed
+    * PROJECT_FOLDER (Optional): The folder on the server where the app will be deployed
+        * If it is not specified it will take the deploy's parent folder name
 
 5. Use _fab_ to list the available tasks
 

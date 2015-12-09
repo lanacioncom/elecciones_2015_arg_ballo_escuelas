@@ -120,6 +120,15 @@ def create(zoom=4, size=3, antar=False, low=False):
 
 @task
 @runs_once
+def create_antartida(zoom=4, size=3):
+    '''creates antartida hex for a particular zoom level and size multiplier'''
+    with lcd(cwd):
+        local('python %s/create_hexagons.py -z %s -s %s -a'
+              % (scripts_path, zoom, size))
+
+
+@task
+@runs_once
 def create_all():
     '''creates hexagons for levels 4 through 12'''
     with lcd(cwd):
@@ -132,12 +141,3 @@ def create_all():
         for i in range(13, 15):
             local('python %s/create_hexagons.py -z %s -s %s -l'
                   % (scripts_path, i, 3))
-
-
-@task
-@runs_once
-def create_antartida(zoom=4, size=3):
-    '''creates antartida hex for a particular zoom level and size multiplier'''
-    with lcd(cwd):
-        local('python %s/create_hexagons.py -z %s -s %s -a'
-              % (scripts_path, zoom, size))

@@ -18,7 +18,7 @@ cwd = os.path.dirname(__file__)
 scripts_path = os.path.join(cwd, '../scripts/DB')
 dbname = DB.split('/')[-1]
 
-######################## HELPER FUNCTIONS ################################
+# ####################### HELPER FUNCTIONS ################################
 
 
 def load(arr):
@@ -76,7 +76,7 @@ def exec_sqlfile(sqlfile):
         local('%s/exec_pg_sqlfile.sh %s %s' % (scripts_path, dbname, sqlfile))
 
 
-############################# TASKS ####################################
+# ############################ TASKS ####################################
 
 @task
 @runs_once

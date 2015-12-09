@@ -1,10 +1,19 @@
-Deployment usage
-================
+Server usage
+============
+
+## Introduction
+
+We use gulp to launch our development web server using live reloading of assets.
+
+We also use gulp tasks in order to optimize, minimify, uglify and build our app.
+
+We have used the [_gulp-requirejs_](https://www.npmjs.com/package/gulp-requirejs) node package to integrate the requirejs optimization in our gulp deployment process.
 
 ## Requirements
 * Have [_nodejs_](https://nodejs.org/) && [_bower_](http://bower.io/) installed
 
-## Process
+## Local webserver process
+
 1. Go to the server folder
 
         $ cd server
@@ -13,9 +22,21 @@ Deployment usage
 
         $ npm install && bower install
 
-3. Clean pevious builds (_optional_)
+3. Run the local server
 
-        $ gulp clear_build
+        $ gulp
+
+4. Open a browser on **http://localhost:8080** and play around. The server is using livereload so that any changes on the js, css or html files will be automatically refreshed.
+
+
+## Build process
+1. Go to the server folder
+
+        $ cd server
+
+2. Install dependencies (_if you didn't already_)
+
+        $ npm install && bower install
 
 3. Run the build process
 
@@ -23,9 +44,12 @@ Deployment usage
 
 4. Test results serving from the build folder
 
-        $ gulp server_pro
+        $ gulp server_prod
 
-5. Open a browser on **http://localhost:8080** and check that everything looks fine
+5. Open a browser on **http://localhost:9000** and check that everything looks fine
 
 ## Implementation notes
-* We are using the last commit found on the local git repo master branch to version the static files accordingly. Probably there should be a better way to locate the git commit but hell!! it works. (Any other way recommendations are more than welcomed through [github issue](https://github.com/lanacioncom/2015_caba_map/issues))
+
+* We are using a timestamp to version both css and javascript minified files
+
+* This project uses require.js to help modularize our javascript files, the build process includes a call to _ropmitize_ the optimizer that require.js provides to prepare a project for production environments
