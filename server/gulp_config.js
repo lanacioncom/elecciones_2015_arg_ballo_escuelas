@@ -3,15 +3,15 @@ var cfg = {
         cwd:'../webapp/',
         opt_path: '../webapp/opt',
         dest:'../build/',
-        commit: Math.floor(Date.now() / 1000),
+        timestamp: Math.floor(Date.now() / 1000),
         prod_url: 'http://especiales.lanacion.com.ar/multimedia/proyectos/15/elecciones/elecciones_2015_arg_ballo_escuelas/index.html',
         log: function(msg) {console.log(msg);}
     };
 
-var js_min = 'all.v'+cfg.commit+'.min.js';
-var libs_min = 'vendor.v'+cfg.commit+'.min.js';
+var js_min = 'all.v'+cfg.timestamp+'.min.js';
+var libs_min = 'vendor.v'+cfg.timestamp+'.min.js';
 var lib_cartodb_min = 'cartodb.js';
-var css_min = 'all.v'+cfg.commit+'.min.css';
+var css_min = 'all.v'+cfg.timestamp+'.min.css';
 
 module.exports.cfg = cfg;
 module.exports.js_min = js_min;

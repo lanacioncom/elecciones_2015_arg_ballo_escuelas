@@ -22,7 +22,9 @@ gulp.task('reload', ['test_js'], function () {
 gulp.task('watch', function () {
   gulp.watch([cfg.cwd+'*.html',
               cfg.cwd+'**/*.css',
-              cfg.cwd+'js/**/*.js'],
+              cfg.cwd+'js/**/*.js',
+              cfg.cwd+'templates/**/*.txt',
+               cfg.cwd+'templates/**/*.html'],
               ['reload']);
 });
 
