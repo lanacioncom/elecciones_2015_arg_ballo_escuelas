@@ -942,7 +942,7 @@ footer div.datos span{
       margin-bottom: 10px;
     }
     
-#telegramas_list li:hover{
+#telegramas_list li:hover, #telegramas_list li.active{
     background:#f1f1f1;
 }
 

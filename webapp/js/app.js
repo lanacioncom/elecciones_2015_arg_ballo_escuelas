@@ -382,7 +382,7 @@ function(ctxt, config, templates, cdb, responsive, Overlay,
                                  .style("opacity", 0)
                                  .transition()
                                  .style("opacity", 1);
-                        d3.select("#append").on("click", function(){
+                        d3.select("#append div.cerrar").on("click", function(){
                             d3.select(".creVent")
                               .transition().style("opacity", 0)
                               .each("end", function(){append_to.html("");});
@@ -390,20 +390,35 @@ function(ctxt, config, templates, cdb, responsive, Overlay,
 
                         //DocumentCloud embedded telegrams viewer
                         d3.selectAll(".dc_telegram").on("click", function(){
-                            var id = d3.select(this).attr("id");
-                            var append_to = d3.select("#dc_embed");
+                            d3.select("div.creVent div.txts")
+                              .style({
+                                "max-width": "100%",
+                                "height": "auto"
+                            });
+
+                            d3.select("div.telegramas_wrapper")
+                              .style({
+                                "width": "10%",
+                                "max-width": "50px",
+                                "height": "auto",
+                                "float": "left",
+                                "padding-right": "10px", 
+                                "border-right": "solid #ccc 1px"
+                            });
+                            // mark selected telegram
+                            d3.selectAll("div.telegramas_wrapper .active")
+                              .classed("active", false);
+                            d3.select(this.parentNode).classed("active", true);
+                            var $el = d3.select(this);
+
+                            var id = $el.attr("id");
+                            var append_to = d3.select("#dc_container");
                             var params = {"data": id,
                                           "vh": view_helpers};
                             append_to.html(dc_embed_tpl(params))
-                                     .style("opacity", 0)
-                                     .transition()
-                                     .style("opacity", 1);  
-                            d3.select("#dc_embed div.cerrar")
-                              .on("click", function(){
-                                d3.select(".creVent")
-                                  .transition().style("opacity", 0)
-                                  .each("end", function(){append_to.html("");});
-                                }, false);
+                                     .style({
+                                        "width": "90%"
+                                     });
                             }, false);
 
                     })
