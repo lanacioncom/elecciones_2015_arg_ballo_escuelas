@@ -50,7 +50,7 @@ define(function (config) {
             return key.slice(2);
         },
         get_key_telegrama: function(key) {
-            return key.split("-")[2];
+            return key.split("-")[2].toLowerCase();
         }
     };
 });
