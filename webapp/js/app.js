@@ -391,20 +391,8 @@ function(ctxt, config, templates, cdb, responsive, Overlay,
                         //DocumentCloud embedded telegrams viewer
                         d3.selectAll(".dc_telegram").on("click", function(){
                             d3.select("div.creVent div.txts")
-                              .style({
-                                "max-width": "100%",
-                                "height": "auto"
-                            });
+                                .classed("telegram_open", true);
 
-                            d3.select("div.telegramas_wrapper")
-                              .style({
-                                "width": "10%",
-                                "max-width": "50px",
-                                "height": "auto",
-                                "float": "left",
-                                "padding-right": "10px", 
-                                "border-right": "solid #ccc 1px"
-                            });
                             // mark selected telegram
                             d3.selectAll("div.telegramas_wrapper .active")
                               .classed("active", false);

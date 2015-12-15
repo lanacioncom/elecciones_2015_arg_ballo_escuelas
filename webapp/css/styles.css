@@ -708,6 +708,20 @@ div.creVent div.txts{
     position: relative;
     /*display: none;*/
 }
+div.creVent div.txts.telegram_open {
+  max-width: 90%;
+  height: auto;
+}
+
+div.txts.telegram_open div.telegramas_wrapper {
+  width: 10%;
+  max-width: 50px;
+  height: auto;
+  float: left;
+  padding-right: 10px; 
+  border-right: solid #ccc 1px;
+}
+
 
 div.creVent div.txts.zoom{
   background-color: #fff;
@@ -942,6 +956,7 @@ footer div.datos span{
       margin-bottom: 10px;
     }
     
+#telegramas_list li .dc_telegram { cursor: pointer; }
 #telegramas_list li:hover, #telegramas_list li.active{
     background:#f1f1f1;
 }

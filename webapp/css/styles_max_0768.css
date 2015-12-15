@@ -1,5 +1,11 @@
 @media (max-width: 768px) {
 
+    div.txts.telegram_open div.telegramas_wrapper {
+      width: 100%;
+      max-width: none;
+      border-right: none;
+    }
+
     div.btn {
         font-size: 11px;
     }
