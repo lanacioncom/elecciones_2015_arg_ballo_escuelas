@@ -86,10 +86,10 @@ We copied the required opensourced cartodb functions and extensions to a local p
 
 We had to tweak _dataset_ CSVSerializer to allow imports to cartoDB without automatic type detection enabled. That way we could upload directly from the dataset freeze export without having to touch ids that were treated as numbers and not strings
 
-        ```python
-            # Hack for cartodb import
-            writer = csv.writer(fh, quoting=csv.QUOTE_NONNUMERIC)
-        ```
+    ```python
+        # Hack for cartodb import
+        writer = csv.writer(fh, quoting=csv.QUOTE_NONNUMERIC)
+    ```
 
 ### DocumentCloud storage of official telegrams
 
