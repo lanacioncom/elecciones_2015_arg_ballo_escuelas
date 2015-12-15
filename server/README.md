@@ -34,7 +34,7 @@ We have used the [_gulp-requirejs_](https://www.npmjs.com/package/gulp-requirejs
 
         $ cd server
 
-2. Install dependencies (_if you didn't already_)
+2. Install dependencies (_if you haven't already_)
 
         $ npm install && bower install
 
