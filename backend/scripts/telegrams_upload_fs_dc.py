@@ -53,7 +53,6 @@ def upload_telegram(folder=None, client=None, row=None):
         'title:%s' % (title),
         page=1,
         per_page=10)
-    print obj_list
     if len(obj_list):
         print "%s already uploaded" % (title)
     else:
@@ -65,6 +64,7 @@ def upload_telegram(folder=None, client=None, row=None):
             access='public',
             source='http://www.resultados.gob.ar/'
         )
+        print dc_obj.id
         dc_id = dc_obj.id.split('-')[0]
         print dc_id
         result['document_id'] = dc_id
