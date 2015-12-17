@@ -3,6 +3,7 @@ import argparse
 import os
 from csvkit.py2 import CSVKitDictReader
 from documentcloud import DocumentCloud
+from documentcloud import DoesNotExistError
 from time import time
 from settings import DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD
 # Parallel execution libs
@@ -40,9 +41,12 @@ N_CORES = 4
 def delete_telegram(client=None, row=None):
     '''delete pdf from DocumentCloud'''
     id = row['dc_id']
-    obj = client.documents.get(id)
-    print obj.title
-    obj.delete()
+    try:
+        obj = client.documents.get(id)
+        print obj.title
+        obj.delete()
+    except DoesNotExistError, e:
+        print e
     return None
 
 
