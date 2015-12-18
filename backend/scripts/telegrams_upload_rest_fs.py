@@ -14,22 +14,23 @@ import joblib.parallel
 
 # PARALLEL EXECUTION SETTINGS
 # Override joblib callback default callback behavior
-class CallBack(object):
+class BatchCompletionCallBack(object):
     completed = defaultdict(int)
 
-    def __init__(self, index, parallel):
-        self.index = index
+    def __init__(self, dispatch_timestamp, batch_size, parallel):
+        self.dispatch_timestamp = dispatch_timestamp
+        self.batch_size = batch_size
         self.parallel = parallel
 
-    def __call__(self, index):
-        CallBack.completed[self.parallel] += 1
-        if CallBack.completed[self.parallel] % 100 == 0:
+    def __call__(self, out):
+        BatchCompletionCallBack.completed[self.parallel] += 1
+        if BatchCompletionCallBack.completed[self.parallel] % 10 == 0:
             print("processed {} items"
-                  .format(CallBack.completed[self.parallel]))
-        if self.parallel._original_iterable:
+                  .format(BatchCompletionCallBack.completed[self.parallel]))
+        if self.parallel._original_iterator is not None:
             self.parallel.dispatch_next()
-# MonkeyPatch Callback
-joblib.parallel.CallBack = CallBack
+# MonkeyPatch BatchCompletionCallBack
+joblib.parallel.BatchCompletionCallBack = BatchCompletionCallBack
 
 
 # GLOBAL SETTINGS
@@ -114,7 +115,7 @@ def test_dc_upload(cache_set, row):
     result['document_title'] = title
     result['project_id'] = PROJECT_ID
     client = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
-    fpath = '%s/%s/%s' % (INPUT_PATH, 'pdf1', row['key'])
+    fpath = '%s/%s/%s' % (INPUT_PATH, 'pdf', row['key'])
     if title in cache_set:
         print "%s already uploaded" % (title)
         # return None
@@ -128,7 +129,6 @@ def test_dc_upload(cache_set, row):
                 source='http://www.resultados.gob.ar/'
         )
         dc_id = dc_obj.id.split('-')[0]
-        import pdb; pdb.set_trace()
         print "DC document_id: %s" % (dc_id)
         result['document_id'] = dc_id
         return result

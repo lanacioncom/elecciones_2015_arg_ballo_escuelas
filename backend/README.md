@@ -76,12 +76,23 @@ We can then import the final results to _cartodb_ postgis DB. This is done mannu
 
 ### Generating the precached hexagons
 
-TODO
+Due to performance problems calculating hexagon grids for Argentina's polling stations with a small hexagon that we thought was needed to allow for the user to explore the data with a proper granularity we had to take another approach and decided to precalculate the hexagon grids for our data and every zoom level that we were going to cover.
+
+This process was quite CPU consuming specially on greater zoom levels were the number of hexagons to be calculated was in the order or billions.
+
+We copied the required opensourced cartodb functions and extensions to a local postgis instance check [here](data/sql/create_cartodb_functions.sql) and included the generation process in our overall general fabric task.
 
 ### Tweaking dataset for CSV quote generation
 
-TODO
+We had to tweak _dataset_ CSVSerializer to allow imports to cartoDB without automatic type detection enabled. That way we could upload directly from the dataset freeze export without having to touch ids that were treated as numbers and not strings
+
+```Python
+    # Hack for cartodb import
+    writer = csv.writer(fh, quoting=csv.QUOTE_NONNUMERIC)
+```
 
 ### DocumentCloud storage of official telegrams
 
-TODO
+This elections we had decided to scrape the telegrams provided in the official electoral website and upload them into DocumentCloud so that we could ensure a more permanent hosting of those documents.
+
+We have used the DocumentCloud API extensively to import almost 100.000 documents to their servers. Because are work was being carried in python we have used the [python wrapper](http://python-documentcloud.readthedocs.org/en/latest/) and found it pretty straight forward to use.

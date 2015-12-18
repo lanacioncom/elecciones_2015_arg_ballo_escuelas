@@ -14,22 +14,23 @@ import joblib.parallel
 
 # PARALLEL EXECUTION SETTINGS
 # Override joblib callback default callback behavior
-class CallBack(object):
+class BatchCompletionCallBack(object):
     completed = defaultdict(int)
 
-    def __init__(self, index, parallel):
-        self.index = index
+    def __init__(self, dispatch_timestamp, batch_size, parallel):
+        self.dispatch_timestamp = dispatch_timestamp
+        self.batch_size = batch_size
         self.parallel = parallel
 
-    def __call__(self, index):
-        CallBack.completed[self.parallel] += 1
-        if CallBack.completed[self.parallel] % 100 == 0:
+    def __call__(self, out):
+        BatchCompletionCallBack.completed[self.parallel] += 1
+        if BatchCompletionCallBack.completed[self.parallel] % 10 == 0:
             print("processed {} items"
-                  .format(CallBack.completed[self.parallel]))
-        if self.parallel._original_iterable:
+                  .format(BatchCompletionCallBack.completed[self.parallel]))
+        if self.parallel._original_iterator is not None:
             self.parallel.dispatch_next()
-# MonkeyPatch Callback
-joblib.parallel.CallBack = CallBack
+# MonkeyPatch BatchCompletionCallBack
+joblib.parallel.BatchCompletionCallBack = BatchCompletionCallBack
 
 
 # GLOBAL SETTINGS
@@ -39,16 +40,6 @@ UPLOADED_FILE = 'uploaded'
 N_CORES = 4
 PROJECT_ID = '23498'
 HEADER = ['document_id', 'document_title', 'project_id']
-
-
-def load_prev_uploaded():
-    '''Already uploaded telegrams to DocumentCloud'''
-    s = None
-    # Create output files folder if needed
-    with open('%s/%s.csv' % (INPUT_PATH, UPLOADED_FILE), 'r') as f:
-        reader = CSVKitDictReader(f)
-        s = set([r['document_title'] for r in reader])
-    return s
 
 
 def upload_telegram(folder=None, client=None, row=None):
@@ -62,7 +53,6 @@ def upload_telegram(folder=None, client=None, row=None):
         'title:%s' % (title),
         page=1,
         per_page=10)
-    print obj_list
     if len(obj_list):
         print "%s already uploaded" % (title)
     else:
@@ -74,6 +64,7 @@ def upload_telegram(folder=None, client=None, row=None):
             access='public',
             source='http://www.resultados.gob.ar/'
         )
+        print dc_obj.id
         dc_id = dc_obj.id.split('-')[0]
         print dc_id
         result['document_id'] = dc_id

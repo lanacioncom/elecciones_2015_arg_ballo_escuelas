@@ -1,8 +1,9 @@
 # coding: utf-8
 import argparse
 import os
-from csvkit.py2 import CSVKitDictReader, CSVKitDictWriter
+from csvkit.py2 import CSVKitDictReader
 from documentcloud import DocumentCloud
+from documentcloud import DoesNotExistError
 from time import time
 from settings import DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD
 # Parallel execution libs
@@ -34,42 +35,39 @@ joblib.parallel.BatchCompletionCallBack = BatchCompletionCallBack
 
 # GLOBAL SETTINGS
 cwd = os.path.dirname(__file__)
-OUTPUT_PATH = os.path.join(cwd, '../data/telegrams')
-HEADER = ['document_id', 'document_title', 'project_id']
+INPUT_PATH = os.path.join(cwd, '../data/telegrams')
 N_CORES = 4
 
 
-def get_proj_docs_dc(client=None, proj=None):
+def delete_telegram(client=None, row=None):
     '''delete pdf from DocumentCloud'''
-    result = []
-    obj = client.projects.get(id=proj)
-    print len(obj.document_ids)
-    for doc in obj.document_ids:
-        id = doc.split("-")[0]
-        title = doc.split("-")[1]
-        r = {'document_id': id, 'document_title': title, 'project_id': proj}
-        print r
-        result.append(r)
-    return result
+    id = row['document_id']
+    try:
+        obj = client.documents.get(id)
+        print obj.title
+        obj.title = row['document_title']
+        print obj.title
+        obj.put()
+    except DoesNotExistError, e:
+        print e
+    return None
 
 
-def process_telegrams(fname=None, proj=None):
+def process_telegrams(fname=None):
     '''Download telegrams from gov site'''
     # Create output files folder if needed
     client = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
-    with open('%s/%s.csv' %
-              (OUTPUT_PATH, fname), 'w') as fout:
-        writer = CSVKitDictWriter(fout, fieldnames=HEADER)
-        writer.writeheader()
-        r = get_proj_docs_dc(client, proj)
-        writer.writerows(r)
+    with open('%s/%s.csv' % (INPUT_PATH, fname), 'r') as f:
+        reader = CSVKitDictReader(f)
+        r = Parallel(n_jobs=N_CORES)(delayed(delete_telegram)(client, row)
+                                     for row in reader)
 
         print('finished processing {}.csv'.format(fname))
 
 
 def run(args):
     '''Let DC get the telegrams for us'''
-    process_telegrams(args.file, args.project)
+    process_telegrams(args.file)
 
 if __name__ == '__main__':
     # Arguments handling
@@ -79,10 +77,5 @@ if __name__ == '__main__':
                         type=str,
                         required=True,
                         help="index file with telegram keys")
-    parser.add_argument("-p",
-                        "--project",
-                        type=str,
-                        required=True,
-                        help="project id in DC")
     args = parser.parse_args()
     run(args)

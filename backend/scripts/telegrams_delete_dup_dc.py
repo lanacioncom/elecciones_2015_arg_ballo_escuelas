@@ -3,6 +3,7 @@ import argparse
 import os
 from csvkit.py2 import CSVKitDictReader
 from documentcloud import DocumentCloud
+from documentcloud import DoesNotExistError
 from time import time
 from settings import DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD
 # Parallel execution libs
@@ -13,22 +14,23 @@ import joblib.parallel
 
 # PARALLEL EXECUTION SETTINGS
 # Override joblib callback default callback behavior
-class CallBack(object):
+class BatchCompletionCallBack(object):
     completed = defaultdict(int)
 
-    def __init__(self, index, parallel):
-        self.index = index
+    def __init__(self, dispatch_timestamp, batch_size, parallel):
+        self.dispatch_timestamp = dispatch_timestamp
+        self.batch_size = batch_size
         self.parallel = parallel
 
-    def __call__(self, index):
-        CallBack.completed[self.parallel] += 1
-        if CallBack.completed[self.parallel] % 10 == 0:
+    def __call__(self, out):
+        BatchCompletionCallBack.completed[self.parallel] += 1
+        if BatchCompletionCallBack.completed[self.parallel] % 10 == 0:
             print("processed {} items"
-                  .format(CallBack.completed[self.parallel]))
-        if self.parallel._original_iterable:
+                  .format(BatchCompletionCallBack.completed[self.parallel]))
+        if self.parallel._original_iterator is not None:
             self.parallel.dispatch_next()
-# MonkeyPatch Callback
-joblib.parallel.CallBack = CallBack
+# MonkeyPatch BatchCompletionCallBack
+joblib.parallel.BatchCompletionCallBack = BatchCompletionCallBack
 
 
 # GLOBAL SETTINGS
@@ -40,9 +42,12 @@ N_CORES = 4
 def delete_telegram(client=None, row=None):
     '''delete pdf from DocumentCloud'''
     id = row['dc_id']
-    obj = client.documents.get(id)
-    print obj.title
-    obj.delete()
+    try:
+        obj = client.documents.get(id)
+        print obj.title
+        obj.delete()
+    except DoesNotExistError, e:
+        print e
     return None
 
 

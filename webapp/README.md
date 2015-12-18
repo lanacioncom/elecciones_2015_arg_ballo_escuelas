@@ -9,7 +9,7 @@ Frontend usage
 
         $ cd server
 
-2. Install dependencies
+2. Install dependencies (_if you haven't already_)
 
         $ npm install && bower install
 

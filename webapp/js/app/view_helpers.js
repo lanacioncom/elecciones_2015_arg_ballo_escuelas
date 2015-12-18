@@ -34,7 +34,24 @@ define(function (config) {
             return dict[d.id_partido] ? dict[d.id_partido].nombre_corto : "";
         },
         get_url: function(key) {
-            return "http://www.resultados.gob.ar/bltgetelegr/"+key+".htm";
+            var k = key.split("-")[2];
+            var items = k.split("_");
+            var url = "http://www.resultados.gob.ar/bltgetelegr/";
+            url += items[0];
+            url += "/";
+            url += items[1];
+            url += "/";
+            url += items[2];
+            url += "/";
+            url += items[3];
+            if (items.length == 5) {
+                url += "_"+items[4]+".htm";
+            }
+            else {
+                url +=".htm";
+            }
+            console.log(url);
+            return url;
         },
         get_mesa: function(key) {
             return key.slice(-4);
